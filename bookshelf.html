@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>📚 传家书廊</title>
+    <style>
+        @font-face {
+            font-family: 'YanTi';
+            src: url('./fonts/颜真卿颜体.ttf') format('truetype');
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'YanTi', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #fdf6f0 0%, #f9e9e0 100%);
+            min-height: 100vh;
+            padding: 20px 15px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: #b03060;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #8b5a2b;
+            font-size: 1em;
+            border-bottom: 2px dashed #d4a373;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+
+
+        /* 确保导航栏占满整行且不换行 */
+        .nav-container {
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+            left: 0;
+            right: 0;
+            white-space: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox隐藏滚动条 */
+        }
+        
+        .nav-container::-webkit-scrollbar {
+            display: none; /* Chrome/Safari隐藏滚动条 */
+        }
+        
+        .nav-container a {
+            display: inline-block;
+        }
+        
+        /* 手机端适配 */
+        @media (max-width: 768px) {
+            .nav-container a {
+                margin: 0 8px !important;
+                font-size: 16px !important;
+                padding: 4px 8px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-container a {
+                margin: 0 5px !important;
+                font-size: 14px !important;
+                padding: 3px 6px !important;
+            }
+        }
+    
+        /* 最近三本书 - 手机端优化 */
+        .recent-section {
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            padding: 15px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 30px;
+            box-shadow: 0 8px 20px rgba(176,48,96,0.1);
+        }
+        
+        .recent-title {
+            text-align: center;
+            font-size: 1.3em;
+            color: #8b4513;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        
+        .recent-books {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .recent-card {
+            flex: 0 1 200px;
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(210,180,140,0.5);
+        }
+        
+        .recent-card:nth-child(1) { transform: rotate(-1deg); }
+        .recent-card:nth-child(2) { transform: rotate(0.5deg); }
+        .recent-card:nth-child(3) { transform: rotate(1.5deg); }
+        
+        .recent-card:hover {
+            transform: rotate(0deg) scale(1.02);
+            border-color: #b03060;
+        }
+        
+        .recent-cover {
+            width: 100px;
+            height: 133px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 0 auto 10px auto;
+            display: block;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+        
+        .recent-info {
+            text-align: center;
+        }
+        
+        .recent-bookname {
+            font-size: 1.1em;
+            color: #4a3729;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .recent-author {
+            color: #8b5a2b;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+        
+        .recent-readers {
+            color: #b03060;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+        }
+        
+        .recent-note {
+            background: #fff0f5;
+            padding: 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            color: #8b5a2b;
+            font-style: italic;
+            border-left: 3px solid #d6336c;
+            text-align: left;
+        }
+        
+        /* 三栏布局 - 手机端改为垂直滚动 */
+        .categories {
+            display: flex;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        .category {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 20px 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+        
+        .category-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d4a373;
+        }
+        
+        .category-title {
+            font-size: 1.8em;
+            color: #8b4513;
+            margin-bottom: 3px;
+        }
+        
+        .category-count {
+            color: #b03060;
+            font-size: 1em;
+            background: rgba(255,215,0,0.2);
+            padding: 4px 12px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+        
+        .scroll-container {
+            height: 500px;
+            overflow-y: auto;
+            padding-right: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: #d4a373 #f5e6d3;
+        }
+        
+        .scroll-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f5e6d3;
+            border-radius: 8px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #d4a373;
+            border-radius: 8px;
+        }
+        
+        .book-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .book-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(210,180,140,0.2);
+        }
+        
+        .book-item:hover {
+            transform: translateX(5px);
+            border-color: #b03060;
+        }
+        
+        .book-cover {
+            width: 70px;
+            height: 93px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        }
+        
+        .book-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .book-title {
+            font-size: 1.1em;
+            color: #4a3729;
+            margin-bottom: 3px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .book-author {
+            color: #8b5a2b;
+            font-size: 0.85em;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .book-readers {
+            color: #b03060;
+            font-size: 0.8em;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .book-meta {
+            display: flex;
+            gap: 8px;
+            color: #b03060;
+            font-size: 0.75em;
+            flex-wrap: wrap;
+        }
+        
+        .book-meta span {
+            background: #fdf6f0;
+            padding: 2px 6px;
+            border-radius: 12px;
+        }
+        
+        .stats {
+            text-align: center;
+            margin-top: 30px;
+            color: #8b5a2b;
+            font-size: 1em;
+            padding: 15px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 40px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 手机端优化 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .categories {
+                flex-direction: column;
+                gap: 15px;
+                padding: 5px;
+            }
+            
+            .category {
+                padding: 15px 12px;
+            }
+            
+            .category-title {
+                font-size: 1.5em;
+            }
+            
+            .scroll-container {
+                height: 350px;
+            }
+            
+            .recent-books {
+                gap: 10px;
+            }
+            
+            .recent-card {
+                flex: 0 1 calc(50% - 10px);
+                min-width: 140px;
+            }
+            
+            .recent-card:last-child {
+                flex: 0 1 100%;
+                max-width: 200px;
+                margin: 0 auto;
+            }
+            
+            .recent-cover {
+                width: 80px;
+                height: 107px;
+            }
+            
+            .book-cover {
+                width: 60px;
+                height: 80px;
+            }
+            
+            .book-title {
+                font-size: 1em;
+            }
+            
+            .stats {
+                font-size: 0.9em;
+                padding: 12px;
+            }
+        }
+        
+        /* 超小屏优化 */
+        @media (max-width: 480px) {
+            .recent-card {
+                flex: 0 1 100%;
+                max-width: 220px;
+            }
+            
+            .book-item {
+                gap: 8px;
+                padding: 10px;
+            }
+            
+            .book-cover {
+                width: 50px;
+                height: 67px;
+            }
+            
+            .book-meta span {
+                padding: 2px 4px;
+                font-size: 0.7em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 - 确保不跨行 
+    <div class="nav-container" style="background-color: white; width: 100%; padding: 10px 0; border-bottom: 2px solid #409EFF; text-align: center; font-family: 'YanTi', 'Microsoft YaHei', sans-serif; box-sizing: border-box; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+        <a href="index.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">🏠 主页</a>
+        <a href="reading_board.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">📜 传家录</a>
+        <a href="world_reading_map.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">🌍 地图</a>
+        <a href="bookshelf.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">📚 书架</a>
+    </div> -->
+    <div class="header">
+        <h1>📖 传家书廊 <a href="index.html">🏠</a></h1>
+        <div class="subtitle">文学 · 社会 · 科学</div>
+    </div>
+
+    <div class="recent-section">
+        <div class="recent-title">✨ 近日所读 ✨</div>
+        <div class="recent-books">
+    
+        <div class="recent-card">
+            <img class="recent-cover" src="./books/半小时漫画中国哲学史.jpg" alt="半小时漫画中国哲学史" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
+            <div class="recent-info">
+                <div class="recent-bookname">半小时漫画中国哲学史</div>
+                <div class="recent-author">陈磊·半小时漫画团队</div>
+                <div class="recent-readers">致虚🏔️</div>
+                <div class="recent-note">「荀子制天命」</div>
+            </div>
+        </div>
+        
+        <div class="recent-card">
+            <img class="recent-cover" src="./books/装修常用数据图解.jpg" alt="装修常用数据图解" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
+            <div class="recent-info">
+                <div class="recent-bookname">装修常用数据图解</div>
+                <div class="recent-author">杨文英</div>
+                <div class="recent-readers">西翁🦁</div>
+                <div class="recent-note">「『装修常用数据图解』一卷读罢，满室生香。」</div>
+            </div>
+        </div>
+        
+        <div class="recent-card">
+            <img class="recent-cover" src="./books/坟.jpg" alt="坟" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
+            <div class="recent-info">
+                <div class="recent-bookname">坟</div>
+                <div class="recent-author">鲁迅</div>
+                <div class="recent-readers">致虚🏔️</div>
+                <div class="recent-note">「暂时做稳了奴隶，他妈的」</div>
+            </div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="categories">
+
+        <div class="category">
+            <div class="category-header">
+                <div class="category-title">📚 文学</div>
+                <div class="category-count">共 11 本</div>
+            </div>
+            <div class="scroll-container">
+                <div class="book-grid">
+    
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/坟.jpg" alt="坟" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">坟</div>
+                            <div class="book-author">鲁迅</div>
+                            <div class="book-readers">致虚🏔️</div>
+                            <div class="book-meta">
+                                <span>228页</span>
+                                <span>¥18</span>
+                                <span>📅 2026-03-19</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/三体2.jpg" alt="三体2" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">三体2</div>
+                            <div class="book-author">刘慈欣</div>
+                            <div class="book-readers">西翁🦁</div>
+                            <div class="book-meta">
+                                <span>470页</span>
+                                <span>¥32</span>
+                                <span>📅 2026-03-18</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/送你一颗子弹.jpg" alt="送你一颗子弹" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">送你一颗子弹</div>
+                            <div class="book-author">刘瑜</div>
+                            <div class="book-readers">致虚🏔️</div>
+                            <div class="book-meta">
+                                <span>300页</span>
+                                <span>¥38</span>
+                                <span>📅 2026-03-18</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/失落的一角遇见大圆满.jpg" alt="失落的一角遇见大圆满" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">失落的一角遇见大圆满</div>
+                            <div class="book-author">[美]谢尔·希尔弗斯坦</div>
+                            <div class="book-readers">致虚🏔️</div>
+                            <div class="book-meta">
+                                <span>100页</span>
+                                <span>¥20</span>
+                                <span>📅 2026-03-17</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/恒河的女儿.jpg" alt="恒河的女儿" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">恒河的女儿</div>
+                            <div class="book-author">[印]贝碧·哈尔德</div>
+                            <div class="book-readers">清一🎋</div>
+                            <div class="book-meta">
+                                <span>207页</span>
+                                <span>¥25</span>
+                                <span>📅 2026-03-14</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/一句顶一万句.jpg" alt="一句顶一万句" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">一句顶一万句</div>
+                            <div class="book-author">刘震云</div>
+                            <div class="book-readers">致虚🏔️</div>
+                            <div class="book-meta">
+                                <span>457页</span>
+                                <span>¥30</span>
+                                <span>📅 2026-03-14</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/养心的妙药.jpg" alt="养心的妙药" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">养心的妙药</div>
+                            <div class="book-author">毕淑敏</div>
+                            <div class="book-readers">抱朴🌲</div>
+                            <div class="book-meta">
+                                <span>360页</span>
+                                <span>¥28</span>
+                                <span>📅 2026-03-12</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/命若琴弦.jpg" alt="命若琴弦" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">命若琴弦</div>
+                            <div class="book-author">史铁生</div>
+                            <div class="book-readers">清一🎋</div>
+                            <div class="book-meta">
+                                <span>421页</span>
+                                <span>¥30</span>
+                                <span>📅 2026-02-28</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/三体1.jpg" alt="三体1" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">三体1</div>
+                            <div class="book-author">刘慈欣</div>
+                            <div class="book-readers">西翁🦁</div>
+                            <div class="book-meta">
+                                <span>302页</span>
+                                <span>¥23</span>
+                                <span>📅 2026-02-26</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/课本里的古诗词.jpg" alt="课本里的古诗词" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">课本里的古诗词</div>
+                            <div class="book-author">谢琰</div>
+                            <div class="book-readers">西翁🦁</div>
+                            <div class="book-meta">
+                                <span>432页</span>
+                                <span>¥68</span>
+                                <span>📅 2026-02-10</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/1984.jpg" alt="1984" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">1984</div>
+                            <div class="book-author">[英]乔治·奥威尔</div>
+                            <div class="book-readers">清一🎋</div>
+                            <div class="book-meta">
+                                <span>304页</span>
+                                <span>¥32</span>
+                                <span>📅 2026-01-29</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    
+        <div class="category">
+            <div class="category-header">
+                <div class="category-title">🏛️ 社科</div>
+                <div class="category-count">共 7 本</div>
+            </div>
+            <div class="scroll-container">
+                <div class="book-grid">
+    
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/半小时漫画中国哲学史.jpg" alt="半小时漫画中国哲学史" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">半小时漫画中国哲学史</div>
+                            <div class="book-author">陈磊·半小时漫画团队</div>
+                            <div class="book-readers">致虚🏔️</div>
+                            <div class="book-meta">
+                                <span>304页</span>
+                                <span>¥50</span>
+                                <span>📅 2026-03-19</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/论大战略.jpg" alt="论大战略" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">论大战略</div>
+                            <div class="book-author">[美]约翰.刘易斯.加迪斯</div>
+                            <div class="book-readers">清一🎋</div>
+                            <div class="book-meta">
+                                <span>393页</span>
+                                <span>¥69</span>
+                                <span>📅 2026-03-12</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/中国文化的深层结构.jpg" alt="中国文化的深层结构" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">中国文化的深层结构</div>
+                            <div class="book-author">孙隆基</div>
+                            <div class="book-readers">致虚🏔️</div>
+                            <div class="book-meta">
+                                <span>434页</span>
+                                <span>¥68</span>
+                                <span>📅 2026-03-05</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/豆包AI赚钱手册.jpg" alt="豆包AI赚钱手册" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">豆包AI赚钱手册</div>
+                            <div class="book-author">未知作者</div>
+                            <div class="book-readers">西翁🦁</div>
+                            <div class="book-meta">
+                                <span>198页</span>
+                                <span>¥60</span>
+                                <span>📅 2026-02-28</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/中华玄机.jpg" alt="中华玄机" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">中华玄机</div>
+                            <div class="book-author">王蒙</div>
+                            <div class="book-readers">清一🎋</div>
+                            <div class="book-meta">
+                                <span>357页</span>
+                                <span>¥45</span>
+                                <span>📅 2026-02-26</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/蔡康永的说话之道.jpg" alt="蔡康永的说话之道" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">蔡康永的说话之道</div>
+                            <div class="book-author">蔡康永</div>
+                            <div class="book-readers">抱朴🌲</div>
+                            <div class="book-meta">
+                                <span>167页</span>
+                                <span>¥25</span>
+                                <span>📅 2026-02-23</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/小镇喧嚣.jpg" alt="小镇喧嚣" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">小镇喧嚣</div>
+                            <div class="book-author">吴毅</div>
+                            <div class="book-readers">抱朴🌲</div>
+                            <div class="book-meta">
+                                <span>622页</span>
+                                <span>¥68</span>
+                                <span>📅 2026-02-11</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    
+        <div class="category">
+            <div class="category-header">
+                <div class="category-title">🔬 自然科学</div>
+                <div class="category-count">共 4 本</div>
+            </div>
+            <div class="scroll-container">
+                <div class="book-grid">
+    
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/小恒星的漂亮朋友.jpg" alt="小恒星的漂亮朋友" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">小恒星的漂亮朋友</div>
+                            <div class="book-author">[俄罗斯]伊莲娜.乌利耶娃+安娜.玛玛耶娃</div>
+                            <div class="book-readers">盈生🐤</div>
+                            <div class="book-meta">
+                                <span>24页</span>
+                                <span>¥33</span>
+                                <span>📅 2026-03-19</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/我们的太阳系.jpg" alt="我们的太阳系" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">我们的太阳系</div>
+                            <div class="book-author">[俄]伊莲娜·乌利耶娃</div>
+                            <div class="book-readers">盈生🐤</div>
+                            <div class="book-meta">
+                                <span>23页</span>
+                                <span>¥33</span>
+                                <span>📅 2026-03-16</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/Writing Science.jpg" alt="Writing Science" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">Writing Science</div>
+                            <div class="book-author">Joshua Schimel</div>
+                            <div class="book-readers">致虚🏔️</div>
+                            <div class="book-meta">
+                                <span>236页</span>
+                                <span>¥300</span>
+                                <span>📅 2026-02-25</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="book-item">
+                        <img class="book-cover" src="./books/Condensed Matter Physics.jpg" alt="Condensed Matter Physics" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                        <div class="book-info">
+                            <div class="book-title">Condensed Matter Physics</div>
+                            <div class="book-author">Ross H. McKenzie</div>
+                            <div class="book-readers">致虚🏔️</div>
+                            <div class="book-meta">
+                                <span>176页</span>
+                                <span>¥70</span>
+                                <span>📅 2026-02-09</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    
+    <div class="stats">
+        📊 总计 23 册 · 累计 6,643 页 · 投资 ¥1206 元
+    </div>
+    
+    <script>
+        document.querySelectorAll('.scroll-container').forEach(container => {
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                container.scrollBy({
+                    top: e.deltaY * 0.5,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

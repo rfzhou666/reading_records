@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📖 好好学习 天天向上</title>
+<style>
+@font-face {
+            font-family: 'YanTi';
+            src: url('./fonts/颜真卿颜体.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+}
+
+@font-face {
+            font-family: 'KangXi';
+            src: url('./fonts/TypeLand-com-KangXiZiDianTi-ShiYongBan-1.otf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+}
+
+@font-face {
+            font-family: 'ZhuanTi';
+            src: url('./fonts/HYZhiHaoTianGongZhuanF-2.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+}
+    
+body {
+    font-family: "YanTi", "ZhuanTi","Microsoft YaHei", Arial, sans-serif;
+    line-height: 1.8;
+    background-color: #fdf6f0;
+    color: #333;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    color: #b03060;
+    margin-bottom: 30px;
+}
+h2, h3 {
+    color: #d6336c;
+    margin-top: 25px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background-color: #fff7f0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+th, td {
+    border: 1px solid #f1c0c0;
+    padding: 8px 12px;
+    text-align: center;
+}
+th {
+    background-color: #ffe6f0;
+    font-weight: bold;
+}
+td:first-child {
+    font-weight: bold;
+}
+ul, ol {
+    margin: 10px 0 10px 20px;
+}
+.update {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 15px;
+}
+.news-container {
+    margin-bottom: 25px;
+}
+.news {
+    background-color: #fff0f5;
+    border-left: 4px solid #d6336c;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border-radius: 6px;
+}
+.news-date {
+    font-weight: bold;
+    color: #b03060;
+    /*margin-bottom: 5px; */
+    margin-right: 8px;   /* 和内容隔开 */
+    display: inline;     /* 关键！让它不换行 */
+}
+.flower-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 15px;
+}
+.card {
+    flex: 1 1 120px;
+    background-color: #fff7f0;
+    border-left: 5px solid #d6336c;
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+.card[data-level="无"] {
+    border-color: #4caf50;
+    background-color: #ffffff;  /* 白色 */
+}
+.card[data-level="初芽🌱"] {
+    border-color: #4caf50;
+    background-color: #f0fff0;
+}
+.card[data-level="育秀🌿"] {
+    border-color: #2e7d32;
+    background-color: #e0f7fa;
+}
+.card[data-level="含英🌼"] {
+    border-color: #ffb300;
+    background-color: #fff8e1;
+}
+.card[data-level="芳菲🌸"] {
+    border-color: #d6336c;
+    background-color: #ffe6f0;
+}
+.card[data-level="簪花🏵️"] {
+    border-color: #8b0000;
+    background-color: #ffd6d6;
+}
+.badge {
+    color: #e74c3c;
+    border: 1.5px solid #e74c3c;
+    padding: 0 3px;
+    font-family: 'ZhuanTi';
+            /* font-size: 20px; */
+    margin-right: 4px;
+    font-weight: bold;
+}
+   /* 确保导航栏占满整行且不换行 */
+    .nav-container {{
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        left: 0;
+        right: 0;
+        white-space: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox隐藏滚动条 */
+    }}
+    
+    .nav-container::-webkit-scrollbar {{
+        display: none; /* Chrome/Safari隐藏滚动条 */
+    }}
+    
+    .nav-container a {{
+        display: inline-block;
+    }}
+    
+    /* 手机端适配 */
+    @media (max-width: 768px) {{
+        .nav-container a {{
+            margin: 0 8px !important;
+            font-size: 16px !important;
+            padding: 4px 8px !important;
+        }}
+    }}
+    
+    @media (max-width: 480px) {{
+        .nav-container a {{
+            margin: 0 5px !important;
+            font-size: 14px !important;
+            padding: 3px 6px !important;
+        }}
+    }}
+#searchInput {
+    display: none;
+}
+</style>
+</head>
+<body>
+
+<!-- 导航栏 - 确保不跨行
+<div class="nav-container" style="background-color: white; width: 100%; padding: 10px 0; border-bottom: 2px solid #409EFF; text-align: center; font-family: 'YanTi', 'Microsoft YaHei', sans-serif; box-sizing: border-box; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+    <a href="index.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">🏠 主页</a>
+    <a href="reading_board.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">📜 传家录</a>
+    <a href="world_reading_map.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">🌍 地图</a>
+    <a href="bookshelf.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">📚 书架</a>
+</div> -->
+
+<h2 align="center">日积月累，水滴石穿<a href="https://www.wjx.top/vm/OMT25NM.aspx#" class="reading-link">🖌️</a></h2>
+<h2 align="center">耕读传家，诗书继世<a href="reading_board.html" class="reading-link">📖</a></h2>
+<h2 align="center">积学储宝，酌理富才<a href="bookshelf.html" class="reading-link">📚</a></h2>
+<h2 align="center">读万卷书，行万里路<a href="world_reading_map.html" class="reading-link">🌍</a></h2>
+
+    <!-- 
+<div class="container">
+    <div class="reading-section">
+        <h2 align="center"><a href="reading_board.html" class="reading-link">📖传家耕读录</a></h2>   
+    </div>
+</div>
+
+<h2 align="center">📈 当前品级一览</h2> 
+    -->
+<div id="flower-cards" class="flower-cards">
+    <!-- 动态花品卡片生成 -->
+</div>
+
+<input id="searchInput" placeholder="输入姓名筛选，如：清一" style="margin-bottom:10px; padding:5px;">
+<h2 align="center">🏮 书山有路 🏮</h2>
+<div id="news-container" class="news-container">
+    <!-- 动态新闻生成 -->
+</div>
+
+
+
+<h2 align="center">🌸 耕读花品 🏵️</h2>
+<table>
+    <tr>
+        <th>花品</th>
+        <th>图标</th>
+        <th>释义</th>
+        <th>换算公式</th>
+        <th>所需初品</th>
+    </tr>
+    <tr>
+        <td>初芽</td>
+        <td>🌱</td>
+        <td>破土而生，读书之始</td>
+        <td>1🌱 = 1📖</td>
+        <td>1分</td>
+    </tr>
+    <tr>
+        <td>育秀</td>
+        <td>🌿</td>
+        <td>育英涵秀，静心培护</td>
+        <td>1🌿 = 5🌱</td>
+        <td>5分</td>
+    </tr>
+    <tr>
+        <td>含英</td>
+        <td>🌼</td>
+        <td>含苞待放，英华内蕴</td>
+        <td>1🌼 = 5🌿</td>
+        <td>25分</td>
+    </tr>
+    <tr>
+        <td>芳菲</td>
+        <td>🌸</td>
+        <td>花开烂漫，满室生香</td>
+        <td>1🌸 = 5🌼</td>
+        <td>125分</td>
+    </tr>
+    <tr>
+        <td>簪花</td>
+        <td>🏵️</td>
+        <td>荣冠加身，读书大成</td>
+        <td>1🏵️ = 5🌸</td>
+        <td>625分</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><b>备注</b>：</td>
+        <td>抱朴×5&ensp;善下×10&ensp;凤书×10</td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+<h3>【财务制度】</h3>
+<ul>
+    <li>轮流担任主持人，负责保管押金，期末统计，发放超过押金（500）的奖励，征收不足的罚款（少于500的人需要补缴），收齐后转给下任主持人；</li>
+    <li>当前押金总额：3500元；</li>
+    <li>主持人顺序：【致虚】>【清一】>【西翁】>【抱朴】>【锦安】>【盈生】；</li>
+    <li>当前主持人【致虚】。</li>
+</ul>
+
+<h3>【积分制度】</h3>
+<ul>
+    <li>耕读花品：初芽🌱、育秀🌿、含英🌼、芳菲🌸以及簪花🏵️；</li>
+    <li>读一本书得一个初芽🌱，5个初芽换一个育秀🌿，依此类推，目前最高等级为簪花🏵️，需要读625本书，换算表见上表；</li>
+    <li>积分有福利，还在构思中。</li>
+</ul>
+
+<h3>【传家耕读录】</h3>
+<ol>
+    <li>【阖府积诵】全家总计读书本数，目前为16本；</li>
+    <li>【本旬新览】当期读书本数，目前为5本；</li>
+    <li>【大日煌煌】累积读书最多；</li>
+    <li>【明月皎皎】近30天累积积分最高（近三期）；</li>
+    <li>【星火荧荧】近10天累积积分最高（本期）；</li>
+    <li>表头阳历时间，农历二十四节气，七十二候，以便大家直观感受时间变化；</li>
+    <li>余下每行为各位读书记录，按照积分逐次排序；</li>
+    <li>名字下方显示生年、“花品"、读完书籍总数；</li>
+    <li>当期读完一/多本书，会加盖印章"观书一卷则增一卷之益"，取自《读书止观录》：「天下之事，利害常相半，有全利而无少害者，惟书。不问贵贱、贫富、老少，观书一卷则有一卷之益；观书一日，则有一日之益。故有全利无少害也」；希望大家开卷有益，不管真理无穷，进一寸有一寸的欢喜。</li>
+</ol>
+
+<script>
+// ===== 新闻数据 =====
+const newsData = [
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌿🌱🌱🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『坟』鲁迅", money: "17.80", page: "228", level: "进阶【🌿🌱🌱】" },
+    { date: "2026-03-19", name: "盈生", bookname: "『小恒星的漂亮朋友』[俄罗斯]伊莲娜.乌利耶娃+安娜.玛玛耶娃", money: "33.00", page: "24", level: "进阶【🌱🌱】" },
+    { date: "2026-03-19", name: "西翁", bookname: "『装修常用数据图解』杨文英", money: "42.00", page: "128", level: "<span class='badge'>晋品【育秀🌿】</span>" },
+    { date: "2026-03-18", name: "西翁", bookname: "『三体2』刘慈欣", money: "32.00", page: "470", level: "进阶【🌱🌱🌱🌱】" },
+    { date: "2026-03-18", name: "致虚", bookname: "『送你一颗子弹』刘瑜", money: "38.00", page: "300", level: "进阶【🌿🌱】" },
+    { date: "2026-03-17", name: "致虚", bookname: "『失落的一角遇见大圆满』[美]谢尔·希尔弗斯坦", money: "20.00", page: "100", level: "<span class='badge'>晋品【育秀🌿】</span>" },
+    { date: "2026-03-16", name: "盈生", bookname: "『我们的太阳系』[俄]伊莲娜·乌利耶娃", money: "33.00", page: "23", level: "进阶【🌱】" },
+    { date: "2026-03-14", name: "致虚", bookname: "『一句顶一万句』刘震云", money: "29.80", page: "457", level: "进阶【🌱🌱🌱🌱】" },
+    { date: "2026-03-14", name: "清一", bookname: "『恒河的女儿』[印]贝碧·哈尔德", money: "25.00", page: "207", level: "<span class='badge'>晋品【育秀🌿】</span>" },
+    { date: "2026-03-12", name: "抱朴", bookname: "『养心的妙药』毕淑敏", money: "28.00", page: "360", level: "进阶【🌿🌿🌿】" },
+    { date: "2026-03-12", name: "清一", bookname: "『论大战略』[美]约翰.刘易斯.加迪斯", money: "69.00", page: "393", level: "进阶【🌱🌱🌱🌱】" },
+    { date: "2026-03-05", name: "致虚", bookname: "『中国文化的深层结构』孙隆基", money: "68.00", page: "434", level: "进阶【🌱🌱🌱】" },
+    { date: "2026-02-28", name: "清一", bookname: "『命若琴弦』史铁生", money: "29.80", page: "421", level: "进阶【🌱🌱🌱】" },
+    { date: "2026-02-28", name: "西翁", bookname: "『豆包AI赚钱手册』", money: "59.80", page: "198", level: "进阶【🌱🌱🌱】" },
+    { date: "2026-02-26", name: "清一", bookname: "『中华玄机』王蒙", money: "45.00", page: "357", level: "进阶【🌱🌱】" },
+    { date: "2026-02-26", name: "西翁", bookname: "『三体1』刘慈欣", money: "23.00", page: "302", level: "进阶【🌱🌱】" },
+    { date: "2026-02-25", name: "致虚", bookname: "<i>&ensp;Writing Science</i> Joshua Schimel", money: "300.00", page: "236", level: "进阶【🌱🌱】" },
+    { date: "2026-02-23", name: "抱朴", bookname: "『蔡康永的说话之道』蔡康永", money: "25.00", page: "167", level: "进阶【🌿🌿】" },
+    { date: "2026-02-11", name: "抱朴", bookname: "『小镇喧嚣』吴毅", money: "68.00", page: "622", level: "<span class='badge'>晋品【育秀🌿】</span>" },
+    { date: "2026-02-10", name: "西翁", bookname: "『课本里的古诗词』谢琰", money: "68.00", page: "432", level: "进阶【🌱】" },
+    { date: "2026-02-09", name: "致虚", bookname: "<i>&ensp;Condensed Matter Physics</i> Ross H. McKenzie", money: "70.00", page: "176", level: "进阶【🌱】" },
+    { date: "2026-01-29", name: "清一", bookname: "『1984』[英]乔治·奥威尔", money: "32.00", page: "304", level: "进阶【🌱】" }
+];
+
+
+// ===== 花品数据 =====
+const flowerData = [
+    { name: "抱朴🌲", level: "育秀🌿", icons: "🌿🌿🌿" },
+    { name: "致虚🏔️", level: "育秀🌿", icons: "🌿🌱🌱🌱" },
+    { name: "清一🎋", level: "育秀🌿", icons: "🌿" },
+    { name: "西翁🦁", level: "育秀🌿", icons: "🌿" },
+    { name: "盈生🐤", level: "初芽🌱", icons: "🌱🌱" }
+];
+
+/* 
+// ===== 渲染新闻 =====
+function formatHeight(heightInMeters) {
+    if (heightInMeters < 1) {
+        return String((heightInMeters * 100).toFixed(0)).padStart(2, "0") + "</b> 厘米";
+    } else if (heightInMeters < 1000) {
+        return heightInMeters.toFixed(2) + "</b> 米";
+    } else {
+        return (heightInMeters / 1000).toFixed(2) + "</b> 千米";
+    }
+}
+const searchInput = document.getElementById("searchInput");
+const newsContainer = document.getElementById("news-container");
+newsData.sort((a,b) => new Date(b.date) - new Date(a.date));
+const totalBooks = newsData.length; 
+newsData.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "news";
+    const dateDiv = document.createElement("div");
+    dateDiv.className = "news-date";
+    dateDiv.textContent = item.date;
+    const contentSpan = document.createElement("span"); // 原本是 div 改为 span contentSpan.textContent = item.content;
+    const height = (newsData.length - index) * 0.025; // 米
+    const count = newsData.length - index;
+    const formattedCount = String(count).padStart(4, "0");
+    contentSpan.innerHTML = 
+                "『全家累计阅读 <b>" + formattedCount + "</b> 本, "
+                +"累积高度 <b>" + formatHeight(height) + "』"
+                +"恭喜<span style='color:#d4a017; font-weight:bold;'>【" + item.name + "】</span>读完 " + item.bookname + item.level;
+    div.appendChild(dateDiv);
+    div.appendChild(contentSpan);
+    newsContainer.appendChild(div);
+
+});*/
+
+// ===== 获取DOM =====
+const newsContainer = document.getElementById("news-container");
+const searchInput = document.getElementById("searchInput");
+
+// ===== 高度换算 =====
+function formatHeight(heightInMeters) {
+    if (heightInMeters < 1) {
+        return String((heightInMeters * 100).toFixed(0)).padStart(2, "0") + "</b>厘米";
+    } else if (heightInMeters < 1000) {
+        return heightInMeters.toFixed(2) + "</b>米";
+    } else {
+        return (heightInMeters / 1000).toFixed(2) + "</b>千米";
+    }
+}
+
+function formatMoney(moneyInYuan) {
+    if (moneyInYuan < 10) {
+        return String((heightInMeters / 1).toFixed(0)).padStart(2, "0") + "圆";
+    } else if (heightInMeters < 100) {
+        return String((heightInMeters / 10).toFixed(0)).padStart(2, "0") + "拾";
+    } else if (heightInMeters < 1000) {
+        return String((heightInMeters / 100).toFixed(0)).padStart(2, "0") + "佰";
+    } else if (heightInMeters < 10000) {
+        return String((heightInMeters / 1000).toFixed(0)).padStart(2, "0") + "仟";
+    } else {
+        return String((heightInMeters / 10000).toFixed(0)).padStart(2, "0") + "万";
+    }
+}
+
+// ===== 排序（只做一次）=====
+newsData.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+// ===== 渲染函数（核心优化点）=====
+function renderNews() {
+    const keyword = searchInput.value.trim();
+    newsContainer.innerHTML = ""; // 清空
+
+    newsData.forEach((item, index) => {
+        if (keyword && item.name.indexOf(keyword) === -1) return;
+
+        let totalMoney = 0;
+        let totalPage = 0;
+        for (let i = index; i < newsData.length; i++) {
+             totalMoney += Number(newsData[i].money) || 0;
+             totalPage += Number(newsData[i].page) || 0
+        }
+
+        const div = document.createElement("div");
+        div.className = "news";
+
+        const dateDiv = document.createElement("div");
+        dateDiv.className = "news-date";
+        dateDiv.textContent = item.date;
+
+        const contentSpan = document.createElement("span");
+
+        const count = newsData.length - index;
+        const formattedCount = String(count).padStart(4, "0");
+        const height = count * 0.025;
+
+        contentSpan.innerHTML =
+            "<span class='badge'>" + formattedCount + "本 "
+            /* + "约<b>" + formatHeight(height) + "</b><br>" 🪙*/
+            + String(Math.floor(totalPage)).padStart(4, "0") + "页</span>"
+            /* + String(Math.floor(totalMoney)).padStart(4, "0") + "元" */
+            + " <span style='color:#d4a017; font-weight:bold;'>【"
+            + item.name + "】</span><br>"+ "阅罢"
+            + item.bookname + "<br>" + item.level;
+
+        div.appendChild(dateDiv);
+        div.appendChild(contentSpan);
+        newsContainer.appendChild(div);
+    });
+}
+
+// ===== 初始化渲染 =====
+renderNews();
+
+// ===== 输入监听 =====
+searchInput.addEventListener("input", renderNews);
+
+
+            
+            
+// ===== 渲染花品卡片 =====
+const cardContainer = document.getElementById("flower-cards");
+
+/* const allDiv = document.createElement("div");
+allDiv.className = "card";
+allDiv.innerHTML = "全部<br>📖";
+allDiv.addEventListener("click", () => {
+    searchInput.value = "";
+    renderNews();
+});
+cardContainer.appendChild(allDiv); */
+
+flowerData.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.setAttribute("data-level", item.level);
+    div.innerHTML = `${item.name}<br>${item.icons}`;
+
+    div.addEventListener("click", () => {
+        searchInput.value = item.name.slice(0, 2); /* remove emoji*/
+        renderNews();
+    });
+    cardContainer.appendChild(div);
+});
+
+
+            
+</script>
+
+</body>
+</html>

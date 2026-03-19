@@ -1,0 +1,875 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>🌍 行万里路</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+            @font-face {
+                font-family: 'YanTi';
+                src: url('./fonts/颜真卿颜体.ttf') format('truetype');
+            }
+            
+            body {
+                font-family: "Microsoft YaHei", sans-serif;
+                background: #f0f2f5;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            #header {
+                text-align: center;
+                padding: 15px;
+                background: white;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                z-index: 1000;
+            }
+            
+            h1 { color: #b03060; margin-bottom: 5px; font-size: 1.8rem; }
+            .stats { color: #666; font-size: 0.9rem; }
+            
+            /* 搜索框样式 */
+            .search-container {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                padding: 10px;
+                background: white;
+                border-bottom: 1px solid #eee;
+                flex-wrap: wrap;
+                z-index: 1000;
+            }
+            
+            .search-wrapper {
+                position: relative;
+                display: inline-block;
+            }
+            
+            .search-input {
+                padding: 8px 15px;
+                border: 2px solid #409EFF;
+                border-radius: 30px;
+                font-size: 14px;
+                width: 150px;
+                outline: none;
+                transition: all 0.3s;
+            }
+            
+            .search-input:focus {
+                border-color: #b03060;
+                box-shadow: 0 0 8px rgba(176,48,96,0.3);
+            }
+            
+            .search-type {
+                padding: 8px 15px;
+                border: 2px solid #409EFF;
+                border-radius: 30px;
+                font-size: 14px;
+                background: white;
+                cursor: pointer;
+                outline: none;
+            }
+            
+            .search-type:hover {
+                border-color: #b03060;
+            }
+            
+            .search-btn {
+                padding: 8px 20px;
+                background: #409EFF;
+                color: white;
+                border: none;
+                border-radius: 30px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            
+            .search-btn:hover {
+                background: #b03060;
+                transform: scale(1.05);
+            }
+            
+            .search-reset {
+                padding: 8px 15px;
+                background: #f0f0f0;
+                color: #666;
+                border: none;
+                border-radius: 30px;
+                font-size: 14px;
+                cursor: pointer;
+            }
+            
+            .search-reset:hover {
+                background: #ddd;
+            }
+            
+            /* 图例中的头像点击样式 */
+            .legend-symbol {
+                font-size: 18px;
+                margin-right: 8px;
+                width: 24px;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            
+            .legend-symbol:hover {
+                transform: scale(1.3);
+                color: #b03060;
+            }
+            
+            .legend-item span:last-child {
+                cursor: pointer;
+            }
+            
+            .legend-item span:last-child:hover {
+                color: #b03060;
+                text-decoration: underline;
+            }
+            
+            #map {
+                flex: 1;
+                width: 100%;
+                z-index: 1;
+                background: #a5d6f7;
+            }
+            
+            /* 读者标志样式 */
+            .reader-symbol {
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.2s;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+            }
+            
+            .reader-symbol:hover {
+                transform: scale(1.3);
+                z-index: 1000 !important;
+                text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            }
+            
+            /* 国家圆圈样式 */
+            .country-circle {
+                stroke: #b03060;
+                stroke-width: 2;
+                fill-opacity: 0.5;
+                transition: all 0.3s;
+            }
+            
+            /* 弹窗样式 */
+            .popup-content {
+                max-width: 280px;
+                padding: 10px;
+            }
+            
+            .popup-header {
+                text-align: center;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 8px;
+                margin-bottom: 10px;
+            }
+            
+            .popup-country {
+                font-size: 18px;
+                font-weight: bold;
+                color: #b03060;
+            }
+            
+            .book-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .book-item {
+                text-align: center;
+            }
+            
+            .book-cover {
+                width: 70px;
+                height: 93px;
+                object-fit: cover;
+                border-radius: 6px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                border: 1px solid #ddd;
+            }
+            
+            .book-title {
+                font-size: 11px;
+                color: #333;
+                margin-top: 3px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .book-reader {
+                font-size: 10px;
+                color: #b03060;
+            }
+            
+            /* 图例样式 */
+            /* .legend {
+                background: rgba(255,255,255,0.9);
+                padding: 12px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                font-size: 12px;
+                border: 1px solid #b03060;
+                max-height: 300px;
+                overflow-y: auto;
+            } */
+
+            .legend {
+                background: rgba(255,255,255,0.9);
+                border-radius: 30px;
+                padding: 8px 15px;
+                border: 1px solid #409EFF;
+                font-size: 14px;
+                white-space: nowrap;
+                overflow-x: auto;
+                max-width: 90vw;
+            }
+            
+            @media (max-width: 768px) {
+                .legend {
+                    font-size: 12px;
+                    padding: 5px 10px;
+                }
+            }
+            
+            
+            .legend-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+            
+            .legend-color {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                margin-right: 8px;
+                border: 1px solid #999;
+            }
+            
+            .location-result {
+                position: absolute;
+                top: 60px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: white;
+                padding: 5px 15px;
+                border-radius: 30px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 2000;
+                display: none;
+                border: 2px solid #409EFF;
+                font-size: 14px;
+            }
+
+            /* 确保导航栏占满整行且不换行 */
+            .nav-container {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+                left: 0;
+                right: 0;
+                white-space: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox隐藏滚动条 */
+            }
+            
+            .nav-container::-webkit-scrollbar {
+                display: none; /* Chrome/Safari隐藏滚动条 */
+            }
+            
+            .nav-container a {
+                display: inline-block;
+            }
+            
+            /* 手机端适配 */
+            @media (max-width: 768px) {
+                .nav-container a {
+                    margin: 0 8px !important;
+                    font-size: 16px !important;
+                    padding: 4px 8px !important;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .nav-container a {
+                    margin: 0 5px !important;
+                    font-size: 14px !important;
+                    padding: 3px 6px !important;
+                }
+            }
+            
+            @media (max-width: 768px) {
+                h1 { font-size: 1.5rem; }
+                .book-cover { width: 60px; height: 80px; }
+                .reader-symbol { font-size: 20px; width: 25px; height: 25px; }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- 导航栏 - 确保不跨行 
+        <div class="nav-container" style="background-color: white; width: 100%; padding: 10px 0; border-bottom: 2px solid #409EFF; text-align: center; font-family: 'YanTi', 'Microsoft YaHei', sans-serif; box-sizing: border-box; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <a href="index.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">🏠 主页</a>
+            <a href="reading_board.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">📜 传家录</a>
+            <a href="world_reading_map.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">🌍 地图</a>
+            <a href="bookshelf.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">📚 书架</a>
+        </div> -->
+        <div id="header">
+            <h1 style="font-family: 'YanTi', 'Microsoft YaHei', sans-serif;">🌍 耕读世界地图 <a href="index.html">🏠</a></h1>
+            <div class="stats" style="font-family: 'YanTi', 'Microsoft YaHei', sans-serif;">万卷书·万里路 | 23 本书 · 5 个国家</div>
+        </div>
+        
+        <!-- 搜索框 
+        <div class="search-container">
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="输入地名、读者或书名...">
+            </div>
+            <button class="search-btn" onclick="searchLocation()">📍 定位</button>
+            <button class="search-reset" onclick="resetSearch()">✖ 重置</button>
+        </div> -->
+
+        <!-- 搜索框 - 同时支持搜索建议和定位 -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="人、地、书..." autocomplete="off">
+                <div id="suggestions" class="suggestions"></div>
+            </div>
+           <select id="searchType" class="search-type">
+                <option value="all">全部</option>
+                <option value="reader">读者</option>
+                <option value="country">国家</option>
+                <option value="book">书籍</option>
+                <option value="place">地名</option>
+            </select> 
+            <button class="search-btn" onclick="searchMarkers()">🔍 搜索</button>
+            <button class="search-btn" onclick="searchLocation()">📍 定位</button>
+            <button class="search-reset" onclick="resetSearch()">✖ 重置</button>
+        </div>
+        
+        <!-- 定位结果提示 -->
+        <div id="locationResult" class="location-result"></div>
+        
+        <div id="map"></div>
+        
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        
+        <script>
+            const countries = [{"name": "英国", "code": "英", "center": [55.3781, -3.436], "count": 3, "fillColor": "rgba(64, 158, 255, 0.44999999999999996)", "pins": [{"title": "1984", "author": "[英]乔治·奥威尔", "cover": "./books/1984.jpg", "date": "01-29", "lat": 54.996762727410264, "lng": -4.17822355642553, "reader": "清一🎋", "symbol": "🎋", "place": "英国"}, {"title": "Condensed Matter Physics", "author": "Ross H. McKenzie", "cover": "./books/Condensed Matter Physics.jpg", "date": "02-09", "lat": 51.7520131, "lng": -1.2578499, "reader": "致虚🏔️", "symbol": "🏔️", "place": "英国牛津"}, {"title": "送你一颗子弹", "author": "刘瑜", "cover": "./books/送你一颗子弹.jpg", "date": "03-18", "lat": 40.7127281, "lng": -74.0060152, "reader": "致虚🏔️", "symbol": "🏔️", "place": "美国纽约"}, {"title": "送你一颗子弹", "author": "刘瑜", "cover": "./books/送你一颗子弹.jpg", "date": "03-18", "lat": 42.3588336, "lng": -71.0578303, "reader": "致虚🏔️", "symbol": "🏔️", "place": "美国波士顿"}, {"title": "送你一颗子弹", "author": "刘瑜", "cover": "./books/送你一颗子弹.jpg", "date": "03-18", "lat": 52.2055314, "lng": 0.1186637, "reader": "致虚🏔️", "symbol": "🏔️", "place": "英国剑桥"}]}, {"name": "中国", "code": "中", "center": [35.8617, 104.1954], "count": 14, "fillColor": "rgba(64, 158, 255, 0.95)", "pins": [{"title": "小镇喧嚣", "author": "吴毅", "cover": "./books/小镇喧嚣.jpg", "date": "02-11", "lat": 36.12539818033522, "lng": 105.21458766590702, "reader": "抱朴🌲", "symbol": "🌲", "place": "中国"}, {"title": "课本里的古诗词", "author": "谢琰", "cover": "./books/课本里的古诗词.jpg", "date": "02-10", "lat": 36.6518680762608, "lng": 101.86374283280277, "reader": "西翁🦁", "symbol": "🦁", "place": "中国"}, {"title": "蔡康永的说话之道", "author": "蔡康永", "cover": "./books/蔡康永的说话之道.jpg", "date": "02-23", "lat": 34.821298917845844, "lng": 103.44501233893168, "reader": "抱朴🌲", "symbol": "🌲", "place": "中国"}, {"title": "三体1", "author": "刘慈欣", "cover": "./books/三体1.jpg", "date": "02-26", "lat": 35.69510764545676, "lng": 104.17732146289795, "reader": "西翁🦁", "symbol": "🦁", "place": "中国"}, {"title": "豆包AI赚钱手册", "author": "", "cover": "./books/豆包AI赚钱手册.jpg", "date": "02-28", "lat": 35.99862944336872, "lng": 104.19087978502093, "reader": "西翁🦁", "symbol": "🦁", "place": "中国"}, {"title": "中华玄机", "author": "王蒙", "cover": "./books/中华玄机.jpg", "date": "02-26", "lat": 37.620927278529685, "lng": 104.4301892544095, "reader": "清一🎋", "symbol": "🎋", "place": "中国"}, {"title": "命若琴弦", "author": "史铁生", "cover": "./books/命若琴弦.jpg", "date": "02-28", "lat": 34.20269138195625, "lng": 105.87840028870046, "reader": "清一🎋", "symbol": "🎋", "place": "中国"}, {"title": "中国文化的深层结构", "author": "孙隆基", "cover": "./books/中国文化的深层结构.jpg", "date": "03-05", "lat": 37.32405930362663, "lng": 106.21413926584073, "reader": "致虚🏔️", "symbol": "🏔️", "place": "中国"}, {"title": "养心的妙药", "author": "毕淑敏", "cover": "./books/养心的妙药.jpg", "date": "03-12", "lat": 35.77025095502974, "lng": 104.45996554865819, "reader": "抱朴🌲", "symbol": "🌲", "place": "中国"}, {"title": "三体2", "author": "刘慈欣", "cover": "./books/三体2.jpg", "date": "03-18", "lat": 37.19503190097249, "lng": 103.19978765080697, "reader": "西翁🦁", "symbol": "🦁", "place": "中国"}, {"title": "一句顶一万句", "author": "刘震云", "cover": "./books/一句顶一万句.jpg", "date": "03-14", "lat": 35.259256, "lng": 114.218442, "reader": "致虚🏔️", "symbol": "🏔️", "place": "延津"}, {"title": "一句顶一万句", "author": "刘震云", "cover": "./books/一句顶一万句.jpg", "date": "03-14", "lat": 36.7072373, "lng": 112.2580628, "reader": "致虚🏔️", "symbol": "🏔️", "place": "沁源"}, {"title": "一句顶一万句", "author": "刘震云", "cover": "./books/一句顶一万句.jpg", "date": "03-14", "lat": 34.7475076, "lng": 113.6536663, "reader": "致虚🏔️", "symbol": "🏔️", "place": "郑州"}, {"title": "一句顶一万句", "author": "刘震云", "cover": "./books/一句顶一万句.jpg", "date": "03-14", "lat": 34.604167, "lng": 114.497222, "reader": "致虚🏔️", "symbol": "🏔️", "place": "开封"}, {"title": "一句顶一万句", "author": "刘震云", "cover": "./books/一句顶一万句.jpg", "date": "03-14", "lat": 35.308611, "lng": 114.051111, "reader": "致虚🏔️", "symbol": "🏔️", "place": "新乡"}, {"title": "一句顶一万句", "author": "刘震云", "cover": "./books/一句顶一万句.jpg", "date": "03-14", "lat": 34.6196539, "lng": 112.4477046, "reader": "致虚🏔️", "symbol": "🏔️", "place": "洛阳"}, {"title": "一句顶一万句", "author": "刘震云", "cover": "./books/一句顶一万句.jpg", "date": "03-14", "lat": 34.3323227, "lng": 108.7128495, "reader": "致虚🏔️", "symbol": "🏔️", "place": "咸阳"}, {"title": "一句顶一万句", "author": "刘震云", "cover": "./books/一句顶一万句.jpg", "date": "03-14", "lat": 34.3742434, "lng": 107.1481713, "reader": "致虚🏔️", "symbol": "🏔️", "place": "宝鸡"}, {"title": "坟", "author": "鲁迅", "cover": "./books/坟.jpg", "date": "03-19", "lat": 35.202862548667134, "lng": 102.00753634929609, "reader": "致虚🏔️", "symbol": "🏔️", "place": "中国"}, {"title": "装修常用数据图解", "author": "杨文英", "cover": "./books/装修常用数据图解.jpg", "date": "03-19", "lat": 36.18604035936958, "lng": 104.0483289042566, "reader": "西翁🦁", "symbol": "🦁", "place": "中国"}, {"title": "半小时漫画中国哲学史", "author": "陈磊·半小时漫画团队", "cover": "./books/半小时漫画中国哲学史.jpg", "date": "03-19", "lat": 35.67321697819803, "lng": 104.21578543152228, "reader": "致虚🏔️", "symbol": "🏔️", "place": "中国"}]}, {"name": "美国", "code": "美", "center": [37.0902, -95.7129], "count": 4, "fillColor": "rgba(64, 158, 255, 0.5)", "pins": [{"title": "Writing Science", "author": "Joshua Schimel", "cover": "./books/Writing Science.jpg", "date": "02-25", "lat": 36.57639833792491, "lng": -94.65591423505178, "reader": "致虚🏔️", "symbol": "🏔️", "place": "美国"}, {"title": "论大战略", "author": "[美]约翰.刘易斯.加迪斯", "cover": "./books/论大战略.jpg", "date": "03-12", "lat": 38.24361473305421, "lng": -97.87932551629552, "reader": "清一🎋", "symbol": "🎋", "place": "美国"}, {"title": "失落的一角遇见大圆满", "author": "[美]谢尔·希尔弗斯坦", "cover": "./books/失落的一角遇见大圆满.jpg", "date": "03-17", "lat": 35.554982503318826, "lng": -96.87905599250375, "reader": "致虚🏔️", "symbol": "🏔️", "place": "美国"}, {"title": "送你一颗子弹", "author": "刘瑜", "cover": "./books/送你一颗子弹.jpg", "date": "03-18", "lat": 40.7127281, "lng": -74.0060152, "reader": "致虚🏔️", "symbol": "🏔️", "place": "美国纽约"}, {"title": "送你一颗子弹", "author": "刘瑜", "cover": "./books/送你一颗子弹.jpg", "date": "03-18", "lat": 42.3588336, "lng": -71.0578303, "reader": "致虚🏔️", "symbol": "🏔️", "place": "美国波士顿"}, {"title": "送你一颗子弹", "author": "刘瑜", "cover": "./books/送你一颗子弹.jpg", "date": "03-18", "lat": 52.2055314, "lng": 0.1186637, "reader": "致虚🏔️", "symbol": "🏔️", "place": "英国剑桥"}]}, {"name": "印度", "code": "印", "center": [20.5937, 78.9629], "count": 1, "fillColor": "rgba(64, 158, 255, 0.35)", "pins": [{"title": "恒河的女儿", "author": "[印]贝碧·哈尔德", "cover": "./books/恒河的女儿.jpg", "date": "03-14", "lat": 21.195900620444935, "lng": 79.02225259495339, "reader": "清一🎋", "symbol": "🎋", "place": "印度"}]}, {"name": "俄罗斯", "code": "俄", "center": [61.524, 105.3188], "count": 2, "fillColor": "rgba(64, 158, 255, 0.39999999999999997)", "pins": [{"title": "我们的太阳系", "author": "[俄]伊莲娜·乌利耶娃", "cover": "./books/我们的太阳系.jpg", "date": "03-16", "lat": 61.914777326384, "lng": 104.45401283765403, "reader": "盈生🐤", "symbol": "🐤", "place": "俄罗斯"}, {"title": "小恒星的漂亮朋友", "author": "[俄罗斯]伊莲娜.乌利耶娃+安娜.玛玛耶娃", "cover": "./books/小恒星的漂亮朋友.jpg", "date": "03-19", "lat": 41.7964648, "lng": 113.6895388, "reader": "盈生🐤", "symbol": "🐤", "place": "宇宙"}, {"title": "小恒星的漂亮朋友", "author": "[俄罗斯]伊莲娜.乌利耶娃+安娜.玛玛耶娃", "cover": "./books/小恒星的漂亮朋友.jpg", "date": "03-19", "lat": 64.6863136, "lng": 97.7453061, "reader": "盈生🐤", "symbol": "🐤", "place": "俄罗斯"}]}];
+            
+            // 以英国为中心初始化地图
+            const map = L.map('map').setView([55.3781, -3.4360], 3);
+            
+             // 添加免费地图图层
+            /* L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+                attribution: '© CartoDB',
+                maxZoom: 19
+            }).addTo(map);  */
+
+            // 方案1：OpenStreetMap 标准底图（最准确）
+             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);  
+
+            /* // 添加免费地图图层
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+                attribution: '© CartoDB'
+            }).addTo(map); */
+            
+            // 添加国家圆圈
+            // 添加国家圆圈时，同时添加数字标签
+            countries.forEach(item => {
+                const radius = 300000 + (item.count * 40000);
+                
+                // 原来的两个同心圆保持不变
+                L.circle(item.center, {
+                    radius: radius,
+                    color: 'transparent',
+                    weight: 0,
+                    fillColor: item.fillColor,
+                    fillOpacity: 0.3,
+                    stroke: false
+                }).addTo(map);
+                
+                L.circle(item.center, {
+                    radius: radius * 0.7,
+                    color: 'transparent',
+                    weight: 0,
+                    fillColor: item.fillColor,
+                    fillOpacity: 0.2,
+                    stroke: false
+                }).addTo(map);
+                
+                /* // 在圆圈边缘添加数字标签（东侧边缘）
+                const edgePoint = [
+                    item.center[0],  // 纬度不变
+                    item.center[1] + (radius / 111000) * 0.8  // 经度向东偏移（约0.8倍半径）
+                ];
+                
+                L.marker(edgePoint, {
+                    icon: L.divIcon({
+                        className: 'country-count-label',
+                        html: `<div style="font-size:16px; font-weight:bold; color:#b03060; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:0px solid #409EFF; box-shadow:0 2px 8px rgba(0,0,0,0.2);">${item.count}</div>`,
+                        iconSize: [30, 30]
+                    })
+                }).addTo(map); */
+
+                // 在圆圈边缘添加数字标签（可点击）
+                const edgePoint = [
+                    item.center[0],
+                    item.center[1] + (radius / 111000) * 0.8
+                ];
+                
+                L.marker(edgePoint, {
+                    icon: L.divIcon({
+                        className: 'country-count-label',
+                        html: `<div style="font-size:16px; font-weight:bold; color:#b03060; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:0px solid #409EFF; box-shadow:0 2px 8px rgba(0,0,0,0.2); cursor:pointer;">${item.count}</div>`,
+                        iconSize: [30, 30]
+                    })
+                }).addTo(map).on('click', function() {
+                    // 构建该国书籍列表弹窗
+                    
+                    // 用数组去重
+                    const seenTitles = [];
+                    item.pins.forEach(pin => {
+                        if (!seenTitles.includes(pin.title)) {
+                            seenTitles.push(pin.title);
+                        }
+                    });
+                    
+                    let booksHtml = '<div style="max-height:300px; overflow-y:auto; padding:5px;">';
+                    booksHtml += `<div style="font-weight:bold; margin-bottom:8px; color:#b03060;">${item.name} 共 ${seenTitles.length} 本书</div>`;
+                    
+                    // 再次遍历用于显示（这次可以用已经去重的seenTitles来显示，或者重新遍历但用seenTitles判断）
+                    seenTitles.forEach(title => {
+                        // 找到对应的pin（取第一个）
+                        const pin = item.pins.find(p => p.title === title);
+                        if (pin) {
+                            booksHtml += `
+                                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; padding:5px; border-bottom:1px solid #eee;">
+                                    <img src="${pin.cover}" style="width:40px; height:53px; object-fit:cover; border-radius:4px;">
+                                    <div>
+                                        <div style="font-weight:bold;">${pin.title}</div>
+                                        <div style="font-size:12px; color:#666;">${pin.reader} · ${pin.date}</div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+                    booksHtml += '</div>';
+                    
+                    L.popup({ maxWidth: 300 })
+                        .setLatLng(edgePoint)
+                        .setContent(booksHtml)
+                        .openOn(map);
+                });
+                
+                /*// 国家代码仍放在中心
+                L.marker(item.center, {
+                    icon: L.divIcon({
+                        className: 'country-code',
+                        html: `<div style="font-size:24px; font-weight:bold; color:#409EFF; text-shadow:1px 1px 3px rgba(255,255,255,0.5);">${item.code}</div>`,
+                        iconSize: [30, 30]
+                    })
+                }).addTo(map); */
+                // 国家代码放在中心，添加点击事件
+                L.marker(item.center, {
+                    icon: L.divIcon({
+                        className: 'country-code',
+                        html: `<div style="font-size:24px; font-weight:bold; color:#409EFF; text-shadow:1px 1px 3px rgba(255,255,255,0.5); cursor:pointer;">${item.code}</div>`,
+                        iconSize: [30, 30]
+                    })
+                }).addTo(map).on('click', function() {
+                    // 构建该国书籍列表弹窗
+                    // 用数组去重
+                    const seenTitles = [];
+                    item.pins.forEach(pin => {
+                        if (!seenTitles.includes(pin.title)) {
+                            seenTitles.push(pin.title);
+                        }
+                    });
+                    
+                    let booksHtml = '<div style="max-height:300px; overflow-y:auto; padding:5px;">';
+                    booksHtml += `<div style="font-weight:bold; margin-bottom:8px; color:#b03060;">${item.name} 共 ${seenTitles.length} 本书</div>`;
+                    
+                    // 再次遍历用于显示（这次可以用已经去重的seenTitles来显示，或者重新遍历但用seenTitles判断）
+                    seenTitles.forEach(title => {
+                        // 找到对应的pin（取第一个）
+                        const pin = item.pins.find(p => p.title === title);
+                        if (pin) {
+                            booksHtml += `
+                                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; padding:5px; border-bottom:1px solid #eee;">
+                                    <img src="${pin.cover}" style="width:40px; height:53px; object-fit:cover; border-radius:4px;">
+                                    <div>
+                                        <div style="font-weight:bold;">${pin.title}</div>
+                                        <div style="font-size:12px; color:#666;">${pin.reader} · ${pin.date}</div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+                    booksHtml += '</div>';
+                    
+                    L.popup({ maxWidth: 300 })
+                        .setLatLng(item.center)
+                        .setContent(booksHtml)
+                        .openOn(map);
+                });
+            });
+            
+            // 存储所有图钉的引用和数据
+            let allMarkers = [];
+            const readerMap = new Map();
+            
+            // 为每本书添加读者符号
+            countries.forEach(item => {
+                item.pins.forEach(pin => {
+                    readerMap.set(pin.symbol, pin.reader);
+                    
+                    const symbolIcon = L.divIcon({
+                        className: 'reader-symbol',
+                        html: pin.symbol,
+                        iconSize: [30, 30],
+                        popupAnchor: [0, -15]
+                    });
+                    
+                    const marker = L.marker([pin.lat, pin.lng], {
+                        icon: symbolIcon,
+                        title: pin.title
+                    }).addTo(map);
+                    
+                    allMarkers.push({
+                        marker: marker,
+                        reader: pin.reader,
+                        country: pin.place,
+                        book: pin.title,
+                        symbol: pin.symbol,
+                        lat: pin.lat,
+                        lng: pin.lng
+                    });
+                    
+                    const popupHtml = `
+                        <div style="text-align:center; padding:5px;">
+                            <div style="font-size:13px; color:#409EFF; margin-bottom:5px; font-weight:bold;">${pin.place}</div>
+                            <img src="${pin.cover}" style="width:100px; height:133px; object-fit:cover; border-radius:8px; margin-bottom:8px; border:2px solid #b03060;">
+                            <div style="font-weight:bold; font-size:16px;">${pin.title}</div>
+                            <div style="font-size:12px; color:#666;">${pin.author}</div>
+                            <div style="font-size:12px; color:#b03060; margin-top:5px;">
+                                <span style="font-size:16px;">${pin.symbol}</span> ${pin.reader}
+                            </div>
+                            <div style="font-size:11px; color:#999; margin-top:5px;">📅 ${pin.date}</div>
+                        </div>
+                    `;
+                    
+                    marker.bindPopup(popupHtml);
+                });
+            });
+
+
+        // 搜索建议功能
+        const searchInput = document.getElementById('searchInput');
+        const suggestionsDiv = document.getElementById('suggestions');
+        const searchType = document.getElementById('searchType');
+        
+        // 收集所有可搜索的项目
+        const allReaders = new Set();
+        const allCountries = new Set();
+        const allBooks = new Set();
+        const allPlaces = new Set();
+        
+        countries.forEach(item => {
+            allCountries.add(item.name);
+            item.pins.forEach(pin => {
+                allReaders.add(pin.reader);
+                allBooks.add(pin.title);
+                allPlaces.add(pin.place);
+            });
+        });
+        
+        function getSuggestions(keyword, type) {
+            if (!keyword) return [];
+            
+            keyword = keyword.toLowerCase();
+            let suggestions = [];
+            
+            if (type === 'all' || type === 'reader') {
+                suggestions = suggestions.concat(
+                    Array.from(allReaders).filter(r => r.toLowerCase().includes(keyword))
+                );
+            }
+            if (type === 'all' || type === 'country') {
+                suggestions = suggestions.concat(
+                    Array.from(allCountries).filter(c => c.toLowerCase().includes(keyword))
+                );
+            }
+            if (type === 'all' || type === 'book') {
+                suggestions = suggestions.concat(
+                    Array.from(allBooks).filter(b => b.toLowerCase().includes(keyword))
+                );
+            }
+            if (type === 'all' || type === 'place') {
+                suggestions = suggestions.concat(
+                    Array.from(allPlaces).filter(p => p.toLowerCase().includes(keyword))
+                );
+            }
+            
+            return [...new Set(suggestions)].slice(0, 8);
+        }
+        
+        function showSuggestions() {
+            const keyword = searchInput.value.trim();
+            const type = searchType.value;
+            const suggestions = getSuggestions(keyword, type);
+            
+            if (suggestions.length === 0) {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
+            
+            let html = '';
+            suggestions.forEach(s => {
+                const highlighted = s.replace(
+                    new RegExp(keyword, 'gi'),
+                    match => `<span class="suggestion-highlight">${match}</span>`
+                );
+                html += `<div class="suggestion-item" onclick="selectSuggestion('${s}')">${highlighted}</div>`;
+            });
+            
+            suggestionsDiv.innerHTML = html;
+            suggestionsDiv.style.display = 'block';
+        }
+        
+        function selectSuggestion(value) {
+            searchInput.value = value;
+            suggestionsDiv.style.display = 'none';
+            searchMarkers();
+        }
+        
+        // 搜索函数（按读者/国家/书籍筛选）
+        function searchMarkers() {
+            const keyword = searchInput.value.toLowerCase().trim();
+            const type = searchType.value;
+            
+            suggestionsDiv.style.display = 'none';
+            
+            if (!keyword) {
+                resetSearch();
+                return;
+            }
+            
+            allMarkers.forEach(item => {
+                let match = false;
+                
+                if (type === 'all' || type === 'reader') {
+                    match = match || item.reader.toLowerCase().includes(keyword);
+                }
+                if (type === 'all' || type === 'country') {
+                    match = match || item.country.toLowerCase().includes(keyword);
+                }
+                if (type === 'all' || type === 'book') {
+                    match = match || item.book.toLowerCase().includes(keyword);
+                }
+                if (type === 'all' || type === 'place') {
+                    match = match || (item.place && item.place.toLowerCase().includes(keyword));
+                }
+                
+                if (match) {
+                    map.addLayer(item.marker);
+                } else {
+                    map.removeLayer(item.marker);
+                }
+            });
+        }
+
+            
+            // 功能1：搜索任意地名并定位到最近书目
+            async function searchLocation() {
+                const keyword = document.getElementById('searchInput').value.trim();
+                if (!keyword) return;
+                
+                const resultDiv = document.getElementById('locationResult');
+                resultDiv.style.display = 'none';
+                
+                try {
+                    // 使用 Nominatim 搜索地名
+                    const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+                        params: {
+                            q: keyword,
+                            format: 'json',
+                            limit: 1
+                        },
+                        headers: {
+                            'User-Agent': 'ReadingMap/1.0'
+                        }
+                    });
+                    
+                    if (response.data && response.data.length > 0) {
+                        const location = response.data[0];
+                        const lat = parseFloat(location.lat);
+                        const lng = parseFloat(location.lon);
+                        
+                        // 查找离这个位置最近的书目
+                        let nearestMarker = null;
+                        let minDistance = Infinity;
+                        
+                        allMarkers.forEach(item => {
+                            const dx = item.lat - lat;
+                            const dy = item.lng - lng;
+                            const distance = Math.sqrt(dx*dx + dy*dy);
+                            if (distance < minDistance) {
+                                minDistance = distance;
+                                nearestMarker = item;
+                            }
+                        });
+                        
+                        if (nearestMarker) {
+                            // 飞向最近的书目
+                            map.flyTo([nearestMarker.lat, nearestMarker.lng], 8);
+                            nearestMarker.marker.openPopup();
+                            
+                            resultDiv.innerHTML = `✅ 找到最近书目: ${nearestMarker.book} (读者: ${nearestMarker.reader} 地点: ${nearestMarker.country})`;
+                            resultDiv.style.display = 'block';
+                            setTimeout(() => { resultDiv.style.display = 'none'; }, 5000);
+                        }
+                    } else {
+                        resultDiv.innerHTML = '❌ 未找到该地点';
+                        resultDiv.style.display = 'block';
+                        setTimeout(() => { resultDiv.style.display = 'none'; }, 3000);
+                    }
+                } catch (error) {
+                    console.error('搜索失败:', error);
+                    resultDiv.innerHTML = '❌ 搜索失败，请稍后重试';
+                    resultDiv.style.display = 'block';
+                    setTimeout(() => { resultDiv.style.display = 'none'; }, 3000);
+                }
+            }
+            
+            // 功能2：点击右下角头像筛选
+            function filterByReader(readerName) {
+                document.getElementById('searchInput').value = readerName;
+                allMarkers.forEach(item => {
+                    if (item.reader === readerName) {
+                        map.addLayer(item.marker);
+                    } else {
+                        map.removeLayer(item.marker);
+                    }
+                });
+            }
+            
+            // 重置搜索
+            function resetSearch() {
+                document.getElementById('searchInput').value = '';
+                document.getElementById('locationResult').style.display = 'none';
+                
+                allMarkers.forEach(item => {
+                    map.addLayer(item.marker);
+                });
+                
+                map.flyTo([55.3781, -3.4360], 3);
+            }
+
+            // 事件监听
+            searchInput.addEventListener('input', showSuggestions);
+            searchInput.addEventListener('focus', showSuggestions);
+            searchType.addEventListener('change', showSuggestions);
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+            
+            /* // 添加图例（带点击筛选功能）
+            const legend = L.control({ position: 'bottomleft' });
+            
+            legend.onAdd = function(map) {
+                const div = L.DomUtil.create('div', 'legend');
+                
+                let legendHtml = `
+                    <div style="font-weight:bold; margin-bottom:8px; color:#409EFF;">📊 国家颜色</div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background:rgba(64,158,255,0.3);"></div>
+                        <span>1-3本书</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background:rgba(64,158,255,0.5);"></div>
+                        <span>4-7本书</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background:rgba(64,158,255,0.7);"></div>
+                        <span>8-12本书</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background:rgba(64,158,255,0.9);"></div>
+                        <span>13+本书</span>
+                    </div>
+                    <div style="margin:12px 0 8px 0; border-top:1px solid #409EFF;"></div>
+                    <div style="font-weight:bold; margin-bottom:8px; color:#409EFF;">👥 点击头像筛选读者</div>
+                `;
+                
+                 const symbolList = Array.from(readerMap.keys()).slice(0, 8);
+                symbolList.forEach(symbol => {
+                    const readerName = readerMap.get(symbol);
+                    legendHtml += `
+                        <div class="legend-item">
+                            <span class="legend-symbol" onclick="filterByReader('${readerName}')">${symbol}</span>
+                            <span onclick="filterByReader('${readerName}')">${readerName}</span>
+                        </div>
+                    `;
+                });
+                
+                div.innerHTML = legendHtml;
+                return div; 
+            };
+            
+            legend.addTo(map); */
+        // 添加图例（一行显示，手机版自适应）
+            const legend = L.control({ position: 'bottomleft' });
+            
+            legend.onAdd = function(map) {
+                const div = L.DomUtil.create('div', 'legend');
+                
+                let legendHtml = `<div style="font-weight:bold; color:#409EFF; display:flex; flex-wrap:wrap; align-items:center; gap:8px;">`; /*👥`;*/
+                
+                const symbolList = Array.from(readerMap.keys()).slice(0, 8);
+                symbolList.forEach(symbol => {
+                    const readerName = readerMap.get(symbol);
+                    legendHtml += `<span style="display:inline-flex; align-items:center; gap:2px; margin:0 2px; cursor:pointer;" onclick="filterByReader('${readerName}')">${symbol}${readerName.slice(0,2)}</span>`;
+                });
+                
+                legendHtml += `</div>`;
+                
+                div.innerHTML = legendHtml;
+                return div;
+            };
+            
+            legend.addTo(map);
+
+
+            
+        </script>
+    </body>
+    </html>
+    

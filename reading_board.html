@@ -1,0 +1,407 @@
+
+    
+    <style>
+    
+    
+        /* @import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css'); 
+        @import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont/style.css');
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap');*/
+        @font-face {
+                font-family: 'HYZhiHaoTianGongZhuan';
+                src: url('./fonts/HYZhiHaoTianGongZhuanF-2.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+        @font-face {
+                font-family: 'TypeLand.com KhangXi Dict Trial';
+                src: url('./fonts/TypeLand-com-KangXiZiDianTi-ShiYongBan-1.otf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+        @font-face {
+                font-family: 'YanTi';
+                src: url('./fonts/颜真卿颜体.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+    
+        /* html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        } */
+    
+        
+        #capture-area { background: #fff; padding: 30px; display: inline-block; border-radius: 20px; }
+        .reading-board { border-collapse: separate; border-spacing: 15px; font-family: 'YanTi','LXGW WenKai','KaiTi',"Microsoft YaHei", sans-serif; }
+        .row-header { font-weight: bold; text-align: right; padding-right: 15px; min-width: 90px; vertical-align: middle; }
+    
+        #capture-area { background: #fff; padding: 30px; display: inline-block; border-radius: 20px; }
+        .reading-board { border-collapse: separate; border-spacing: 15px; font-family: 'YanTi','KaiTi'; } /* MF YanSong (Noncommercial) Regular LXGW WenKai Screen , "Microsoft YaHei", sans-serif */
+        .row-header { font-weight: bold; text-align: right; padding-right: 15px; min-width: 80px; font-size: 20px; }
+    
+    /* 增加：确保表头期数和格子宽度一致并居中 */
+        .reading-board th { 
+            text-align: center; 
+            width: 120px; 
+            font-size: 14px; 
+            padding-bottom: 10px; 
+        }
+        
+        /* 增加：确保单元格内容居中 */
+        .reading-board td { 
+            text-align: center; 
+        }
+    
+        .book-cell {
+            width: 120px; height: 160px; 
+            background-color: #f8f9fa; border-radius: 10px;
+            overflow: hidden; position: relative;
+            margin: 0 auto; /* 增加：配合 td 居中实现上下对齐 */
+        }
+        
+        /* .book-cell {
+        #     width: 120px; height: 160px; 
+        #     background-color: #f8f9fa; border-radius: 10px;
+        #     overflow: hidden; position: relative;
+        # }
+        
+        # .img-wrapper { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        # .book-cover { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 4; }
+    
+        # .finished { border: 5px solid #FFD700; box-shadow: 0 4px 8px rgba(0,0,0,0.3); box-sizing: border-box; z-index: 5; }
+        */
+        
+        /*.img-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: transparent; /* 确保容器背景不干扰 */
+        }*/
+        .img-wrapper.unfinished {
+            background-color: #555 !important; /* 这个灰色决定了未读区域的基调 */
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: 3 / 4;
+            display: block;        /* 关键：消除行内元素底部的微小间隙 */
+        }
+    /* 1. 消除白边的核心：让边框向内挤压，并取消图片与边框的间隙 */
+        .finished { 
+            border-style: solid;
+            border-color: #FFD700;
+            box-sizing: border-box; /* 关键：强制边框向内生长 */
+            border-width: 2px 1.5px; /* 第一个值是上下，第二个值是左右 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+            background-color: #FFD700;
+            z-index: 5;
+        }
+    
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: 3 / 4;
+            display: block;        
+            /* 关键：消除图片在容器中的微小缩放偏移 */
+            transform: scale(1.02); 
+        }
+    
+        /* 2. 兼容导出的置灰方案：不使用 filter，改用半透明遮罩 */
+        .unfinished { 
+            opacity: 0.15; 
+            background-color: #555 !important; 
+        }
+        /* .unfinished { opacity: 0.2; filter: grayscale(1) brightness(70%); } */
+    
+        /* 两本书布局：左上 2/3 (约81%)，右下 1/4 (50%) */
+        .layout-2 { position: relative; width: 100%; height: 100%; }
+        .b2-1 { position: absolute; top: 0; right: 0; width: 81%; height: 81%; }
+        .b2-2 { position: absolute; bottom: 0; left: 0; width: 50%; height: 50%; border-width: 2px !important; }
+    
+        /*  .layout-4 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 100%;} */
+    /* 基础布局：强制 2x2 网格 */
+        .layout-4 { 
+            display: grid !important; /* 加 !important 防止被其他手机端排版(如 flex)覆盖 */
+            grid-template-columns: repeat(2, 1fr) !important; 
+            
+            /* 关键修复：不要用 grid-template-rows: 1fr 1fr; 
+               改用 grid-auto-rows，让网格自己根据内容撑开 */
+            grid-auto-rows: 1fr; 
+            
+            gap: 0.5px; /* 建议加一点微小的缝隙，视觉上不会糊在一起，不需要可删掉 */
+            width: 100%;
+        }
+    
+        /* 关键：确保内部的图片或容器不会被拉长 */
+        .layout-4 > div, 
+        .layout-4 > img {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 3 / 4; /* 强制锁定书本比例，绝对不会变形拉长 */
+            object-fit: cover; 
+        }
+    
+        /* 手机适配 */
+        @media (max-width: 600px) {
+            .layout-4 {
+                /* 既然锁定了 3:4 比例，这里甚至不需要再写高度了 */
+                /* 宽度自适应屏幕，高度会自动按比例计算，严丝合缝 */
+                width: 100%;
+            }
+        }
+
+/* --- 新增：九宫格排版 (5至9本书) --- */
+        .layout-9 {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important; /* 强制 3 列 */
+            gap: 0.5px; /* 极细的网格缝隙，增强精致感 */
+            width: 100%;
+        }
+
+        .layout-9 > div {
+            width: 100%;
+            aspect-ratio: 3 / 4; /* 死死锁住比例，手机上绝对不会拉长 */
+            object-fit: cover;
+        }
+
+        /* 💎 美学细节：当进入九宫格时，格子变小了，金边必须变细，否则会“糊”成一团 */
+        .layout-9 .finished {
+            /* 之前 2x2 时是 2px 4px，这里减半，保持比例平衡 */
+            border-width: 2px 1.5px !important; 
+        }
+
+        
+        .btn-save { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 20px; font-weight: bold; }
+    
+    
+    /* 荣誉勋章印章样式 */
+        .crown-tag {
+            display: inline-block;
+            padding: 1px 5px;
+            font-size: 14px;
+            font-weight: 900;
+            border-radius: 3px;
+            margin-left: 5px;
+            line-height: 1.2;
+        }
+        .tag-sun { font-family: "TypeLand.com KhangXi Dict Trial"; color:#e74c3c; border:1.5px solid #e74c3c; padding:0 3px; font-size:20px; margin-right:4px; font-weight:bold; } /* 煌煌 */
+        .tag-moon { font-family: "TypeLand.com KhangXi Dict Trial"; color:#e74c3c; border:1.5px solid #e74c3c; padding:0 3px; font-size:20px; margin-right:4px; font-weight:bold; } /* 皎皎 */
+        .tag-star { font-family: "TypeLand.com KhangXi Dict Trial"; color:#e74c3c; border:1.5px solid #e74c3c; padding:0 3px; font-size:20px; margin-right:4px; font-weight:bold;  } /* 熒熒 */
+
+        /* 确保导航栏占满整行且不换行 */
+        .nav-container {{
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+            left: 0;
+            right: 0;
+            white-space: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox隐藏滚动条 */
+        }}
+        
+        .nav-container::-webkit-scrollbar {{
+            display: none; /* Chrome/Safari隐藏滚动条 */
+        }}
+        
+        .nav-container a {{
+            display: inline-block;
+        }}
+        
+        /* 手机端适配 */
+        @media (max-width: 768px) {{
+            .nav-container a {{
+                margin: 0 8px !important;
+                font-size: 16px !important;
+                padding: 4px 8px !important;
+            }}
+        }}
+        
+        @media (max-width: 480px) {{
+            .nav-container a {{
+                margin: 0 5px !important;
+                font-size: 14px !important;
+                padding: 3px 6px !important;
+            }}
+        }}
+        
+        /* 水印印章样式 */
+        .watermark {
+            position: absolute;
+            bottom: 15px;      /* 距离底部距离 */
+            right: -10px;      /* 稍微往右出格一点点，更有设计感 */
+            padding: 2px 8px;
+            border: 3px solid #e74c3c;
+            color: #e74c3c;
+            font-family: 'HYZhiHaoTianGongZhuan'; /*   TypeLand.com KhangXi Dict Trial    Microsoft JhengHei ZCOOL XiaoWei #LXGW WenKai Screen,sans-serif; #"Arial Black", */
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transform: rotate(-20deg); /* 倾斜角度 */
+            opacity: 0.8;
+            border-radius: 5px;
+            z-index: 100;
+            pointer-events: none; /* 确保不影响点击 */
+            background-color: rgba(255,255,255,0.1); /* 淡淡的底色 */
+            text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5); /*  半透明描边 text-shadow: text-shadow: 1px 1px 0*/
+            box-shadow: 0 0 2px rgba(0,0,0,0.2);
+        }
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function saveImage() {
+            const btn = document.querySelector('.btn-save');
+            btn.style.display = 'none';
+            html2canvas(document.querySelector("#capture-area"), { scale: 2, useCORS: true }).then(canvas => { 
+                let a = document.createElement('a');
+                a.href = canvas.toDataURL("image/png");
+    
+    
+                
+                // 获取当前时间并格式化为 YYYY-MM-DD HH:MM
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const timeStr = `${year}-${month}-${day} ${hours}:${minutes}`;
+                
+                a.download = `传家耕读录${timeStr}.png`;
+                a.click();
+                btn.style.display = 'block';
+            });
+        }
+    </script>
+    
+    <title>📜 耕读传家</title>
+        <!-- 导航栏 
+    <div class="nav-container" style="background-color: white; width: 100%; padding: 10px 0; border-bottom: 2px solid #409EFF; text-align: center; font-family: 'YanTi', 'Microsoft YaHei', sans-serif; box-sizing: border-box; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+        <a href="index.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">🏠 主页</a>
+        <a href="reading_board.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">📜 传家录</a>
+        <a href="world_reading_map.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">🌍 地图</a>
+        <a href="bookshelf.html" style="margin: 0 15px; color: #409EFF; text-decoration: none; font-size: 18px; padding: 5px 10px; border-radius: 20px; display: inline-block; transition: all 0.3s;">📚 书架</a>
+    </div> -->
+    <button class="btn-save" onclick="saveImage()">📸 保存看板为图片</button>
+    <div id="capture-area" style="font-family: 'TypeLand.com KhangXi Dict Trial', 'Microsoft YaHei', sans-serif;">
+        <div style="text-align:center; margin-bottom:20px; line-height:1.5;">
+            <h1 style="margin:0 0 6px 0; letter-spacing:2px;">
+                📜 傳家耕讀錄 (2026.03中) <a href="index.html">🏠</a>
+            </h1>
+        
+            <h2 style="color:#666; margin:4px 0;">
+                <span style='font-size:24px;'>🌿🌿🌿🌿🌱🌱🌱</span>
+                闔府積誦 <b>23</b> 捲 |
+                本旬新覽 <b>12</b> 冊
+                <span style='font-size:24px;'>🌿🌿🌱🌱</span>
+            </h2>
+        
+            <h3 style="color:#c0392b; margin:6px 0; line-height:1.6;">
+                <span style='color:#e74c3c; border:1.5px solid #e74c3c; padding:0 3px; font-size:20px; margin-right:4px; font-weight:bold;'>大日煌煌</span>☀️
+                <span style="color:#d4a017; font-weight:bold;">
+                致虚🏔️
+                </span> | 
+        
+                <span style='color:#e74c3c; border:1.5px solid #e74c3c; padding:0 3px; font-size:20px; margin-right:4px; font-weight:bold;'>明月皎皎</span>🌙
+                <span style="color:#d4a017; font-weight:bold;">
+                抱朴🌲
+                </span> | 
+                
+                <span style='color:#e74c3c; border:1.5px solid #e74c3c; padding:0 3px; font-size:20px; margin-right:4px; font-weight:bold;'>星火熒熒</span>💫
+                <span style="color:#d4a017; font-weight:bold;">
+                抱朴🌲
+                </span>
+            </h3>
+        </div>
+        <table class="reading-board"><tr><th style='width: 140px; min-width: 140px; max-width: 140px;'></th><th>2026.01下<br>大寒<br>鸡始乳 征鸟厉疾</th><th>2026.02上<br>大寒>立春<br>水泽腹坚 东风解冻</th><th>2026.02中<br>立春<br>蛰虫始振 鱼陟负冰</th><th>2026.02下<br>雨水<br>獭祭鱼 候雁北</th><th>2026.03上<br>雨水>惊蛰<br>草木萌动 桃始华</th><th>2026.03中<br>惊蛰<br>仓庚鸣 鹰化为鸠</th></tr><tr>
+            <td class='row-header'>
+                <span style='font-size: 28px;'><span class='tag-moon'>皎皎<br></span><span class='tag-star'>熒熒<br></span></span>
+                <span style='font-size: 32px;'>🌲抱朴</span><br>
+                <span style='font-size: 28px;'>🌿🌿🌿</span><br>
+                <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >和3 月10 旬5</small>
+                <!-- <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >合3 月10 旬5</small>  --->
+                <!-- <small style='color:#e74c3c; font-family: "HYZhiHaoTianGongZhuan";' >共计: 3 5 10本</small> --->
+            </td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/小镇喧嚣.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/小镇喧嚣.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper finished'><img class='book-cover' src='./books/小镇喧嚣.jpg'></div><div class="watermark">抱朴观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='img-wrapper finished'><img class='book-cover' src='./books/蔡康永的说话之道.jpg'></div><div class="watermark">抱朴观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/养心的妙药.jpg'></div></div></td><td><div class='book-cell'><div class='layout-2'>
+                    <div class='b2-1 img-wrapper finished'><img class='book-cover' src='./books/养心的妙药.jpg'></div>
+                    <div class='b2-2 img-wrapper unfinished'><img class='book-cover' src='./books/情的菩提.jpg'></div>
+                </div><div class="watermark">抱朴观书一卷<br>则增一卷之益</div></div></td></tr><tr>
+            <td class='row-header'>
+                <span style='font-size: 28px;'><span class='tag-sun'>煌煌<br></span></span>
+                <span style='font-size: 32px;'>🏔️致虚</span><br>
+                <span style='font-size: 28px;'>🌿🌱🌱🌱</span><br>
+                <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >和8 月7 旬5</small>
+                <!-- <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >合8 月7 旬5</small>  --->
+                <!-- <small style='color:#e74c3c; font-family: "HYZhiHaoTianGongZhuan";' >共计: 8 5 7本</small> --->
+            </td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/Condensed Matter Physics.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper finished'><img class='book-cover' src='./books/Condensed Matter Physics.jpg'></div><div class="watermark">致虚观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/Writing Science.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper finished'><img class='book-cover' src='./books/Writing Science.jpg'></div><div class="watermark">致虚观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='img-wrapper finished'><img class='book-cover' src='./books/中国文化的深层结构.jpg'></div><div class="watermark">致虚观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='layout-9'><div class='img-wrapper finished'><img class='book-cover' src='./books/一句顶一万句.jpg'></div><div class='img-wrapper finished'><img class='book-cover' src='./books/失落的一角遇见大圆满.jpg'></div><div class='img-wrapper finished'><img class='book-cover' src='./books/送你一颗子弹.jpg'></div><div class='img-wrapper unfinished'><img class='book-cover' src='./books/鲁迅全集-1.jpg'></div><div class='img-wrapper unfinished'><img class='book-cover' src='./books/Educated.jpg'></div><div class='img-wrapper unfinished'><img class='book-cover' src='./books/A mind over matter.jpg'></div><div class='img-wrapper finished'><img class='book-cover' src='./books/坟.jpg'></div><div class='img-wrapper finished'><img class='book-cover' src='./books/半小时漫画中国哲学史.jpg'></div></div><div class="watermark">致虚观书一卷<br>则增一卷之益</div></div></td></tr><tr>
+            <td class='row-header'>
+                <span style='font-size: 28px;'></span>
+                <span style='font-size: 32px;'>🦁西翁</span><br>
+                <span style='font-size: 28px;'>🌿</span><br>
+                <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >和5 月4 旬2</small>
+                <!-- <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >合5 月4 旬2</small>  --->
+                <!-- <small style='color:#e74c3c; font-family: "HYZhiHaoTianGongZhuan";' >共计: 5 2 4本</small> --->
+            </td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/课本里的古诗词.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/课本里的古诗词.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper finished'><img class='book-cover' src='./books/课本里的古诗词.jpg'></div><div class="watermark">西翁观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='layout-2'>
+                    <div class='b2-1 img-wrapper finished'><img class='book-cover' src='./books/三体1.jpg'></div>
+                    <div class='b2-2 img-wrapper finished'><img class='book-cover' src='./books/豆包AI赚钱手册.jpg'></div>
+                </div><div class="watermark">西翁观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/三体2.jpg'></div></div></td><td><div class='book-cell'><div class='layout-2'>
+                    <div class='b2-1 img-wrapper finished'><img class='book-cover' src='./books/三体2.jpg'></div>
+                    <div class='b2-2 img-wrapper finished'><img class='book-cover' src='./books/装修常用数据图解.jpg'></div>
+                </div><div class="watermark">西翁观书一卷<br>则增一卷之益</div></div></td></tr><tr>
+            <td class='row-header'>
+                <span style='font-size: 28px;'></span>
+                <span style='font-size: 32px;'>🎋清一</span><br>
+                <span style='font-size: 28px;'>🌿</span><br>
+                <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >和5 月4 旬2</small>
+                <!-- <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >合5 月4 旬2</small>  --->
+                <!-- <small style='color:#e74c3c; font-family: "HYZhiHaoTianGongZhuan";' >共计: 5 2 4本</small> --->
+            </td><td><div class='book-cell'><div class='img-wrapper finished'><img class='book-cover' src='./books/1984.jpg'></div><div class="watermark">清一观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/鲁迅全集_同心1.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/中华玄机.jpg'></div></div></td><td><div class='book-cell'><div class='layout-2'>
+                    <div class='b2-1 img-wrapper finished'><img class='book-cover' src='./books/中华玄机.jpg'></div>
+                    <div class='b2-2 img-wrapper finished'><img class='book-cover' src='./books/命若琴弦.jpg'></div>
+                </div><div class="watermark">清一观书一卷<br>则增一卷之益</div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/论大战略.jpg'></div></div></td><td><div class='book-cell'><div class='layout-4'><div class='img-wrapper finished'><img class='book-cover' src='./books/论大战略.jpg'></div><div class='img-wrapper finished'><img class='book-cover' src='./books/恒河的女儿.jpg'></div><div class='img-wrapper unfinished'><img class='book-cover' src='./books/毛泽东选集第一卷.jpg'></div></div><div class="watermark">清一观书一卷<br>则增一卷之益</div></div></td></tr><tr>
+            <td class='row-header'>
+                <span style='font-size: 28px;'></span>
+                <span style='font-size: 32px;'>🐤盈生</span><br>
+                <span style='font-size: 28px;'>🌱🌱</span><br>
+                <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >和2 月2 旬2</small>
+                <!-- <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >合2 月2 旬2</small>  --->
+                <!-- <small style='color:#e74c3c; font-family: "HYZhiHaoTianGongZhuan";' >共计: 2 2 2本</small> --->
+            </td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'><div class='layout-4'><div class='img-wrapper finished'><img class='book-cover' src='./books/我们的太阳系.jpg'></div><div class='img-wrapper finished'><img class='book-cover' src='./books/小恒星的漂亮朋友.jpg'></div><div class='img-wrapper unfinished'><img class='book-cover' src='./books/挠痒痒先生.jpg'></div></div><div class="watermark">盈生观书一卷<br>则增一卷之益</div></div></td></tr><tr>
+            <td class='row-header'>
+                <span style='font-size: 28px;'></span>
+                <span style='font-size: 32px;'>💰锦安</span><br>
+                <span style='font-size: 28px;'></span><br>
+                <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >和0 月0 旬0</small>
+                <!-- <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >合0 月0 旬0</small>  --->
+                <!-- <small style='color:#e74c3c; font-family: "HYZhiHaoTianGongZhuan";' >共计: 0 0 0本</small> --->
+            </td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/呐喊·彷徨.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/呐喊·彷徨.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/呐喊·彷徨.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/呐喊·彷徨.jpg'></div></div></td></tr><tr>
+            <td class='row-header'>
+                <span style='font-size: 28px;'></span>
+                <span style='font-size: 32px;'>🐦‍🔥凤书</span><br>
+                <span style='font-size: 28px;'></span><br>
+                <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >和0 月0 旬0</small>
+                <!-- <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >合0 月0 旬0</small>  --->
+                <!-- <small style='color:#e74c3c; font-family: "HYZhiHaoTianGongZhuan";' >共计: 0 0 0本</small> --->
+            </td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/乱时候穷时候.jpg'></div></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/乱时候穷时候.jpg'></div></div></td></tr><tr>
+            <td class='row-header'>
+                <span style='font-size: 28px;'></span>
+                <span style='font-size: 32px;'>🌊善下</span><br>
+                <span style='font-size: 28px;'></span><br>
+                <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >和0 月0 旬0</small>
+                <!-- <small style='color:#e74c3c; font-family: "TypeLand.com KhangXi Dict Trial";' >合0 月0 旬0</small>  --->
+                <!-- <small style='color:#e74c3c; font-family: "HYZhiHaoTianGongZhuan";' >共计: 0 0 0本</small> --->
+            </td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'></div></td><td><div class='book-cell'><div class='img-wrapper unfinished'><img class='book-cover' src='./books/豆包小故事.jpg'></div></div></td></tr></table>
+    </div>
+    
