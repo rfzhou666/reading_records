@@ -508,7 +508,12 @@ function initMiniMap() {
     });
 
     // 使用浅色底图
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(miniMap);
+    // L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(miniMap);
+        // 方案1：OpenStreetMap 标准底图（最准确）
+    // 标准 OpenStreetMap (注意：只有单大括号)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(miniMap);
     
     // 1. 在中心添加“北京”文字标注
     const cityLabel = L.divIcon({
