@@ -213,7 +213,7 @@ ul, ol {
 
 <h3 align="center">涓滴<a href="https://www.wjx.top/vm/OMT25NM.aspx#" 
 class="reading-link" style="text-decoration: none;">💧</a>·流衍<a href="reading_board.html" 
-class="reading-link" style="text-decoration: none;">🚣</a>·涵泳<a href="bookshelf.html" class="reading-link" 
+class="reading-link" style="text-decoration: none;">🌊</a>·涵泳<a href="bookshelf.html" class="reading-link" // 🚣
 style="text-decoration: none;">🏞️</a>·浩瀚<a href="world_reading_map.html" class="reading-link" style="text-decoration: none;">🌍</a></h3>
 
     <!-- 
@@ -262,7 +262,7 @@ style="text-decoration: none;">🏞️</a>·浩瀚<a href="world_reading_map.htm
         <div id="miniMap" style="width: 150px; height: 160px; border-radius: 50%; border: 6px solid #f0f0f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; position: relative; background: #fff; box-sizing: content-box;"></div>
         <div style="font-size: 12px; color: #666; margin-top: 8px;">足迹范围</div>
     </div>
-</div>   -->
+</div>   ============================== -->
 
 
 
@@ -285,7 +285,7 @@ style="text-decoration: none;">🏞️</a>·浩瀚<a href="world_reading_map.htm
             </div>
             
             <div style="position: absolute; top: 80%; left: 50%; transform: translate(-50%, -50%); color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.9); font-weight: bold; text-align: center; z-index: 4;">
-                <div style="font-size: 18px; line-height: 1.1;"><span id="earthLaps">0.0000</span><span style="font-size: 14px;">圈</span></div>
+                <div style="font-size: 18px; line-height: 1.1;"><span id="earthLaps">0.0000</span><span style="font-size: 20px;">圈</span></div>
             </div>
         </div>
         <div style="font-size: 12px; color: #666; margin-top: -5px;">绕金家镇</div>
@@ -297,20 +297,28 @@ style="text-decoration: none;">🏞️</a>·浩瀚<a href="world_reading_map.htm
     </div>
 </div>
 
-
-
-
-
-
-
-
-
+<!--  ============
 <div style="text-align: center; margin-bottom: 20px;">
     <div style="font-size: 14px; color: #555; background: #fff; 
     display: inline-block; padding: 8px 18px; border-radius: 30px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05);"><span id="earthDistance" style="color: #E6A23C; font-weight: bold; font-size: 16px;">0</span> 里 
         <span style="margin: 0 10px; color: #ccc;">|</span><span id="earthPercent" style="color: #67C23A; font-weight: bold; font-size: 16px;">0.00%</span>
     </div>
 </div>
+===========   -->
+
+<div style="text-align: center; margin-bottom: 20px; padding: 0 10px;">
+    <div style="font-size: 14px; color: #555; background: #fff; 
+        display: inline-block; padding: 8px 12px; border-radius: 30px; border: 1px solid #eee; 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+        max-width: 100%; box-sizing: border-box; white-space: nowrap;">
+        
+        共走 <span id="earthDistance" style="color: #E6A23C; font-weight: bold; font-size: 15px;">0</span> 里 
+        <span style="margin: 0 6px; color: #ccc;">|</span>
+        <span id="earthPercent" style="color: #67C23A; font-weight: bold; font-size: 15px;">0.00%</span>
+        
+    </div>
+</div>
+
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -415,23 +423,32 @@ style="text-decoration: none;">🏞️</a>·浩瀚<a href="world_reading_map.htm
 // ===== 新闻数据 =====
 const newsData = [
     { date: "2026-03-20", name: "凤书", bookname: "『乱时候，穷时候』姜淑梅", money: "49.80", page: "344", level: "<span class='badge'>晋品【芳菲🌸】</span>" },
-    { date: "2026-03-20", name: "清一", bookname: "『失落的一角遇见大圆满』[美]谢尔·希尔弗斯坦", money: "20.00", page: "100", level: "进阶【🌿🌿】" },
     { date: "2026-03-20", name: "锦安", bookname: "『呐喊·彷徨』鲁迅", money: "26.80", page: "287", level: "进阶【🌱】" },
-    { date: "2026-03-19", name: "西翁", bookname: "『装修常用数据图解』杨文英", money: "42.00", page: "128", level: "进阶【🌿🌱🌱】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌿🌿🌱🌱】" },
+    { date: "2026-03-20", name: "清一", bookname: "『失落的一角遇见大圆满』[美]谢尔·希尔弗斯坦", money: "20.00", page: "100", level: "进阶【🌿🌿】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌱🌱】" },
     { date: "2026-03-19", name: "致虚", bookname: "『坟』鲁迅", money: "17.80", page: "228", level: "进阶【🌿🌿🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌿🌿🌱🌱】" },
+    { date: "2026-03-19", name: "西翁", bookname: "『装修常用数据图解』杨文英", money: "42.00", page: "128", level: "进阶【🌿🌱🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "<span class='badge'>晋品【芳菲🌸】</span>" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌱🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌿】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌿🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌿🌱🌱】" },
     { date: "2026-03-19", name: "盈生", bookname: "『小恒星的漂亮朋友』[俄罗斯]伊莲娜.乌利耶娃+安娜.玛玛耶娃", money: "33.00", page: "24", level: "进阶【🌱🌱】" },
-    { date: "2026-03-18", name: "西翁", bookname: "『三体2』刘慈欣", money: "32.00", page: "470", level: "进阶【🌿🌱】" },
     { date: "2026-03-18", name: "致虚", bookname: "『送你一颗子弹』刘瑜", money: "38.00", page: "300", level: "进阶【🌿🌿】" },
+    { date: "2026-03-18", name: "西翁", bookname: "『三体2』刘慈欣", money: "32.00", page: "470", level: "进阶【🌿🌱】" },
     { date: "2026-03-17", name: "致虚", bookname: "『失落的一角遇见大圆满』[美]谢尔·希尔弗斯坦", money: "20.00", page: "100", level: "进阶【🌿🌱🌱】" },
     { date: "2026-03-16", name: "盈生", bookname: "『我们的太阳系』[俄]伊莲娜·乌利耶娃", money: "33.00", page: "23", level: "进阶【🌱】" },
     { date: "2026-03-14", name: "致虚", bookname: "『一句顶一万句』刘震云", money: "29.80", page: "457", level: "进阶【🌿🌱】" },
     { date: "2026-03-14", name: "清一", bookname: "『恒河的女儿』[印]贝碧·哈尔德", money: "25.00", page: "207", level: "进阶【🌿🌱🌱】" },
-    { date: "2026-03-12", name: "清一", bookname: "『论大战略』[美]约翰.刘易斯.加迪斯", money: "69.00", page: "393", level: "进阶【🌿🌱】" },
     { date: "2026-03-12", name: "抱朴", bookname: "『养心的妙药』毕淑敏", money: "28.00", page: "360", level: "<span class='badge'>晋品【芳菲🌸】</span>" },
+    { date: "2026-03-12", name: "清一", bookname: "『论大战略』[美]约翰.刘易斯.加迪斯", money: "69.00", page: "393", level: "进阶【🌿🌱】" },
     { date: "2026-03-05", name: "致虚", bookname: "『中国文化的深层结构』孙隆基", money: "68.00", page: "434", level: "<span class='badge'>晋品【育秀🌿】</span>" },
-    { date: "2026-02-28", name: "清一", bookname: "『命若琴弦』史铁生", money: "29.80", page: "421", level: "<span class='badge'>晋品【育秀🌿】</span>" },
     { date: "2026-02-28", name: "西翁", bookname: "『豆包AI赚钱手册』", money: "59.80", page: "198", level: "<span class='badge'>晋品【育秀🌿】</span>" },
+    { date: "2026-02-28", name: "清一", bookname: "『命若琴弦』史铁生", money: "29.80", page: "421", level: "<span class='badge'>晋品【育秀🌿】</span>" },
     { date: "2026-02-26", name: "清一", bookname: "『中华玄机』王蒙", money: "45.00", page: "357", level: "进阶【🌱🌱】" },
     { date: "2026-02-26", name: "西翁", bookname: "『三体1』刘慈欣", money: "23.00", page: "302", level: "进阶【🌱🌱】" },
     { date: "2026-02-25", name: "致虚", bookname: "<i>&ensp;Writing Science</i> Joshua Schimel", money: "300.00", page: "236", level: "进阶【🌱🌱】" },
@@ -445,16 +462,17 @@ const newsData = [
 
 // ===== 花品数据 =====
 const flowerData = [
+    { name: "致虚🏔️", level: "芳菲🌸", icons: "🌸🌿🌿🌱🌱" },
     { name: "凤书🐦‍🔥", level: "芳菲🌸", icons: "🌸" },
     { name: "抱朴🌲", level: "芳菲🌸", icons: "🌸" },
-    { name: "致虚🏔️", level: "育秀🌿", icons: "🌿🌿🌱🌱" },
     { name: "清一🎋", level: "育秀🌿", icons: "🌿🌿" },
     { name: "西翁🦁", level: "育秀🌿", icons: "🌿🌱🌱" },
     { name: "盈生🐤", level: "初芽🌱", icons: "🌱🌱" },
     { name: "锦安💰", level: "初芽🌱", icons: "🌱" }
 ];
 
-/* 
+
+/*  ****************************
 // ===== 渲染新闻 =====
 function formatHeight(heightInMeters) {
     if (heightInMeters < 1) {
@@ -478,7 +496,7 @@ newsData.forEach((item, index) => {
     const contentSpan = document.createElement("span"); // 原本是 div 改为 span contentSpan.textContent = item.content;
     const height = (newsData.length - index) * 0.025; // 米
     const count = newsData.length - index;
-    const formattedCount = String(count).padStart(4, "0");
+    const formattedCount = String(count).padStart(2, "0");
     contentSpan.innerHTML = 
                 "『全家累计阅读 <b>" + formattedCount + "</b> 本, "
                 +"累积高度 <b>" + formatHeight(height) + "』"
@@ -487,7 +505,8 @@ newsData.forEach((item, index) => {
     div.appendChild(contentSpan);
     newsContainer.appendChild(div);
 
-});*/
+});
+***********   */
 
 // ===== 获取DOM =====
 const newsContainer = document.getElementById("news-container");
@@ -502,7 +521,10 @@ function formatHeight(heightInMeters) {
     } else {
         return (heightInMeters / 500).toFixed(2) + "</b>里";
     }
-} */
+} 
+===============================   */
+
+
 
 function formatMoney(moneyInYuan) {
     if (moneyInYuan < 10) {
@@ -595,8 +617,8 @@ function updateEarthProgress(distanceInMeters) {
 
     // 更新文本数据
     document.getElementById("earthDistance").innerText = totalLi.toFixed(2);
-    document.getElementById("earthPercent").innerText = totalPercent.toFixed(4) + "%"; 
-    document.getElementById("earthLaps").innerText = (totalLi / liPerLap).toFixed(4);
+    document.getElementById("earthPercent").innerText = totalPercent.toFixed(3) + "%"; 
+    document.getElementById("earthLaps").innerText = (totalLi / liPerLap).toFixed(3);
 
     // 更新左侧 SVG 圆环进度 (r=77 对应的周长是 2 * π * 77 ≈ 483.8)
     const circle = document.getElementById("progressCircle");
