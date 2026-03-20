@@ -445,12 +445,13 @@ function renderNews() {
 
         const count = newsData.length - index;
         const formattedCount = String(count).padStart(4, "0");
-        const height = count * 0.025;
+        const height = count * 0.25 * totalPage;
 
         contentSpan.innerHTML =
             "<span class='badge'>" + formattedCount + "本 "
             /* + "约<b>" + formatHeight(height) + "</b><br>" 🪙*/
-            + String(Math.floor(totalPage)).padStart(4, "0") + "页</span>"
+            + String(Math.floor(totalPage)).padStart(4, "0") + "页 "
+            + formatHeight(height) + "</span><br>"
             /* + String(Math.floor(totalMoney)).padStart(4, "0") + "元" */
             + " <span style='color:#d4a017; font-weight:bold;'>【"
             + item.name + "】</span><br>"+ "阅罢"
