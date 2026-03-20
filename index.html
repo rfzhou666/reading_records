@@ -86,12 +86,16 @@ ul, ol {
     margin-right: 8px;   /* 和内容隔开 */
     display: inline;     /* 关键！让它不换行 */
 }
+
+
+
 .flower-cards {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 15px;
 }
+
 .card {
     flex: 1 1 120px;
     background-color: #fff7f0;
@@ -103,6 +107,7 @@ ul, ol {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.2s;
 }
+
 .card:hover {
     transform: scale(1.05);
 }
@@ -134,6 +139,14 @@ ul, ol {
     border-color: #e67e22;  /* 火焰橙 */
     background-color: #fff1e0;
 }
+/* 增加触摸反馈：手指按下去时的效果 */
+.card:active {
+    transform: scale(0.95);
+    background-color: #f0f0f0 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
 .badge {
     color: #e74c3c;
     border: 1.5px solid #e74c3c;
@@ -214,7 +227,7 @@ ul, ol {
 <h3 align="center">涓滴<a href="https://www.wjx.top/vm/OMT25NM.aspx#" 
 class="reading-link" style="text-decoration: none;">💧</a>·流衍<a href="reading_board.html" 
 class="reading-link" style="text-decoration: none;">🌊</a>·涵泳<a href="bookshelf.html" class="reading-link" // 🚣🏞️
-style="text-decoration: none;">🐳</a>·浩瀚<a href="world_reading_map.html" class="reading-link" style="text-decoration: none;">🌍</a></h3>
+style="text-decoration: none;">🐳</a>·浩瀚<a href="world_reading_map.html" class="reading-link" style="text-decoration: none;">🌏</a></h3>
 
     <!-- 
 <div class="container">
@@ -423,32 +436,23 @@ style="text-decoration: none;">🐳</a>·浩瀚<a href="world_reading_map.html" 
 // ===== 新闻数据 =====
 const newsData = [
     { date: "2026-03-20", name: "凤书", bookname: "『乱时候，穷时候』姜淑梅", money: "49.80", page: "344", level: "<span class='badge'>晋品【芳菲🌸】</span>" },
-    { date: "2026-03-20", name: "锦安", bookname: "『呐喊·彷徨』鲁迅", money: "26.80", page: "287", level: "进阶【🌱】" },
     { date: "2026-03-20", name: "清一", bookname: "『失落的一角遇见大圆满』[美]谢尔·希尔弗斯坦", money: "20.00", page: "100", level: "进阶【🌿🌿】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌱🌱】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『坟』鲁迅", money: "17.80", page: "228", level: "进阶【🌿🌿🌱】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌿🌿🌱🌱】" },
+    { date: "2026-03-20", name: "锦安", bookname: "『呐喊·彷徨』鲁迅", money: "26.80", page: "287", level: "进阶【🌱】" },
     { date: "2026-03-19", name: "西翁", bookname: "『装修常用数据图解』杨文英", money: "42.00", page: "128", level: "进阶【🌿🌱🌱】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "<span class='badge'>晋品【芳菲🌸】</span>" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌱】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌱】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌱🌱】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌿】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌿🌱】" },
-    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌸🌿🌿🌱🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『半小时漫画中国哲学史』陈磊·半小时漫画团队", money: "49.90", page: "304", level: "进阶【🌿🌿🌱🌱】" },
+    { date: "2026-03-19", name: "致虚", bookname: "『坟』鲁迅", money: "17.80", page: "228", level: "进阶【🌿🌿🌱】" },
     { date: "2026-03-19", name: "盈生", bookname: "『小恒星的漂亮朋友』[俄罗斯]伊莲娜.乌利耶娃+安娜.玛玛耶娃", money: "33.00", page: "24", level: "进阶【🌱🌱】" },
-    { date: "2026-03-18", name: "致虚", bookname: "『送你一颗子弹』刘瑜", money: "38.00", page: "300", level: "进阶【🌿🌿】" },
     { date: "2026-03-18", name: "西翁", bookname: "『三体2』刘慈欣", money: "32.00", page: "470", level: "进阶【🌿🌱】" },
+    { date: "2026-03-18", name: "致虚", bookname: "『送你一颗子弹』刘瑜", money: "38.00", page: "300", level: "进阶【🌿🌿】" },
     { date: "2026-03-17", name: "致虚", bookname: "『失落的一角遇见大圆满』[美]谢尔·希尔弗斯坦", money: "20.00", page: "100", level: "进阶【🌿🌱🌱】" },
     { date: "2026-03-16", name: "盈生", bookname: "『我们的太阳系』[俄]伊莲娜·乌利耶娃", money: "33.00", page: "23", level: "进阶【🌱】" },
     { date: "2026-03-14", name: "致虚", bookname: "『一句顶一万句』刘震云", money: "29.80", page: "457", level: "进阶【🌿🌱】" },
     { date: "2026-03-14", name: "清一", bookname: "『恒河的女儿』[印]贝碧·哈尔德", money: "25.00", page: "207", level: "进阶【🌿🌱🌱】" },
-    { date: "2026-03-12", name: "抱朴", bookname: "『养心的妙药』毕淑敏", money: "28.00", page: "360", level: "<span class='badge'>晋品【芳菲🌸】</span>" },
     { date: "2026-03-12", name: "清一", bookname: "『论大战略』[美]约翰.刘易斯.加迪斯", money: "69.00", page: "393", level: "进阶【🌿🌱】" },
+    { date: "2026-03-12", name: "抱朴", bookname: "『养心的妙药』毕淑敏", money: "28.00", page: "360", level: "<span class='badge'>晋品【芳菲🌸】</span>" },
     { date: "2026-03-05", name: "致虚", bookname: "『中国文化的深层结构』孙隆基", money: "68.00", page: "434", level: "<span class='badge'>晋品【育秀🌿】</span>" },
-    { date: "2026-02-28", name: "西翁", bookname: "『豆包AI赚钱手册』", money: "59.80", page: "198", level: "<span class='badge'>晋品【育秀🌿】</span>" },
     { date: "2026-02-28", name: "清一", bookname: "『命若琴弦』史铁生", money: "29.80", page: "421", level: "<span class='badge'>晋品【育秀🌿】</span>" },
+    { date: "2026-02-28", name: "西翁", bookname: "『豆包AI赚钱手册』", money: "59.80", page: "198", level: "<span class='badge'>晋品【育秀🌿】</span>" },
     { date: "2026-02-26", name: "清一", bookname: "『中华玄机』王蒙", money: "45.00", page: "357", level: "进阶【🌱🌱】" },
     { date: "2026-02-26", name: "西翁", bookname: "『三体1』刘慈欣", money: "23.00", page: "302", level: "进阶【🌱🌱】" },
     { date: "2026-02-25", name: "致虚", bookname: "<i>&ensp;Writing Science</i> Joshua Schimel", money: "300.00", page: "236", level: "进阶【🌱🌱】" },
@@ -462,9 +466,9 @@ const newsData = [
 
 // ===== 花品数据 =====
 const flowerData = [
-    { name: "致虚🏔️", level: "芳菲🌸", icons: "🌸🌿🌿🌱🌱" },
     { name: "凤书🐦‍🔥", level: "芳菲🌸", icons: "🌸" },
     { name: "抱朴🌲", level: "芳菲🌸", icons: "🌸" },
+    { name: "致虚🏔️", level: "育秀🌿", icons: "🌿🌿🌱🌱" },
     { name: "清一🎋", level: "育秀🌿", icons: "🌿🌿" },
     { name: "西翁🦁", level: "育秀🌿", icons: "🌿🌱🌱" },
     { name: "盈生🐤", level: "初芽🌱", icons: "🌱🌱" },
@@ -472,57 +476,57 @@ const flowerData = [
 ];
 
 
-/*  ****************************
-// ===== 渲染新闻 =====
-function formatHeight(heightInMeters) {
-    if (heightInMeters < 1) {
-        return String((heightInMeters * 100).toFixed(0)).padStart(2, "0") + "</b> 厘米";
-    } else if (heightInMeters < 1000) {
-        return heightInMeters.toFixed(2) + "</b> 米";
-    } else {
-        return (heightInMeters / 1000).toFixed(2) + "</b> 千米";
-    }
-}
-const searchInput = document.getElementById("searchInput");
-const newsContainer = document.getElementById("news-container");
-newsData.sort((a,b) => new Date(b.date) - new Date(a.date));
-const totalBooks = newsData.length; 
-newsData.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.className = "news";
-    const dateDiv = document.createElement("div");
-    dateDiv.className = "news-date";
-    dateDiv.textContent = item.date;
-    const contentSpan = document.createElement("span"); // 原本是 div 改为 span contentSpan.textContent = item.content;
-    const height = (newsData.length - index) * 0.025; // 米
-    const count = newsData.length - index;
-    const formattedCount = String(count).padStart(2, "0");
-    contentSpan.innerHTML = 
-                "『全家累计阅读 <b>" + formattedCount + "</b> 本, "
-                +"累积高度 <b>" + formatHeight(height) + "』"
-                +"恭喜<span style='color:#d4a017; font-weight:bold;'>【" + item.name + "】</span>读完 " + item.bookname + item.level;
-    div.appendChild(dateDiv);
-    div.appendChild(contentSpan);
-    newsContainer.appendChild(div);
-
-});
-***********   */
+            /*  ****************************
+            // ===== 渲染新闻 =====
+            function formatHeight(heightInMeters) {
+                if (heightInMeters < 1) {
+                    return String((heightInMeters * 100).toFixed(0)).padStart(2, "0") + "</b> 厘米";
+                } else if (heightInMeters < 1000) {
+                    return heightInMeters.toFixed(2) + "</b> 米";
+                } else {
+                    return (heightInMeters / 1000).toFixed(2) + "</b> 千米";
+                }
+            }
+            const searchInput = document.getElementById("searchInput");
+            const newsContainer = document.getElementById("news-container");
+            newsData.sort((a,b) => new Date(b.date) - new Date(a.date));
+            const totalBooks = newsData.length; 
+            newsData.forEach((item, index) => {
+                const div = document.createElement("div");
+                div.className = "news";
+                const dateDiv = document.createElement("div");
+                dateDiv.className = "news-date";
+                dateDiv.textContent = item.date;
+                const contentSpan = document.createElement("span"); // 原本是 div 改为 span contentSpan.textContent = item.content;
+                const height = (newsData.length - index) * 0.025; // 米
+                const count = newsData.length - index;
+                const formattedCount = String(count).padStart(2, "0");
+                contentSpan.innerHTML = 
+                            "『全家累计阅读 <b>" + formattedCount + "</b> 本, "
+                            +"累积高度 <b>" + formatHeight(height) + "』"
+                            +"恭喜<span style='color:#d4a017; font-weight:bold;'>【" + item.name + "】</span>读完 " + item.bookname + item.level;
+                div.appendChild(dateDiv);
+                div.appendChild(contentSpan);
+                newsContainer.appendChild(div);
+            
+            });
+            ***********   */
 
 // ===== 获取DOM =====
 const newsContainer = document.getElementById("news-container");
 const searchInput = document.getElementById("searchInput");
 
-/* ===== 高度换算 =====
-function formatHeight(heightInMeters) {
-    if (heightInMeters < 1) {
-        return String((heightInMeters * 100).toFixed(0)).padStart(2, "0") + "</b>厘米";
-    } else if (heightInMeters < 1000) {
-        return heightInMeters.toFixed(2) + "</b>米";
-    } else {
-        return (heightInMeters / 500).toFixed(2) + "</b>里";
-    }
-} 
-===============================   */
+            /* ===== 高度换算 =====
+            function formatHeight(heightInMeters) {
+                if (heightInMeters < 1) {
+                    return String((heightInMeters * 100).toFixed(0)).padStart(2, "0") + "</b>厘米";
+                } else if (heightInMeters < 1000) {
+                    return heightInMeters.toFixed(2) + "</b>米";
+                } else {
+                    return (heightInMeters / 500).toFixed(2) + "</b>里";
+                }
+            } 
+            ===============================   */
 
 
 
@@ -548,7 +552,7 @@ newsData.sort((a,b) => new Date(b.date) - new Date(a.date));
 function formatDistance(distanceInMeters) {
     if (distanceInMeters < 1) {
         return String((distanceInMeters * 100).toFixed(0)).padStart(2, "0") + "</b>厘米";
-    } else if (distanceInMeters < 1000) {
+    } else if (distanceInMeters < 500) {
         return distanceInMeters.toFixed(2) + "</b>米";
     } else {
         return (distanceInMeters / 500).toFixed(2) + "</b>里";
@@ -667,7 +671,8 @@ function renderNews() {
 
         const count = newsData.length - index;
         // 原来的 height 变量更名为 distance (单位: 米)
-        const distance = count * 0.25 * totalPage / 2 ; 
+        // 20260320 发现bug 多乘了   const distance = count * 0.25 * totalPage / 2 ; 
+         const distance = 0.25 * totalPage / 2 ; 
 
         // 提取第一条（距离最远）的数据更新地球进度
         if (isFirstMatched) {
@@ -725,15 +730,24 @@ allDiv.addEventListener("click", () => {
 });
 cardContainer.appendChild(allDiv); */
 
+
 flowerData.forEach(item => {
     const div = document.createElement("div");
     div.className = "card";
+    
+    div.style.cursor = "pointer"; // 
+
     div.setAttribute("data-level", item.level);
     div.innerHTML = `${item.name}<br>${item.icons}`;
 
+
+    // 点击事件
     div.addEventListener("click", () => {
-        searchInput.value = item.name.slice(0, 2); /* remove emoji*/
+        // 稍微加一点点击后的视觉反馈延迟，让用户看清“按下了”
+        searchInput.value = item.name.slice(0, 2);
         renderNews();
+        // 自动滚动到顶部看结果（可选）
+        window.scrollTo({top: 0, behavior: 'smooth'});
     });
     cardContainer.appendChild(div);
 });
