@@ -213,6 +213,39 @@ ul, ol {
     <!-- 动态花品卡片生成 -->
 </div>
 
+<div id="earthWidget" style="text-align: center; margin: 25px 0; font-family: 'Microsoft YaHei', sans-serif;">
+    <div style="position: relative; width: 160px; height: 160px; margin: 0 auto;">
+        <svg width="160" height="160" viewBox="0 0 160 160" style="transform: rotate(-90deg); position: absolute; top: 0; left: 0; z-index: 2;">
+            <circle cx="80" cy="80" r="70" fill="none" stroke="#f0f0f0" stroke-width="12" />
+            <circle id="progressCircle" cx="80" cy="80" r="70" fill="none" stroke="#409EFF" stroke-width="12" 
+                    stroke-dasharray="439.8" stroke-dashoffset="439.8" stroke-linecap="round" 
+                    style="transition: stroke-dashoffset 1.5s ease-in-out;" />
+        </svg>
+        
+       <!-- <div style="position: absolute; top: 16px; left: 16px; width: 128px; height: 128px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 30% 30%, #4facfe 0%, #00f2fe 40%, #000428 100%); z-index: 1; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.6);">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Earth_Western_Hemisphere_transparent_background.png/240px-Earth_Western_Hemisphere_transparent_background.png" 
+                 alt="Earth" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.95; mix-blend-mode: hard-light;">
+        </div> -->
+
+        <div style="position: absolute; top: 16px; left: 16px; width: 128px; height: 128px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 30% 30%, #4facfe 0%, #00f2fe 40%, #000428 100%); z-index: 1; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.6);">
+            <img src="Earth_Eastern_Hemisphere_2002.png" 
+                 alt="Earth" 
+                 style="width: 100%; height: 100%; object-fit: cover; opacity: 0.95; mix-blend-mode: hard-light;"
+                 onerror="this.style.display='none';"> 
+         </div>
+        
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                    color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.9); font-weight: bold; text-align: center; z-index: 3;">
+            <div style="font-size: 28px; line-height: 1;"><span id="earthLaps">0.00</span><span style="font-size: 14px;">圈</span></div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 15px; font-size: 15px; color: #555; background: #f8f9fa; display: inline-block; padding: 10px 20px; border-radius: 20px; border: 1px solid #ebeef5;">
+        总计前行：<span id="earthDistance" style="color: #E6A23C; font-weight: bold; font-size: 18px;">0</span> 里 <br>
+        地球进度：<span id="earthPercent" style="color: #67C23A; font-weight: bold; font-size: 18px;">0.00%</span>
+    </div>
+</div>
+
 <input id="searchInput" placeholder="输入姓名筛选，如：清一" style="margin-bottom:10px; padding:5px;">
 <h2 align="center">🏮 书山有路 🏮</h2>
 <div id="news-container" class="news-container">
@@ -391,7 +424,7 @@ newsData.forEach((item, index) => {
 const newsContainer = document.getElementById("news-container");
 const searchInput = document.getElementById("searchInput");
 
-// ===== 高度换算 =====
+/* ===== 高度换算 =====
 function formatHeight(heightInMeters) {
     if (heightInMeters < 1) {
         return String((heightInMeters * 100).toFixed(0)).padStart(2, "0") + "</b>厘米";
@@ -400,7 +433,7 @@ function formatHeight(heightInMeters) {
     } else {
         return (heightInMeters / 500).toFixed(2) + "</b>里";
     }
-}
+} */
 
 function formatMoney(moneyInYuan) {
     if (moneyInYuan < 10) {
@@ -416,13 +449,49 @@ function formatMoney(moneyInYuan) {
     }
 }
 
+
 // ===== 排序（只做一次）=====
 newsData.sort((a,b) => new Date(b.date) - new Date(a.date));
 
-// ===== 渲染函数（核心优化点）=====
+// ===== 距离换算 (由原本的 formatHeight 更名) =====
+function formatDistance(distanceInMeters) {
+    if (distanceInMeters < 1) {
+        return String((distanceInMeters * 100).toFixed(0)).padStart(2, "0") + "</b>厘米";
+    } else if (distanceInMeters < 1000) {
+        return distanceInMeters.toFixed(2) + "</b>米";
+    } else {
+        return (distanceInMeters / 500).toFixed(2) + "</b>里";
+    }
+}
+
+// ===== 地球进度计算函数 =====
+function updateEarthProgress(distanceInMeters) {
+    const liPerLap = 80150; // 地球赤道周长约 40075 公里，折合 80150 里 (1里=500米)
+    const totalLi = distanceInMeters / 500; 
+
+    const laps = Math.floor(totalLi / liPerLap).toFixed(4); // 完整圈数
+    const currentLapLi = totalLi % liPerLap;     // 当前这圈走出的里数
+    const percentInCurrentLap = (currentLapLi / liPerLap) * 100; // 圆环视觉进度比例
+    const totalPercent = (totalLi / liPerLap) * 100; // 绝对总进度百分比
+
+    // 更新页面文本
+    document.getElementById("earthDistance").innerText = totalLi.toFixed(2);
+    document.getElementById("earthPercent").innerText = totalPercent.toFixed(4) + "%"; 
+    document.getElementById("earthLaps").innerText = laps;
+
+    // 更新SVG圆环动画
+    const circle = document.getElementById("progressCircle");
+    const circumference = 439.82;
+    const offset = circumference - (percentInCurrentLap / 100) * circumference;
+    circle.style.strokeDashoffset = offset;
+}
+
+// ===== 渲染函数 =====
 function renderNews() {
     const keyword = searchInput.value.trim();
     newsContainer.innerHTML = ""; // 清空
+
+    let isFirstMatched = true; 
 
     newsData.forEach((item, index) => {
         if (keyword && item.name.indexOf(keyword) === -1) return;
@@ -431,7 +500,17 @@ function renderNews() {
         let totalPage = 0;
         for (let i = index; i < newsData.length; i++) {
              totalMoney += Number(newsData[i].money) || 0;
-             totalPage += Number(newsData[i].page) || 0
+             totalPage += Number(newsData[i].page) || 0;
+        }
+
+        const count = newsData.length - index;
+        // 原来的 height 变量更名为 distance (单位: 米)
+        const distance = count * 0.25 * totalPage / 2 ; 
+
+        // 提取第一条（距离最远）的数据更新地球进度
+        if (isFirstMatched) {
+            updateEarthProgress(distance);
+            isFirstMatched = false;
         }
 
         const div = document.createElement("div");
@@ -442,17 +521,12 @@ function renderNews() {
         dateDiv.textContent = item.date;
 
         const contentSpan = document.createElement("span");
-
-        const count = newsData.length - index;
         const formattedCount = String(count).padStart(4, "0");
-        const height = count * 0.25 * totalPage /2 ;
 
         contentSpan.innerHTML =
             "<span class='badge'>" + formattedCount + "本 "
-            /* + "约<b>" + formatHeight(height) + "</b><br>" 🪙*/
             + String(Math.floor(totalPage)).padStart(4, "0") + "页 "
-            + formatHeight(height) + "</span><br>"
-            /* + String(Math.floor(totalMoney)).padStart(4, "0") + "元" */
+            + formatDistance(distance) + "</span><br>"  // 使用新的格式化函数
             + " <span style='color:#d4a017; font-weight:bold;'>【"
             + item.name + "】</span>"+ "阅罢"
             + item.bookname + "<br>" + item.level;
@@ -461,6 +535,11 @@ function renderNews() {
         div.appendChild(contentSpan);
         newsContainer.appendChild(div);
     });
+    
+    // 如果筛选后一条结果都没有，将地球归零
+    if (isFirstMatched) {
+        updateEarthProgress(0);
+    }
 }
 
 // ===== 初始化渲染 =====
