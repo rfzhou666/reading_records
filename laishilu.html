@@ -975,6 +975,13 @@ function updateEarthProgress(distanceInMeters) {
             miniMap.setView(beijingCoords, 2);
         }
     }
+
+    //如果上述微调后手机依然不显示，请在 updateEarthProgress 函数末尾强制重置一次 startOffset，这能触发手机浏览器的重绘：
+    const curvedPath = document.querySelector("#curvedPagesText").parentNode;
+    if (curvedPath) {
+        curvedPath.setAttribute("startOffset", "50.1%"); // 微小变动触发重绘
+}
+    
 }
 
 /* // 3. 气泡与交互 (独立出来)
