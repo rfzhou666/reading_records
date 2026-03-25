@@ -74,7 +74,7 @@
 </style>
 </head>
 <body>
-    <h2 class="header-title">🏆 盈生🐤 的成就馆 (4 分)</h2>
+    <h2 class="header-title">🐤菜鸡进化 (4 分)</h2>
     
     <div class="gallery-container">
         <div class="hero-section">
@@ -86,7 +86,7 @@
                 field-of-view="20deg">
             </model-viewer>
             <div class="hero-info-display">
-                <div class="hero-name" id="hero-name">书本</div>
+                <div class="hero-name" id="hero-name">飞翔书本</div>
                 <div class="hero-date" id="hero-date">解锁时间：2026-03-16</div>
             </div>
         </div>
@@ -114,6 +114,13 @@
         <div class="m-date">2026-03-24</div>
     </div>
     
+    <div class="card" onclick="changeHero('model/chick_baby_chicken_bird.glb', '雏鸡', '0', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/chick_baby_chicken_bird.glb" loading="lazy"></model-viewer>
+        <div class="m-name">雏鸡</div>
+        <div class="m-points">0 分</div>
+        <div class="m-date">2026-03-24</div>
+    </div>
+    
     <div class="card" onclick="changeHero('model/bird_orange.glb', '小菜鸡', '0', '2026-03-24')">
         <model-viewer class="thumb-viewer" src="model/bird_orange.glb" loading="lazy"></model-viewer>
         <div class="m-name">小菜鸡</div>
@@ -121,9 +128,23 @@
         <div class="m-date">2026-03-24</div>
     </div>
     
-    <div class="card" onclick="changeHero('model/lowpoly_bird_robin.glb', '小麻雀', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/lowpoly_bird_robin.glb" loading="lazy"></model-viewer>
-        <div class="m-name">小麻雀</div>
+    <div class="card" onclick="changeHero('model/simple_bird.glb', '飞鸟', '0', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/simple_bird.glb" loading="lazy"></model-viewer>
+        <div class="m-name">飞鸟</div>
+        <div class="m-points">0 分</div>
+        <div class="m-date">2026-03-24</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/animated_bird_pigeon.glb', '海鸥', '0', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/animated_bird_pigeon.glb" loading="lazy"></model-viewer>
+        <div class="m-name">海鸥</div>
+        <div class="m-points">0 分</div>
+        <div class="m-date">2026-03-24</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/bird_flying_animation.glb', '四翼猫头鹰', '0', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/bird_flying_animation.glb" loading="lazy"></model-viewer>
+        <div class="m-name">四翼猫头鹰</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
@@ -135,41 +156,6 @@
         <div class="m-date">2026-03-24</div>
     </div>
     
-    <div class="card" onclick="changeHero('model/chick_baby_chicken_bird.glb', '雏鸡', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/chick_baby_chicken_bird.glb" loading="lazy"></model-viewer>
-        <div class="m-name">雏鸡</div>
-        <div class="m-points">0 分</div>
-        <div class="m-date">2026-03-24</div>
-    </div>
-    
-    <div class="card" onclick="changeHero('model/simple_bird.glb', '简单飞鸟', '1', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/simple_bird.glb" loading="lazy"></model-viewer>
-        <div class="m-name">简单飞鸟</div>
-        <div class="m-points">1 分</div>
-        <div class="m-date">2026-03-16</div>
-    </div>
-    
-    <div class="card" onclick="changeHero('model/quetzal_animation__texture_test.glb', '红鸟', '1', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/quetzal_animation__texture_test.glb" loading="lazy"></model-viewer>
-        <div class="m-name">红鸟</div>
-        <div class="m-points">1 分</div>
-        <div class="m-date">2026-03-16</div>
-    </div>
-    
-    <div class="card" onclick="changeHero('model/animated_bird_pigeon.glb', '海鸥', '1', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/animated_bird_pigeon.glb" loading="lazy"></model-viewer>
-        <div class="m-name">海鸥</div>
-        <div class="m-points">1 分</div>
-        <div class="m-date">2026-03-16</div>
-    </div>
-    
-    <div class="card" onclick="changeHero('model/bird_flying_animation.glb', '猫头鹰', '1', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/bird_flying_animation.glb" loading="lazy"></model-viewer>
-        <div class="m-name">猫头鹰</div>
-        <div class="m-points">1 分</div>
-        <div class="m-date">2026-03-16</div>
-    </div>
-    
     <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '1', '2026-03-16')">
         <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">凤凰</div>
@@ -177,9 +163,9 @@
         <div class="m-date">2026-03-16</div>
     </div>
     
-    <div class="card" onclick="changeHero('model/medieval_fantasy_book.glb', '书本', '1', '2026-03-16')">
+    <div class="card" onclick="changeHero('model/medieval_fantasy_book.glb', '飞翔书本', '1', '2026-03-16')">
         <model-viewer class="thumb-viewer" src="model/medieval_fantasy_book.glb" loading="lazy"></model-viewer>
-        <div class="m-name">书本</div>
+        <div class="m-name">飞翔书本</div>
         <div class="m-points">1 分</div>
         <div class="m-date">2026-03-16</div>
     </div>
