@@ -6,48 +6,48 @@
 <script type="module" src="./model-viewer.min.js"></script>
 <style>
     body { background: #121212; color: white; font-family: 'PingFang SC', sans-serif; margin: 0; padding: 10px; }
-    .gallery-container { max-width: 800px; margin: auto; padding: 5px; }
-    .header-title { text-align: center; color: #ffd700; margin: 15px 0; font-size: 1.2rem; }
+    .gallery-container { max-width: 800px; margin: auto; padding: 10px; }
+    .header-title { text-align: center; color: #ffd700; margin-bottom: 20px; }
     
-    /* 重点展示区：明亮可爱的天蓝色背景 */
+    /* 活泼可爱的亮色背景：明亮的粉蓝紫渐变 */
     .hero-section { 
         width: 100%; height: 380px; 
-        background-color: #e0f7fa; /* 活泼的浅蓝色 */
-        background-image: radial-gradient(circle at center, #ffffff 0%, #b2ebf2 100%);
-        border-radius: 30px; margin-bottom: 20px; 
+        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 30%, #a1c4fd 100%); 
+        border-radius: 25px; margin-bottom: 20px; 
         position: relative; overflow: hidden; 
-        border: 5px solid #fff;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        border: 4px solid #fff;
+        box-shadow: 0 10px 25px rgba(255,154,158,0.4);
     }
     
-    /* 最新解锁标签：红色发光 */
+    /* 发光标签：最新解锁 */
     .hero-label { 
         position: absolute; top: 15px; left: 15px; 
-        background: #ff4757; color: #fff; padding: 6px 14px; border-radius: 20px; 
+        background: #ff4757; color: #fff; padding: 5px 15px; border-radius: 20px; 
         font-weight: bold; font-size: 13px; z-index: 10;
         box-shadow: 0 0 15px rgba(255, 71, 87, 0.8);
-        animation: glow 1.5s infinite;
+        animation: shiny-glow 2s infinite;
+        display: none; /* 由 JS 控制显示 */
     }
-    @keyframes glow { 0% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.8; transform: scale(1); } }
+    @keyframes shiny-glow { 0% { opacity: 0.9; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.9; transform: scale(1); } }
     
     .hero-name-display {
         position: absolute; bottom: 15px; width: 100%; text-align: center;
-        font-weight: bold; font-size: 22px; color: #006064; /* 深青色文字适配浅色背景 */
-        text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+        font-weight: bold; font-size: 20px; color: #333; /* 暗色文字适配亮色背景 */
+        text-shadow: 0 1px 2px rgba(255,255,255,0.8);
         pointer-events: none;
     }
 
     /* 手机端一行两格 */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    @media (min-width: 600px) { .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } }
+    @media (min-width: 600px) { .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } }
 
-    .card { background: #252525; border-radius: 15px; padding: 8px; text-align: center; border: 1px solid #333; }
+    .card { background: #252525; border-radius: 15px; padding: 8px; text-align: center; border: 1px solid #333; cursor: pointer; }
     .thumb-viewer { width: 100%; height: 90px; border-radius: 10px; pointer-events: none; --poster-color: transparent; }
     .locked-box { width: 100%; height: 90px; background-color: #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #555; }
     
     .m-name { font-weight: bold; margin-top: 8px; color: #eee; font-size: 13px; }
-    .m-points { color: #ffd700; font-size: 11px; font-weight: bold; margin-top: 3px; }
-    .p-bar-bg { width: 100%; background: #444; height: 4px; border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .m-points { color: #ffd700; font-size: 12px; font-weight: bold; margin-top: 3px; }
+    .p-bar-bg { width: 100%; background: #444; height: 5px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
     .p-bar-fill { background: #ff7f50; height: 100%; }
 
     model-viewer::part(poster) { display: none; }
@@ -58,7 +58,7 @@
     <h2 class="header-title">🏆 盈生🐤 的成就馆 (4 分)</h2>
     
     <div class="hero-section">
-        <div class="hero-label" id="new-tag" style="display: block;">最新解锁 ✨</div>
+        <div class="hero-label" id="new-tag">最新解锁 ✨</div>
         <model-viewer id="main-viewer" src="model/phoenix_bird.glb" 
             autoplay animation-name="*" auto-rotate camera-controls 
             shadow-intensity="1" environment-image="neutral">
@@ -68,19 +68,19 @@
 
     <div class="grid">
     <div class="card" onclick="changeHero('model/bird_orange.glb', '小鸡', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/bird_orange.glb" loading="lazy"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/bird_orange.glb" loading="lazy" shadow-intensity="0"></model-viewer>
         <div class="m-name">小鸡</div>
         <div class="m-points">1 分</div>
     </div>
     
     <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '2026-03-19')">
-        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
         <div class="m-name">凤凰</div>
         <div class="m-points">2 分</div>
     </div>
     
     <div class="card" onclick="changeHero('model/phoenix_bird.glb', '打凤凰', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
         <div class="m-name">打凤凰</div>
         <div class="m-points">4 分</div>
     </div>
@@ -105,9 +105,17 @@ function changeHero(file, name, date) {
     viewer.setAttribute('src', file);
     nameLabel.innerText = name;
     
-    // 点击缩略图时，如果是最新模型则显示标签，否则隐藏
+    // 如果是最新模型，显示发光标签
     newTag.style.display = (file === LATEST_FILE) ? 'block' : 'none';
 }
+
+// 初始进入页面时，自动判断一次
+document.addEventListener('DOMContentLoaded', () => {
+    const currentSrc = document.getElementById('main-viewer').getAttribute('src');
+    if (currentSrc && currentSrc === LATEST_FILE) {
+        document.getElementById('new-tag').style.display = 'block';
+    }
+});
 </script>
 </body>
 </html>
