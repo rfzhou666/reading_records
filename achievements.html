@@ -5,21 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <script type="module" src="./model-viewer.min.js"></script>
 <style>
-    body { background: #121212; color: white; font-family: 'PingFang SC', sans-serif; margin: 0; padding: 10px; overflow-x: hidden; }
-    .gallery-container { max-width: 800px; margin: auto; padding: 5px; display: flex; flex-direction: column; }
+    body { background: #121212; color: white; font-family: 'PingFang SC', sans-serif; margin: 0; padding: 10px; }
     
-    /* 标题样式：确保始终在最上方 */
+    /* 标题置顶强制显示 */
     .header-title { 
         text-align: center; color: #ffd700; 
-        margin: 10px 0 20px 0; font-size: 1.2rem; font-weight: bold;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        padding: 15px 0; font-size: 1.3rem; font-weight: bold;
+        text-shadow: 0 2px 10px rgba(255,215,0,0.3);
+        width: 100%;
     }
+
+    .gallery-container { max-width: 800px; margin: auto; }
     
+    /* 展示框样式 */
     .hero-section { 
-        width: 100%; height: 380px; 
+        width: 100%; height: 350px; 
         background-color: #e0f7fa; 
         background-image: radial-gradient(circle at center, #ffffff 0%, #b2ebf2 100%);
-        border-radius: 25px; margin-bottom: 25px; 
+        border-radius: 25px; margin-bottom: 20px; 
         position: relative; overflow: hidden; 
         border: 4px solid #fff;
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
@@ -28,7 +31,7 @@
     .hero-label { 
         position: absolute; top: 12px; left: 12px; 
         background: #ff4757; color: #fff; padding: 5px 12px; border-radius: 20px; 
-        font-weight: bold; font-size: 12px; z-index: 10;
+        font-weight: bold; font-size: 11px; z-index: 10;
         box-shadow: 0 0 10px rgba(255, 71, 87, 0.6);
         animation: glow 1.5s infinite;
         display: none; 
@@ -38,166 +41,151 @@
     #main-viewer { width: 100%; height: 100%; outline: none; }
 
     .hero-info-display {
-        position: absolute; bottom: 12px; width: 100%; text-align: center;
-        color: #006064; pointer-events: none;
+        position: absolute; bottom: 10px; width: 100%; text-align: center;
+        color: #006064; pointer-events: none; line-height: 1.2;
     }
-    .hero-name { font-weight: bold; font-size: 18px; margin-bottom: 2px; }
-    .hero-date { font-size: 11px; opacity: 0.8; }
+    .hero-name { font-weight: bold; font-size: 16px; }
+    .hero-date { font-size: 10px; opacity: 0.8; }
 
-    /* 横向滚动布局 */
-    .grid-wrapper {
-        width: 100%;
-        overflow-x: auto;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding-bottom: 10px;
-    }
-    .grid-wrapper::-webkit-scrollbar { display: none; }
-
+    /* 强制三格网格布局 */
     .grid { 
-        display: inline-flex;
-        gap: 12px; 
+        display: grid; 
+        grid-template-columns: repeat(3, 1fr); /* 强制三格 */
+        gap: 8px; 
         padding: 5px;
     }
 
     .card { 
-        flex: 0 0 calc(50vw - 25px); /* 强制每屏只展示两个 */
-        max-width: 200px;
-        background: #252525; border-radius: 15px; padding: 12px 10px; 
+        background: #252525; border-radius: 12px; padding: 8px 5px; 
         text-align: center; border: 1px solid #333;
-        white-space: normal;
     }
     
-    .thumb-viewer { width: 100%; height: 85px; border-radius: 10px; pointer-events: none; --poster-color: transparent; }
-    .locked-box { width: 100%; height: 85px; background-color: #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #555; }
+    .thumb-viewer { width: 100%; height: 70px; border-radius: 8px; pointer-events: none; --poster-color: transparent; }
+    .locked-box { width: 100%; height: 70px; background-color: #333; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #555; }
     
-    .m-name { font-weight: bold; margin-top: 8px; color: #eee; font-size: 12px; }
-    .m-points { color: #ffd700; font-size: 11px; font-weight: bold; margin-top: 2px; }
-    .m-date { color: #777; font-size: 10px; margin-top: 2px; }
+    .m-name { font-weight: bold; margin-top: 5px; color: #eee; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .m-points { color: #ffd700; font-size: 10px; font-weight: bold; }
+    .m-date { color: #666; font-size: 9px; margin-top: 2px; }
     
-    .p-bar-bg { width: 100%; background: #444; height: 4px; border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .p-bar-bg { width: 100%; background: #444; height: 3px; border-radius: 2px; margin-top: 5px; overflow: hidden; }
     .p-bar-fill { background: #ff7f50; height: 100%; }
 
     model-viewer::part(poster) { display: none; }
 </style>
 </head>
 <body>
-<div class="gallery-container">
     <h2 class="header-title">🏆 盈生🐤 的成就馆 (4 分)</h2>
     
-    <div class="hero-section">
-        <div class="hero-label" id="new-tag">最新解锁 ✨</div>
-        <model-viewer id="main-viewer" src="model/hand-drawing_birds.glb" 
-            autoplay animation-name="*" auto-rotate camera-controls 
-            shadow-intensity="1" shadow-softness="1" environment-image="neutral"
-            camera-orbit="auto auto auto"
-            camera-target="0m 0.5m 0m"
-            min-camera-orbit="auto auto 5%"
-            interpolation-decay="200">
-        </model-viewer>
-        <div class="hero-info-display">
-            <div class="hero-name" id="hero-name">77</div>
-            <div class="hero-date" id="hero-date">解锁时间：2026-03-16</div>
+    <div class="gallery-container">
+        <div class="hero-section">
+            <div class="hero-label" id="new-tag">最新解锁 ✨</div>
+            <model-viewer id="main-viewer" src="model/hand-drawing_birds.glb" 
+                autoplay animation-name="*" auto-rotate camera-controls 
+                shadow-intensity="1" shadow-softness="1" environment-image="neutral"
+                camera-target="0m 0.5m 0m"
+                field-of-view="20deg">
+            </model-viewer>
+            <div class="hero-info-display">
+                <div class="hero-name" id="hero-name">77</div>
+                <div class="hero-date" id="hero-date">解锁时间：2026-03-16</div>
+            </div>
         </div>
-    </div>
 
-    <div class="grid-wrapper">
         <div class="grid">
             
     <div class="card" onclick="changeHero('model/minecraft_bird.glb', '像素菜鸡', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/minecraft_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/minecraft_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">像素菜鸡</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/mango_bird.glb', '芒果菜鸡', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/mango_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/mango_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">芒果菜鸡</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/bird_orange.glb', '小菜鸡', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/bird_orange.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/bird_orange.glb" loading="lazy"></model-viewer>
         <div class="m-name">小菜鸡</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/watercolor_bird.glb', '水彩鸡', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/watercolor_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/watercolor_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">水彩鸡</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">凤凰</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/phoenix_bird.glb', '大凤凰', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">大凤凰</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/phoenix_bird.glb', '大大凤凰', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">大大凤凰</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/bobbing_bird.glb', '蛋蛋鸡', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/bobbing_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/bobbing_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">蛋蛋鸡</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/bird_fly.glb', '22', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/bird_fly.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/bird_fly.glb" loading="lazy"></model-viewer>
         <div class="m-name">22</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/peony_bird.glb', '33', '0', '2026-03-24')">
-        <model-viewer class="thumb-viewer" src="model/peony_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/peony_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">33</div>
         <div class="m-points">0 分</div>
         <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" onclick="changeHero('model/dove_bird_rigged.glb', '44', '1', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/dove_bird_rigged.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/dove_bird_rigged.glb" loading="lazy"></model-viewer>
         <div class="m-name">44</div>
         <div class="m-points">1 分</div>
         <div class="m-date">2026-03-16</div>
     </div>
     
     <div class="card" onclick="changeHero('model/cob.glb', '55', '1', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/cob.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/cob.glb" loading="lazy"></model-viewer>
         <div class="m-name">55</div>
         <div class="m-points">1 分</div>
         <div class="m-date">2026-03-16</div>
     </div>
     
     <div class="card" onclick="changeHero('model/chick_baby_chicken_bird.glb', '66', '1', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/chick_baby_chicken_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/chick_baby_chicken_bird.glb" loading="lazy"></model-viewer>
         <div class="m-name">66</div>
         <div class="m-points">1 分</div>
         <div class="m-date">2026-03-16</div>
     </div>
     
     <div class="card" onclick="changeHero('model/hand-drawing_birds.glb', '77', '1', '2026-03-16')">
-        <model-viewer class="thumb-viewer" src="model/hand-drawing_birds.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <model-viewer class="thumb-viewer" src="model/hand-drawing_birds.glb" loading="lazy"></model-viewer>
         <div class="m-name">77</div>
         <div class="m-points">1 分</div>
         <div class="m-date">2026-03-16</div>
@@ -205,8 +193,6 @@
     
         </div>
     </div>
-    <div style="text-align: center; color: #888; font-size: 11px; margin-top: 10px;">👈 左右滑动发现更多成就 👉</div>
-</div>
 
 <script>
 const LATEST_POINTS = 1;
@@ -224,9 +210,8 @@ function changeHero(file, name, points, date) {
     // 逻辑：判断是否是最新解锁
     newTag.style.display = (parseInt(points) === LATEST_POINTS) ? 'block' : 'none';
     
-    // 自动重置视角以适应新模型的大小
-    viewer.cameraOrbit = "auto auto auto";
-    viewer.jumpCameraToGoal();
+    // 强制重置视角以防穿模或距离错误
+    viewer.fieldOfView = "20deg";
 }
 
 window.onload = () => {
