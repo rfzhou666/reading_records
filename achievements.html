@@ -6,51 +6,54 @@
 <script type="module" src="./model-viewer.min.js"></script>
 <style>
     body { background: #121212; color: white; font-family: 'PingFang SC', sans-serif; margin: 0; padding: 10px; }
-    .gallery-container { max-width: 800px; margin: auto; padding: 10px; }
-    .header-title { text-align: center; color: #ffd700; margin-bottom: 20px; }
+    .gallery-container { max-width: 800px; margin: auto; padding: 5px; }
+    .header-title { text-align: center; color: #ffd700; margin: 15px 0; font-size: 1.2rem; }
     
-    /* 活泼可爱的亮色背景：明亮的粉蓝紫渐变 */
+    /* 重点展示区：修复手机端对齐 */
     .hero-section { 
-        width: 100%; height: 380px; 
-        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 30%, #a1c4fd 100%); 
-        border-radius: 25px; margin-bottom: 20px; 
+        width: 100%; height: 350px; 
+        background-color: #e0f7fa; 
+        background-image: radial-gradient(circle at center, #ffffff 0%, #b2ebf2 100%);
+        border-radius: 30px; margin-bottom: 20px; 
         position: relative; overflow: hidden; 
         border: 4px solid #fff;
-        box-shadow: 0 10px 25px rgba(255,154,158,0.4);
+        display: flex; align-items: center; justify-content: center; /* 居中容器 */
     }
     
-    /* 发光标签：最新解锁 */
     .hero-label { 
         position: absolute; top: 15px; left: 15px; 
-        background: #ff4757; color: #fff; padding: 5px 15px; border-radius: 20px; 
+        background: #ff4757; color: #fff; padding: 6px 14px; border-radius: 20px; 
         font-weight: bold; font-size: 13px; z-index: 10;
         box-shadow: 0 0 15px rgba(255, 71, 87, 0.8);
-        animation: shiny-glow 2s infinite;
-        display: none; /* 由 JS 控制显示 */
+        animation: glow 1.5s infinite;
+        display: none; 
     }
-    @keyframes shiny-glow { 0% { opacity: 0.9; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.9; transform: scale(1); } }
+    @keyframes glow { 0% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.8; transform: scale(1); } }
     
+    /* 调整模型组件，强制居中 */
+    #main-viewer { 
+        width: 100%; height: 100%; 
+        outline: none;
+    }
+
     .hero-name-display {
         position: absolute; bottom: 15px; width: 100%; text-align: center;
-        font-weight: bold; font-size: 20px; color: #333; /* 暗色文字适配亮色背景 */
-        text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        font-weight: bold; font-size: 20px; color: #006064;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.5);
         pointer-events: none;
     }
 
-    /* 手机端一行两格 */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     @media (min-width: 600px) { .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } }
 
-    .card { background: #252525; border-radius: 15px; padding: 8px; text-align: center; border: 1px solid #333; cursor: pointer; }
+    .card { background: #252525; border-radius: 15px; padding: 8px; text-align: center; border: 1px solid #333; }
     .thumb-viewer { width: 100%; height: 90px; border-radius: 10px; pointer-events: none; --poster-color: transparent; }
-    .locked-box { width: 100%; height: 90px; background-color: #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #555; }
+    .locked-box { width: 100%; height: 90px; background-color: #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #444; }
     
     .m-name { font-weight: bold; margin-top: 8px; color: #eee; font-size: 13px; }
-    .m-points { color: #ffd700; font-size: 12px; font-weight: bold; margin-top: 3px; }
-    .p-bar-bg { width: 100%; background: #444; height: 5px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+    .m-points { color: #ffd700; font-size: 11px; font-weight: bold; margin-top: 3px; }
+    .p-bar-bg { width: 100%; background: #444; height: 4px; border-radius: 2px; margin-top: 8px; overflow: hidden; }
     .p-bar-fill { background: #ff7f50; height: 100%; }
-
-    model-viewer::part(poster) { display: none; }
 </style>
 </head>
 <body>
@@ -61,25 +64,26 @@
         <div class="hero-label" id="new-tag">最新解锁 ✨</div>
         <model-viewer id="main-viewer" src="model/phoenix_bird.glb" 
             autoplay animation-name="*" auto-rotate camera-controls 
-            shadow-intensity="1" environment-image="neutral">
+            shadow-intensity="1" environment-image="neutral"
+            bounds="tight" camera-target="0m 0m 0m">
         </model-viewer>
         <div class="hero-name-display" id="hero-name">打凤凰</div>
     </div>
 
     <div class="grid">
-    <div class="card" onclick="changeHero('model/bird_orange.glb', '小鸡', '2026-03-16')">
+    <div class="card" onclick="changeHero('model/bird_orange.glb', '小鸡', '1')">
         <model-viewer class="thumb-viewer" src="model/bird_orange.glb" loading="lazy" shadow-intensity="0"></model-viewer>
         <div class="m-name">小鸡</div>
         <div class="m-points">1 分</div>
     </div>
     
-    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '2026-03-19')">
+    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '2')">
         <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
         <div class="m-name">凤凰</div>
         <div class="m-points">2 分</div>
     </div>
     
-    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '打凤凰', '2026-03-24')">
+    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '打凤凰', '4')">
         <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
         <div class="m-name">打凤凰</div>
         <div class="m-points">4 分</div>
@@ -95,9 +99,10 @@
 </div>
 
 <script>
-const LATEST_FILE = "model/phoenix_bird.glb";
+// 唯一的最新解锁积分 ID
+const LATEST_POINTS = 4;
 
-function changeHero(file, name, date) {
+function changeHero(file, name, points) {
     const viewer = document.getElementById('main-viewer');
     const nameLabel = document.getElementById('hero-name');
     const newTag = document.getElementById('new-tag');
@@ -105,17 +110,21 @@ function changeHero(file, name, date) {
     viewer.setAttribute('src', file);
     nameLabel.innerText = name;
     
-    // 如果是最新模型，显示发光标签
-    newTag.style.display = (file === LATEST_FILE) ? 'block' : 'none';
+    // 逻辑修复：判断积分 ID 是否匹配最新积分
+    if (parseInt(points) === LATEST_POINTS) {
+        newTag.style.display = 'block';
+    } else {
+        newTag.style.display = 'none';
+    }
 }
 
-// 初始进入页面时，自动判断一次
-document.addEventListener('DOMContentLoaded', () => {
-    const currentSrc = document.getElementById('main-viewer').getAttribute('src');
-    if (currentSrc && currentSrc === LATEST_FILE) {
+// 初始状态设置
+window.onload = () => {
+    const initialPoints = 4;
+    if (initialPoints === LATEST_POINTS && initialPoints !== -1) {
         document.getElementById('new-tag').style.display = 'block';
     }
-});
+};
 </script>
 </body>
 </html>
