@@ -17,7 +17,7 @@
         border-radius: 30px; margin-bottom: 20px; 
         position: relative; overflow: hidden; 
         border: 4px solid #fff;
-        display: flex; align-items: center; justify-content: center; /* 居中容器 */
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
     
     .hero-label { 
@@ -30,7 +30,7 @@
     }
     @keyframes glow { 0% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.8; transform: scale(1); } }
     
-    /* 调整模型组件，强制居中 */
+    /* 核心修复：相机对齐 */
     #main-viewer { 
         width: 100%; height: 100%; 
         outline: none;
@@ -43,17 +43,20 @@
         pointer-events: none;
     }
 
+    /* 手机端一行两格关键 CSS */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     @media (min-width: 600px) { .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } }
 
-    .card { background: #252525; border-radius: 15px; padding: 8px; text-align: center; border: 1px solid #333; }
+    .card { background: #252525; border-radius: 15px; padding: 8px; text-align: center; border: 1px solid #333; transition: 0.3s; }
     .thumb-viewer { width: 100%; height: 90px; border-radius: 10px; pointer-events: none; --poster-color: transparent; }
-    .locked-box { width: 100%; height: 90px; background-color: #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #444; }
+    .locked-box { width: 100%; height: 90px; background-color: #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #555; }
     
     .m-name { font-weight: bold; margin-top: 8px; color: #eee; font-size: 13px; }
     .m-points { color: #ffd700; font-size: 11px; font-weight: bold; margin-top: 3px; }
     .p-bar-bg { width: 100%; background: #444; height: 4px; border-radius: 2px; margin-top: 8px; overflow: hidden; }
     .p-bar-fill { background: #ff7f50; height: 100%; }
+
+    model-viewer::part(poster) { display: none; }
 </style>
 </head>
 <body>
@@ -64,42 +67,50 @@
         <div class="hero-label" id="new-tag">最新解锁 ✨</div>
         <model-viewer id="main-viewer" src="model/phoenix_bird.glb" 
             autoplay animation-name="*" auto-rotate camera-controls 
-            shadow-intensity="1" environment-image="neutral"
-            bounds="tight" camera-target="0m 0m 0m">
+            shadow-intensity="1" shadow-softness="1"
+            environment-image="neutral"
+            camera-target="0m 0.6m 0m"
+            min-camera-orbit="auto 45deg auto"
+            max-camera-orbit="auto 135deg auto">
         </model-viewer>
-        <div class="hero-name-display" id="hero-name">打凤凰</div>
+        <div class="hero-name-display" id="hero-name">大凤凰</div>
     </div>
 
     <div class="grid">
-    <div class="card" onclick="changeHero('model/bird_orange.glb', '小鸡', '1')">
+    <div class="card" onclick="changeHero('model/bird_orange.glb', '小菜鸡', '1')">
         <model-viewer class="thumb-viewer" src="model/bird_orange.glb" loading="lazy" shadow-intensity="0"></model-viewer>
-        <div class="m-name">小鸡</div>
+        <div class="m-name">小菜鸡</div>
         <div class="m-points">1 分</div>
     </div>
     
-    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '2')">
-        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
-        <div class="m-name">凤凰</div>
+    <div class="card" onclick="changeHero('model/watercolor_bird.glb', '水彩鸡', '2')">
+        <model-viewer class="thumb-viewer" src="model/watercolor_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <div class="m-name">水彩鸡</div>
         <div class="m-points">2 分</div>
     </div>
     
-    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '打凤凰', '4')">
+    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '3')">
         <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
-        <div class="m-name">打凤凰</div>
+        <div class="m-name">凤凰</div>
+        <div class="m-points">3 分</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '大凤凰', '4')">
+        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy" shadow-intensity="0"></model-viewer>
+        <div class="m-name">大凤凰</div>
         <div class="m-points">4 分</div>
     </div>
     
     <div class="card" style="opacity: 0.6; cursor: default;">
         <div class="locked-box">?</div>
         <div class="m-name">???</div>
-        <div class="m-points">8 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 50.0%"></div></div>
+        <div class="m-points">6 分</div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 66.66666666666666%"></div></div>
     </div>
     </div>
 </div>
 
 <script>
-// 唯一的最新解锁积分 ID
 const LATEST_POINTS = 4;
 
 function changeHero(file, name, points) {
