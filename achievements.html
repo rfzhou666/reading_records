@@ -1,74 +1,91 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>盈生🐤的成就馆</title>
-    <script type="module" src="model-viewer.min.js"></script>
-    <style>
-        body { background: #121212; color: white; font-family: sans-serif; padding: 20px; }
-        .container { max-width: 1000px; margin: auto; }
-        .hero { 
-            width: 100%; height: 420px; background: #1e1e1e; border-radius: 20px; 
-            margin-bottom: 25px; position: relative; border: 2px solid #444; 
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
-        }
-        .hero-tag { position: absolute; top: 15px; left: 15px; background: gold; color: black; padding: 5px 15px; border-radius: 20px; font-weight: bold; z-index: 5; }
-        #main-viewer { width: 100%; height: 100%; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
-        .card { background: #252525; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; border: 1px solid #333; transition: 0.3s; }
-        .card:hover { border-color: gold; transform: translateY(-3px); }
-        .thumb { width: 100%; height: 120px; pointer-events: none; }
-        .m-name { font-weight: bold; margin-top: 10px; font-size: 14px; }
-        .m-points { color: gold; font-size: 12px; margin-top: 5px; }
-        .locked { opacity: 0.5; cursor: default; }
-    </style>
+    
+<script type="module" src="model-viewer.min.js"></script>
+<style>
+    .gallery-container { font-family: 'PingFang SC', sans-serif; max-width: 1000px; margin: auto; padding: 20px; background: #121212; border-radius: 20px; color: #fff; }
+    .header-title { text-align: center; color: #ffd700; margin-bottom: 25px; }
+    
+    .hero-section { 
+        width: 100%; height: 400px; background: #1e1e1e; border-radius: 15px; margin-bottom: 30px; 
+        position: relative; overflow: hidden; border: 2px solid #444;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    }
+    .hero-label { position: absolute; top: 15px; left: 15px; background: rgba(255, 215, 0, 0.9); color: #000; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 10; }
+    #main-viewer { width: 100%; height: 100%; --poster-color: transparent; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+    .card { background: #252525; border-radius: 12px; padding: 12px; text-align: center; border: 1px solid #333; cursor: pointer; transition: 0.3s; }
+    .card:hover { border-color: #ffd700; transform: translateY(-3px); }
+    
+    .thumb-viewer { width: 100%; height: 120px; background-color: #1a1a1a; border-radius: 8px; pointer-events: none; }
+    .locked-box { width: 100%; height: 120px; background-color: #333; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #555; }
+    
+    .m-name { font-weight: bold; margin-top: 10px; color: #eee; font-size: 14px; }
+    .m-points { color: #ffd700; font-size: 13px; font-weight: bold; margin-top: 4px; }
+    .m-date { font-size: 10px; color: #666; margin-top: 4px; }
+    
+    .p-bar-bg { width: 100%; background: #333; height: 5px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+    .p-bar-fill { background: #4CAF50; height: 100%; }
+</style>
+
 </head>
 <body>
-    <div class="container">
-        <h2 style="text-align:center; color:gold;">🏆 盈生🐤 的成就馆 (4 分)</h2>
-        <div class="hero">
-            <div id="hero-tag" class="hero-tag">当前展示: 打凤凰</div>
-            <model-viewer id="main-viewer" src="model/phoenix_bird.glb" autoplay animation-name="*" auto-rotate camera-controls shadow-intensity="2" environment-image="neutral"></model-viewer>
-        </div>
-        <div class="grid">
-
-            <div class="card" onclick="changeHero('model/bird_orange.glb', '小鸡', '2026-03-16')">
-                <model-viewer class="thumb" src="model/bird_orange.glb" loading="lazy"></model-viewer>
-                <div class="m-name">小鸡</div>
-                <div class="m-points">1 分</div>
-                <div style="font-size:10px; color:#666;">2026-03-16</div>
-            </div>
+<div class="gallery-container">
+    <h2 class="header-title">🏆 盈生🐤 的成就馆 (4 分)</h2>
     
-            <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '2026-03-19')">
-                <model-viewer class="thumb" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
-                <div class="m-name">凤凰</div>
-                <div class="m-points">2 分</div>
-                <div style="font-size:10px; color:#666;">2026-03-19</div>
-            </div>
-    
-            <div class="card" onclick="changeHero('model/phoenix_bird.glb', '打凤凰', '2026-03-24')">
-                <model-viewer class="thumb" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
-                <div class="m-name">打凤凰</div>
-                <div class="m-points">4 分</div>
-                <div style="font-size:10px; color:#666;">2026-03-24</div>
-            </div>
-    
-            <div class="card locked">
-                <div style="height:120px; display:flex; align-items:center; justify-content:center; font-size:30px; color:#555;">?</div>
-                <div class="m-name">dasa</div>
-                <div class="m-points">8 分</div>
-            </div>
-    
-        </div>
+    <div class="hero-section">
+        <div class="hero-label" id="hero-tag">当前展示: 打凤凰</div>
+        <model-viewer id="main-viewer" src="model/phoenix_bird.glb" 
+            autoplay animation-name="*" auto-rotate camera-controls 
+            shadow-intensity="2" environment-image="neutral">
+        </model-viewer>
     </div>
-    <script>
-        function changeHero(file, name, date) {
-            const v = document.getElementById('main-viewer');
-            const t = document.getElementById('hero-tag');
-            v.setAttribute('src', file); 
-            t.innerText = "展示中: " + name + " (" + date + ")";
-        }
-    </script>
+
+    <div class="grid">
+        
+    <div class="card" onclick="changeHero('model/bird_orange.glb', '小鸡', '2026-03-16')">
+        <model-viewer class="thumb-viewer" src="model/bird_orange.glb" loading="lazy"></model-viewer>
+        <div class="m-name">小鸡</div>
+        <div class="m-points">1 分</div>
+        <div class="m-date">2026-03-16</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '凤凰', '2026-03-19')">
+        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
+        <div class="m-name">凤凰</div>
+        <div class="m-points">2 分</div>
+        <div class="m-date">2026-03-19</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/phoenix_bird.glb', '打凤凰', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/phoenix_bird.glb" loading="lazy"></model-viewer>
+        <div class="m-name">打凤凰</div>
+        <div class="m-points">4 分</div>
+        <div class="m-date">2026-03-24</div>
+    </div>
+    
+    <div class="card" style="opacity: 0.5; cursor: default;">
+        <div class="locked-box">?</div>
+        <div class="m-name">dasa</div>
+        <div class="m-points">8 分</div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 50.0%"></div></div>
+    </div>
+    
+    </div>
+</div>
+
+<script>
+function changeHero(file, name, date) {
+    const viewer = document.getElementById('main-viewer');
+    const tag = document.getElementById('hero-tag');
+    // 强制更新属性以触发重新渲染
+    viewer.setAttribute('src', file);
+    tag.innerText = "展示中: " + name + " (" + date + ")";
+}
+</script>
 </body>
 </html>
