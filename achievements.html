@@ -152,21 +152,27 @@
     </div>
 
 <script>
-const LATEST_POINTS = 2;
+const LATEST_NAME = "雏鸡";
+// 修改后的 JS 函数
 function changeHero(file, name, points, date) {
     const viewer = document.getElementById('main-viewer');
     const nameLabel = document.getElementById('hero-name');
     const dateLabel = document.getElementById('hero-date');
     const newTag = document.getElementById('new-tag');
+    
     viewer.setAttribute('src', file);
     nameLabel.innerText = name;
     dateLabel.innerText = "解锁时间：" + date;
-    newTag.style.display = (parseInt(points) === LATEST_POINTS) ? 'block' : 'none';
+    
+    // 2. 只有名字完全匹配时，才显示“最新解锁”
+    newTag.style.display = (name === LATEST_NAME) ? 'block' : 'none';
+    
     viewer.fieldOfView = "20deg";
 }
+
 window.onload = () => {
-    const initialPoints = 2;
-    if (initialPoints === LATEST_POINTS && initialPoints !== -1) {
+    const initialName = "雏鸡";
+    if (initialName === LATEST_NAME && initialName !== "暂无") {
         document.getElementById('new-tag').style.display = 'block';
     }
 };
