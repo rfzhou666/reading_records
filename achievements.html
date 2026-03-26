@@ -47,21 +47,21 @@
 <body>
     <h2 class="header-title">盈生<a href="index.html" style="text-decoration: none;">🐤</a> 的菜鸡进化路</h2>
     <div class="balance-tag">
-        <span style="color: #ffd700; margin-right: 15px;">🪙总获得积分：4 分 🦤</span>
-        <span style="color: #00ff88;">💎 当前可用余额：1 分 🦜</span>
+        <span style="color: #ffd700; margin-right: 15px;">🪙总获得积分：5 分 🦤</span>
+        <span style="color: #00ff88;">💎 当前可用余额：0 分 🦜</span>
     </div>
     
     <div class="gallery-container">
         <div class="hero-section">
             <div class="hero-label" id="new-tag">最新解锁 ✨</div>
-            <model-viewer id="main-viewer" src="model/minecraft_bird.glb" 
+            <model-viewer id="main-viewer" src="model/chick_baby_chicken_bird.glb" 
                 autoplay animation-name="*" auto-rotate camera-controls 
                 shadow-intensity="1" shadow-softness="1" environment-image="neutral"
                 camera-target="0m 0.5m 0m" field-of-view="20deg">
             </model-viewer>
             <div class="hero-info-display">
-                <div class="hero-name" id="hero-name">像素菜鸡</div>
-                <div class="hero-date" id="hero-date">解锁时间：2026-03-23</div>
+                <div class="hero-name" id="hero-name">雏鸡</div>
+                <div class="hero-date" id="hero-date">解锁时间：2026-03-24</div>
             </div>
         </div>
         <div class="grid">
@@ -79,74 +79,74 @@
         <div class="m-date">2026-03-23</div>
     </div>
     
-    <div class="card" style="opacity: 0.7;">
-        <div class="locked-box">🔒</div>
-        <div class="m-name">未解锁</div>
-        <div class="m-points">还需 2 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 50.0%"></div></div>
+    <div class="card" onclick="changeHero('model/chick_baby_chicken_bird.glb', '雏鸡', '2', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/chick_baby_chicken_bird.glb" loading="lazy"></model-viewer>
+        <div class="m-name">雏鸡</div>
+        <div class="m-points">已消耗 2 分</div>
+        <div class="m-date">2026-03-24</div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 2 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 50.0%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 3 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 33.33333333333333%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 3 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 33.33333333333333%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 3 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 33.33333333333333%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 4 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 25.0%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 4 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 25.0%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 4 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 25.0%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 4 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 25.0%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     
     <div class="card" style="opacity: 0.7;">
         <div class="locked-box">🔒</div>
         <div class="m-name">未解锁</div>
         <div class="m-points">还需 5 分</div>
-        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 20.0%"></div></div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
     </div>
     </div>
     </div>
