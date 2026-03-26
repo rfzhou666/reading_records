@@ -98,6 +98,38 @@ h1, h2, h3, .section-title {
 .todo-icon { margin-right: 12px !important; font-size: 0.8em !important; }
 
 @media (max-width: 600px) { .timeline-left { width: 40px !important; } #todo-list { grid-template-columns: 1fr !important; } }
+
+.reading-section {
+    max-width: 600px;
+    margin: 40px auto;
+    font-family: "STKaiti", "KaiTi", "Microsoft YaHei", serif;
+  }
+  .link-card {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid transparent;
+  }
+  /* 第一行：沉稳水系 */
+  .card-1 { color: #2c3e50; background: linear-gradient(to right, #fdfbfb 0%, #ebedee 100%); }
+  .card-1:hover { transform: scale(1.02); border-color: #95a5a6; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+  
+  /* 第二行：涅槃火系 */
+  .card-2 { color: #d35400; background: linear-gradient(120deg, #fff5e6 0%, #ffecb3 100%); }
+  .card-2:hover { transform: scale(1.02); border-color: #f39c12; box-shadow: 0 10px 20px rgba(243, 156, 18, 0.1); }
+  
+  /* 第三行：清新书香 */
+  .card-3 { color: #27ae60; background: linear-gradient(to right, #f0f9f4 0%, #e8f5e9 100%); }
+  .card-3:hover { transform: scale(1.02); border-color: #2ecc71; box-shadow: 0 10px 20px rgba(46, 204, 113, 0.1); }
+
+  .emoji-span { margin: 0 5px; transition: 0.3s; }
+  .link-card:hover .emoji-span { filter: drop-shadow(0 0 5px rgba(0,0,0,0.2)); }
+</style>
+
 </style>
 </head>
 <body>
@@ -105,25 +137,48 @@ h1, h2, h3, .section-title {
 <h1 align="center" style="font-family: 'YanTi'"><a href="https://wj.qq.com/s2/26058833/8s0i/" style="text-decoration: none;">记录·时光·生活</a></h1>
 
 
-<h2 align="center">❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁<br>❁涓滴<a href="laishilu.html"    //https://www.wjx.top/vm/OMT25NM.aspx#
+<!-- <h3 align="center">❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁<br>❁涓滴<a href="laishilu.html"    //https://www.wjx.top/vm/OMT25NM.aspx#
 class="reading-link" style="text-decoration: none;">💧</a>✧流衍<a href="reading_board.html" 
 class="reading-link" style="text-decoration: none;">🌊</a>✧涵泳<a href="bookshelf.html" class="reading-link" // 🚣🏞️
 style="text-decoration: none;">🐳</a>✧浩瀚<a href="world_reading_map.html" class="reading-link" style="text-decoration: none;">🌏</a>❁
-<br>❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁</h2>
+<br>❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁</h3> -->
+
+<div style="text-align: center; background: #f9fbfd; padding: 20px; border-radius: 8px;">
+  <div style="color: #88abda; letter-spacing: 2px; margin-bottom: 8px; overflow: hidden; white-space: nowrap;">
+    ❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁
+  </div>
+  
+  <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">
+    <span style="color: #88abda;">❁</span>
+    <a href="aaa.html" style="text-decoration: none; color: #444;">涓滴 💧</a>
+    <span style="color: #ccc;">✧</span>
+    <a href="bbb.html" style="text-decoration: none; color: #444;">流衍 🌊</a>
+    <span style="color: #ccc;">✧</span>
+    <a href="ccc.html" style="text-decoration: none; color: #444;">涵泳 🐳</a>
+    <span style="color: #ccc;">✧</span>
+    <a href="ddd.html" style="text-decoration: none; color: #444;">浩瀚 🌏</a>
+    <span style="color: #88abda;">❁</span>
+  </div>
+
+  <div style="color: #88abda; letter-spacing: 2px; margin-top: 8px; overflow: hidden; white-space: nowrap;">
+    ❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁❁
+  </div>
+</div>
 
 
+<div class="reading-section">
+  <a href="reading_report.html" class="link-card card-1">
+    <h2 style="margin:0; font-size: 1.4em;">不积小流，无以成江海 <span class="emoji-span">👣</span></h2>
+  </a>
 
-<h2 align="center"><a href="reading_report.html" 
-class="reading-link" style="text-decoration: none;">不积小流，无以成江海 👣 👣 👣</a></h2>
+  <a href="achievements.html" class="link-card card-2">
+    <h2 style="margin:0; font-size: 1.4em;">🐤 菜鸡涅槃记 <span class="emoji-span">🐦‍🔥</span></h2>
+  </a>
 
-
-<h2 align="center"><a href="achievements.html" 
-class="reading-link" style="text-decoration: none;">🐤 🐤 🐤 菜鸡涅槃记 🐦‍🔥 🐦‍🔥 🐦‍🔥</a></h2>
-
-<h2 align="center"><a href="geo_heat_map.html" 
-class="reading-link" style="text-decoration: none;">大家都在哪儿读书</a></h2>
-
-<!-- <h2 align="center">🪷🪷🪷🪷🪷🪷🪷🪷🪷</h2> -->
+  <a href="geo_heat_map.html" class="link-card card-3">
+    <h2 style="margin:0; font-size: 1.4em;">📖 大家都在哪儿读书 📍</h2>
+  </a>
+</div>
 
 
 <div class="log-body">
@@ -187,6 +242,8 @@ class="reading-link" style="text-decoration: none;">大家都在哪儿读书</a>
             
 <li><span class="list-icon">✓</span> v3.4.2 【读万卷书】删除打卡地址在图上增加图标，仅计算书中地址；打卡热力图在额外页面展示</li>
 <li><span class="list-icon">✓</span> v3.4.3 【菜鸡进化路】最新解锁图标 修复</li>
+<li><span class="list-icon">✓</span> v3.5.0 【大家在哪儿看书】打卡地图</li>
+<li><span class="list-icon">✓</span> v3.5.1 主页UI更新</li>
 
                         </ul>
                     </div>
