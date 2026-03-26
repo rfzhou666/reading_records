@@ -99,6 +99,117 @@ h1, h2, h3, .section-title {
 
 @media (max-width: 600px) { .timeline-left { width: 40px !important; } #todo-list { grid-template-columns: 1fr !important; } }
 
+
+
+这是一个非常精彩的创意！将这四个词从“并列关系”升华为“河流的生命周期”，不仅视觉上更连贯，意境上也更有深度：从高山起源，汇聚成川，最后归于浩瀚。
+
+为了实现这种“河流感”，我们可以利用 SVG 背景线或者 Flex 布局的连接点，配合渐变色来模拟水流的流动。
+
+方案：流线型“生命之河”导航
+这个设计将四个点串联在一条隐形的直线上，并用渐变背景色暗示从浅（涓滴）到深（浩瀚）的过程。
+
+HTML
+<style>
+  .river-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 30px 20px;
+    background: #fdfeff;
+    border-radius: 20px;
+    box-shadow: inset 0 0 20px rgba(136, 171, 218, 0.05);
+    position: relative;
+    font-family: "STKaiti", "KaiTi", serif;
+  }
+
+  /* 模拟河流背景线 */
+  .river-line {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 4px;
+    background: linear-gradient(to right, #e0f2fe, #7dd3fc, #38bdf8, #0369a1);
+    border-radius: 2px;
+    z-index: 1;
+    transform: translateY(-50%);
+    opacity: 0.6;
+  }
+
+  .river-flow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .river-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    width: 80px;
+  }
+
+  /* 节点圆圈 */
+  .node-circle {
+    width: 45px;
+    height: 45px;
+    background: white;
+    border: 2px solid #88abda;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+
+  .node-text {
+    color: #555;
+    font-size: 1.1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: 0.3s;
+  }
+
+  /* 悬停动效：模拟波浪起伏 */
+  .river-node:hover {
+    transform: translateY(-8px);
+  }
+
+  .river-node:hover .node-circle {
+    border-color: #0369a1;
+    box-shadow: 0 0 15px rgba(3, 105, 161, 0.3);
+    background: #f0f9ff;
+    transform: scale(1.1);
+  }
+
+  .river-node:hover .node-text {
+    color: #0369a1;
+  }
+
+  /* 响应式：手机端自动变成竖向河流 */
+  @media (max-width: 480px) {
+    .river-line {
+      left: 50%;
+      top: 10%;
+      bottom: 10%;
+      width: 4px;
+      height: auto;
+      transform: translateX(-50%);
+    }
+    .river-flow {
+      flex-direction: column;
+      gap: 30px;
+    }
+  }
+
+
+
 .reading-section {
     max-width: 600px;
     margin: 40px auto;
@@ -133,6 +244,39 @@ h1, h2, h3, .section-title {
 </style>
 </head>
 <body>
+
+
+<div class="river-container">
+  <div class="river-line"></div>
+  
+  <div class="river-flow">
+    
+    <a href="aaa.html" class="river-node">
+      <div class="node-circle">💧</div>
+      <span class="node-text">涓滴</span>
+      <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">起源</div>
+    </a>
+
+    <a href="bbb.html" class="river-node">
+      <div class="node-circle">🌊</div>
+      <span class="node-text">流衍</span>
+      <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">汇聚</div>
+    </a>
+
+    <a href="ccc.html" class="river-node">
+      <div class="node-circle">🐳</div>
+      <span class="node-text">涵泳</span>
+      <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">沉浸</div>
+    </a>
+
+    <a href="ddd.html" class="river-node">
+      <div class="node-circle">🌏</div>
+      <span class="node-text">浩瀚</span>
+      <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">终点</div>
+    </a>
+
+  </div>
+</div>
 
 <h1 align="center" style="font-family: 'YanTi'"><a href="https://wj.qq.com/s2/26058833/8s0i/" style="text-decoration: none;">记录·时光·生活</a></h1>
 
