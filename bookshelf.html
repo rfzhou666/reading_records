@@ -431,6 +431,16 @@
         <div class="recent-books">
     
         <div class="recent-card">
+            <img class="recent-cover" src="./books/帮倒忙小姐.webp" alt="帮倒忙小姐" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
+            <div class="recent-info">
+                <div class="recent-bookname">帮倒忙小姐</div>
+                <div class="recent-author">[英]罗杰.哈格里维斯</div>
+                <div class="recent-readers">盈生🐤</div>
+                <div class="recent-note">「这个帮倒忙小姐也太奇怪了，有一次高先生的鞋带松了，帮倒忙小姐就说我来帮你，但是她把两个鞋带都系在一起了。她还把快乐先生的家整的乱七八糟的。帮倒忙小姐太搞笑了，她把高先生的鞋带系在一起，把膏药贴着嘴巴上，还把快乐先生的家弄的乱七八糟的。」</div>
+            </div>
+        </div>
+        
+        <div class="recent-card">
             <img class="recent-cover" src="./books/户型优化理想格局改造攻略.webp" alt="户型优化理想格局改造攻略" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
             <div class="recent-info">
                 <div class="recent-bookname">户型优化理想格局改造攻略</div>
@@ -450,16 +460,6 @@
             </div>
         </div>
         
-        <div class="recent-card">
-            <img class="recent-cover" src="./books/半小时漫画中国哲学史2.webp" alt="半小时漫画中国哲学史2" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
-            <div class="recent-info">
-                <div class="recent-bookname">半小时漫画中国哲学史2</div>
-                <div class="recent-author">陈磊·半小时漫画团队</div>
-                <div class="recent-readers">致虚🏔️</div>
-                <div class="recent-note">「庄子齐物逍遥。汉代儒学，纲。魏晋清谈，玄学。儒学复兴，程朱理学。心即理，知行合一，致良知。」</div>
-            </div>
-        </div>
-        
         </div>
     </div>
     
@@ -468,11 +468,28 @@
         <div class="category">
             <div class="category-header">
                 <div class="category-title">📚 文学</div>
-                <div class="category-count">共 15 本</div>
+                <div class="category-count">共 16 本</div>
             </div>
             <div class="scroll-container">
                 <div class="book-grid">
     
+                            <div class="book-item" onclick="toggleNote(this)">
+                                <img class="book-cover" src="./books/帮倒忙小姐.webp" alt="帮倒忙小姐" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <div class="book-info">
+                                    <div class="book-title">帮倒忙小姐</div>
+                                    <div class="book-author">[英]罗杰.哈格里维斯</div>
+                                    <div class="book-readers">盈生🐤</div>
+                                    <div class="book-meta">
+                                        <span>35页</span>
+                                        <span>📅 2026-03-26</span>
+                                        
+                                    </div>
+                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
+                                        「这个帮倒忙小姐也太奇怪了，有一次高先生的鞋带松了，帮倒忙小姐就说我来帮你，但是她把两个鞋带都系在一起了。她还把快乐先生的家整的乱七八糟的。帮倒忙小姐太搞笑了，她把高先生的鞋带系在一起，把膏药贴着嘴巴上，还把快乐先生的家弄的乱七八糟的。」
+                                    </div>
+                                </div>
+                            </div>
+                
                             <div class="book-item" onclick="toggleNote(this)">
                                 <img class="book-cover" src="./books/野草.webp" alt="野草" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
@@ -1031,7 +1048,7 @@
     </div>
     
     <div class="stats">
-        📊 总计 32 册 · 累计 8,475 页 · 投资 ¥1731 元
+        📊 总计 33 册 · 累计 8,510 页 · 投资 ¥1731 元
     </div>
     
     <script>
