@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<script type="module" src="./model-viewer.min.js"></script>
+<style>
+    body { background: #121212; color: white; font-family: 'PingFang SC', sans-serif; margin: 0; padding: 10px; }
+    .header-title { text-align: center; color: #ffd700; padding: 10px 0 5px 0; font-size: 1.3rem; font-weight: bold; }
+    .balance-tag { text-align: center; color: #00ff88; font-size: 0.9rem; margin-bottom: 15px; font-weight: bold; }
+    
+    .gallery-container { max-width: 800px; margin: auto; }
+    
+    .hero-section { 
+        width: 100%; height: 350px; background-color: #e0f7fa; 
+        background-image: radial-gradient(circle at center, #ffffff 0%, #b2ebf2 100%);
+        border-radius: 25px; margin-bottom: 20px; position: relative; overflow: hidden; border: 4px solid #fff;
+    }
+    
+    .hero-label { 
+        position: absolute; top: 12px; left: 12px; background: #ff4757; color: #fff; 
+        padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 11px; z-index: 10;
+        animation: glow 1.5s infinite; display: none; 
+    }
+    @keyframes glow { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+    
+    #main-viewer { width: 100%; height: 100%; outline: none; }
+    .hero-info-display { position: absolute; bottom: 10px; width: 100%; text-align: center; color: #006064; pointer-events: none; }
+    .hero-name { font-weight: bold; font-size: 16px; }
+    .hero-date { font-size: 10px; opacity: 0.8; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 5px; }
+    .card { background: #252525; border-radius: 12px; padding: 8px 5px; text-align: center; border: 1px solid #333; position: relative; }
+    .thumb-viewer { width: 100%; height: 70px; border-radius: 8px; pointer-events: none; --poster-color: transparent; }
+    .locked-box { width: 100%; height: 70px; background-color: #333; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #555; }
+    
+    .m-name { font-weight: bold; margin-top: 5px; color: #eee; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .m-points { color: #ffd700; font-size: 10px; font-weight: bold; }
+    .m-date { color: #666; font-size: 9px; margin-top: 2px; }
+    
+    .p-bar-bg { width: 80%; background: #444; height: 4px; border-radius: 2px; margin: 6px auto; overflow: hidden; }
+    .p-bar-fill { background: linear-gradient(90deg, #00ff88, #00bd68); height: 100%; transition: width 0.5s; }
+
+    model-viewer::part(poster) { display: none; }
+</style>
+</head>
+<body>
+    <h2 class="header-title">致虚<a href="index.html" style="text-decoration: none;">🏔️</a> 的菜鸡进化路</h2>
+    <div class="balance-tag">
+        <span style="color: #ffd700; margin-right: 15px;">🪙总获得积分：14 分 </span>
+        <span style="color: #00ff88;">💎 当前可用余额：0 分 ✈</span>
+    </div>
+    
+    <div class="gallery-container">
+        <div class="hero-section">
+            <div class="hero-label" id="new-tag">最新解锁 ✨</div>
+            <model-viewer id="main-viewer" src="model/jiujiu/reap_the_whirlwind.glb" 
+                autoplay animation-name="*" auto-rotate camera-controls 
+                shadow-intensity="1" shadow-softness="1" environment-image="neutral"
+                camera-target="0m 0.5m 0m" field-of-view="20deg">
+            </model-viewer>
+            <div class="hero-info-display">
+                <div class="hero-name" id="hero-name">飞翔书城市</div>
+                <div class="hero-date" id="hero-date">解锁时间：2026-03-26</div>
+            </div>
+        </div>
+        <div class="grid">
+    <div class="card" onclick="changeHero('model/jiujiu/boeing-stearman_model_75.glb', '蛋蛋鸡', '1', '2026-02-09')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/boeing-stearman_model_75.glb" loading="lazy"></model-viewer>
+        <div class="m-name">蛋蛋鸡</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-02-09</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/chernovan_nemesis.glb', '像素菜鸡', '1', '2026-02-25')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/chernovan_nemesis.glb" loading="lazy"></model-viewer>
+        <div class="m-name">像素菜鸡</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-02-25</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/cybertruck_-_fun_size.glb', '雏鸡', '1', '2026-03-05')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/cybertruck_-_fun_size.glb" loading="lazy"></model-viewer>
+        <div class="m-name">雏鸡</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-05</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/dae_stylized_plane_comet_88.glb', '小菜鸡', '1', '2026-03-14')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/dae_stylized_plane_comet_88.glb" loading="lazy"></model-viewer>
+        <div class="m-name">小菜鸡</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-14</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/dae_the_flying_circus_koi_fish.glb', '飞鸟', '1', '2026-03-17')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/dae_the_flying_circus_koi_fish.glb" loading="lazy"></model-viewer>
+        <div class="m-name">飞鸟</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-17</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/discworld.glb', '四翼猫头鹰', '1', '2026-03-18')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/discworld.glb" loading="lazy"></model-viewer>
+        <div class="m-name">四翼猫头鹰</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-18</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/fel_iron_horde_lightning_cannon_tank_-_animated.glb', '魔法乌鸦', '1', '2026-03-19')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/fel_iron_horde_lightning_cannon_tank_-_animated.glb" loading="lazy"></model-viewer>
+        <div class="m-name">魔法乌鸦</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-19</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/free_cyberpunk_hovercar.glb', '凤凰', '1', '2026-03-19')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/free_cyberpunk_hovercar.glb" loading="lazy"></model-viewer>
+        <div class="m-name">凤凰</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-19</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/futuristic_transport_shuttle_animated.glb', '凤凰', '1', '2026-03-21')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/futuristic_transport_shuttle_animated.glb" loading="lazy"></model-viewer>
+        <div class="m-name">凤凰</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-21</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/hover_bike_-_the_rocket.glb', '凤凰', '1', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/hover_bike_-_the_rocket.glb" loading="lazy"></model-viewer>
+        <div class="m-name">凤凰</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-24</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/low-poly_truck_car_drifter.glb', '凤凰', '1', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/low-poly_truck_car_drifter.glb" loading="lazy"></model-viewer>
+        <div class="m-name">凤凰</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-24</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/luminaris_starship.glb', '飞翔书城市', '1', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/luminaris_starship.glb" loading="lazy"></model-viewer>
+        <div class="m-name">飞翔书城市</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-24</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/msa-0011m_-_s_gundam_project_m.glb', '凤凰', '1', '2026-03-24')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/msa-0011m_-_s_gundam_project_m.glb" loading="lazy"></model-viewer>
+        <div class="m-name">凤凰</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-24</div>
+    </div>
+    
+    <div class="card" onclick="changeHero('model/jiujiu/reap_the_whirlwind.glb', '飞翔书城市', '1', '2026-03-26')">
+        <model-viewer class="thumb-viewer" src="model/jiujiu/reap_the_whirlwind.glb" loading="lazy"></model-viewer>
+        <div class="m-name">飞翔书城市</div>
+        <div class="m-points">已消耗 1 分</div>
+        <div class="m-date">2026-03-26</div>
+    </div>
+    
+    <div class="card" style="opacity: 0.7;">
+        <div class="locked-box">🔒</div>
+        <div class="m-name">未解锁</div>
+        <div class="m-points">还需 1 分</div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
+    </div>
+    
+    <div class="card" style="opacity: 0.7;">
+        <div class="locked-box">🔒</div>
+        <div class="m-name">未解锁</div>
+        <div class="m-points">还需 1 分</div>
+        <div class="p-bar-bg"><div class="p-bar-fill" style="width: 0.0%"></div></div>
+    </div>
+    </div>
+    </div>
+
+<script>
+const LATEST_NAME = "飞翔书城市";
+// 修改后的 JS 函数
+function changeHero(file, name, points, date) {
+    const viewer = document.getElementById('main-viewer');
+    const nameLabel = document.getElementById('hero-name');
+    const dateLabel = document.getElementById('hero-date');
+    const newTag = document.getElementById('new-tag');
+    
+    viewer.setAttribute('src', file);
+    nameLabel.innerText = name;
+    dateLabel.innerText = "解锁时间：" + date;
+    
+    // 2. 只有名字完全匹配时，才显示“最新解锁”
+    newTag.style.display = (name === LATEST_NAME) ? 'block' : 'none';
+    
+    viewer.fieldOfView = "20deg";
+}
+
+window.onload = () => {
+    const initialName = "飞翔书城市";
+    if (initialName === LATEST_NAME && initialName !== "暂无") {
+        document.getElementById('new-tag').style.display = 'block';
+    }
+};
+</script>
+</body>
+</html>
