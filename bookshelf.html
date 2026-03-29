@@ -431,6 +431,16 @@
         <div class="recent-books">
     
         <div class="recent-card">
+            <img class="recent-cover" src="./books/忙碌先生.webp" alt="忙碌先生" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
+            <div class="recent-info">
+                <div class="recent-bookname">忙碌先生</div>
+                <div class="recent-author">[英]罗杰.哈格里维斯</div>
+                <div class="recent-readers">盈生🐤</div>
+                <div class="recent-note">「我觉得忙碌先生太忙了，因为呢，我看到忙碌先生的时候，我觉得我自己说话，跑得超级无敌快。」</div>
+            </div>
+        </div>
+        
+        <div class="recent-card">
             <img class="recent-cover" src="./books/乱时候，穷时候.webp" alt="乱时候，穷时候" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
             <div class="recent-info">
                 <div class="recent-bookname">乱时候，穷时候</div>
@@ -450,16 +460,6 @@
             </div>
         </div>
         
-        <div class="recent-card">
-            <img class="recent-cover" src="./books/人类简史-人类的诞生.webp" alt="人类简史-人类的诞生" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
-            <div class="recent-info">
-                <div class="recent-bookname">人类简史-人类的诞生</div>
-                <div class="recent-author">作者们</div>
-                <div class="recent-readers">致虚🏔️</div>
-                <div class="recent-note">「叙事。性、谎言和洞穴岩画。感觉文字版更清晰。」</div>
-            </div>
-        </div>
-        
         </div>
     </div>
     
@@ -468,11 +468,28 @@
         <div class="category">
             <div class="category-header">
                 <div class="category-title">📚 文学</div>
-                <div class="category-count">共 16 本</div>
+                <div class="category-count">共 17 本</div>
             </div>
             <div class="scroll-container">
                 <div class="book-grid">
     
+                            <div class="book-item" onclick="toggleNote(this)">
+                                <img class="book-cover" src="./books/忙碌先生.webp" alt="忙碌先生" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <div class="book-info">
+                                    <div class="book-title">忙碌先生</div>
+                                    <div class="book-author">[英]罗杰.哈格里维斯</div>
+                                    <div class="book-readers">盈生🐤</div>
+                                    <div class="book-meta">
+                                        <span>35页</span>
+                                        <span>📅 2026-03-29</span>
+                                        
+                                    </div>
+                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
+                                        「我觉得忙碌先生太忙了，因为呢，我看到忙碌先生的时候，我觉得我自己说话，跑得超级无敌快。」
+                                    </div>
+                                </div>
+                            </div>
+                
                             <div class="book-item" onclick="toggleNote(this)">
                                 <img class="book-cover" src="./books/帮倒忙小姐.webp" alt="帮倒忙小姐" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
@@ -525,23 +542,6 @@
                             </div>
                 
                             <div class="book-item" onclick="toggleNote(this)">
-                                <img class="book-cover" src="./books/乱时候，穷时候.webp" alt="乱时候，穷时候" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
-                                <div class="book-info">
-                                    <div class="book-title">乱时候，穷时候</div>
-                                    <div class="book-author">姜淑梅</div>
-                                    <div class="book-readers">凤书🐦‍🔥 凤书🐦‍🔥</div>
-                                    <div class="book-meta">
-                                        <span>344页</span>
-                                        <span>¥50</span>
-                                        <span>📅 2026-03-20</span>
-                                    </div>
-                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
-                                        「毅力太强了，向她学习。」
-                                    </div>
-                                </div>
-                            </div>
-                
-                            <div class="book-item" onclick="toggleNote(this)">
                                 <img class="book-cover" src="./books/呐喊·彷徨.webp" alt="呐喊·彷徨" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
                                     <div class="book-title">呐喊·彷徨</div>
@@ -554,6 +554,23 @@
                                     </div>
                                     <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
                                         「读《呐喊·彷徨》到277页。对于现在的我来说，还是看着是有些吃力的，不过内容确实有很多很震撼的地方。出名的孔乙己是我以前学过的课文，再读一遍感触很深，脱不掉的长衫……。」
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="book-item" onclick="toggleNote(this)">
+                                <img class="book-cover" src="./books/乱时候，穷时候.webp" alt="乱时候，穷时候" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <div class="book-info">
+                                    <div class="book-title">乱时候，穷时候</div>
+                                    <div class="book-author">姜淑梅</div>
+                                    <div class="book-readers">凤书🐦‍🔥 凤书🐦‍🔥</div>
+                                    <div class="book-meta">
+                                        <span>344页</span>
+                                        <span>¥50</span>
+                                        <span>📅 2026-03-20</span>
+                                    </div>
+                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
+                                        「毅力太强了，向她学习。」
                                     </div>
                                 </div>
                             </div>
@@ -576,23 +593,6 @@
                             </div>
                 
                             <div class="book-item" onclick="toggleNote(this)">
-                                <img class="book-cover" src="./books/送你一颗子弹.webp" alt="送你一颗子弹" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
-                                <div class="book-info">
-                                    <div class="book-title">送你一颗子弹</div>
-                                    <div class="book-author">刘瑜</div>
-                                    <div class="book-readers">致虚🏔️</div>
-                                    <div class="book-meta">
-                                        <span>300页</span>
-                                        <span>¥38</span>
-                                        <span>📅 2026-03-18</span>
-                                    </div>
-                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
-                                        「二三十岁的碎碎念，积极的悲观主义者，不抱怨绝望，和日常的无聊作斗争。」
-                                    </div>
-                                </div>
-                            </div>
-                
-                            <div class="book-item" onclick="toggleNote(this)">
                                 <img class="book-cover" src="./books/三体2.webp" alt="三体2" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
                                     <div class="book-title">三体2</div>
@@ -605,6 +605,23 @@
                                     </div>
                                     <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
                                         「下次再说」
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="book-item" onclick="toggleNote(this)">
+                                <img class="book-cover" src="./books/送你一颗子弹.webp" alt="送你一颗子弹" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <div class="book-info">
+                                    <div class="book-title">送你一颗子弹</div>
+                                    <div class="book-author">刘瑜</div>
+                                    <div class="book-readers">致虚🏔️</div>
+                                    <div class="book-meta">
+                                        <span>300页</span>
+                                        <span>¥38</span>
+                                        <span>📅 2026-03-18</span>
+                                    </div>
+                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
+                                        「二三十岁的碎碎念，积极的悲观主义者，不抱怨绝望，和日常的无聊作斗争。」
                                     </div>
                                 </div>
                             </div>
@@ -627,14 +644,14 @@
                             </div>
                 
                             <div class="book-item" onclick="toggleNote(this)">
-                                <img class="book-cover" src="./books/恒河的女儿.webp" alt="恒河的女儿" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <img class="book-cover" src="./books/一句顶一万句.webp" alt="一句顶一万句" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
-                                    <div class="book-title">恒河的女儿</div>
-                                    <div class="book-author">[印]贝碧·哈尔德</div>
-                                    <div class="book-readers">清一🎋</div>
+                                    <div class="book-title">一句顶一万句</div>
+                                    <div class="book-author">刘震云</div>
+                                    <div class="book-readers">致虚🏔️</div>
                                     <div class="book-meta">
-                                        <span>207页</span>
-                                        <span>¥25</span>
+                                        <span>457页</span>
+                                        <span>¥30</span>
                                         <span>📅 2026-03-14</span>
                                     </div>
                                     <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
@@ -644,14 +661,14 @@
                             </div>
                 
                             <div class="book-item" onclick="toggleNote(this)">
-                                <img class="book-cover" src="./books/一句顶一万句.webp" alt="一句顶一万句" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <img class="book-cover" src="./books/恒河的女儿.webp" alt="恒河的女儿" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
-                                    <div class="book-title">一句顶一万句</div>
-                                    <div class="book-author">刘震云</div>
-                                    <div class="book-readers">致虚🏔️</div>
+                                    <div class="book-title">恒河的女儿</div>
+                                    <div class="book-author">[印]贝碧·哈尔德</div>
+                                    <div class="book-readers">清一🎋</div>
                                     <div class="book-meta">
-                                        <span>457页</span>
-                                        <span>¥30</span>
+                                        <span>207页</span>
+                                        <span>¥25</span>
                                         <span>📅 2026-03-14</span>
                                     </div>
                                     <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
@@ -1082,7 +1099,7 @@
     </div>
     
     <div class="stats">
-        📊 总计 35 册 · 累计 8,950 页 · 投资 ¥1891 元
+        📊 总计 36 册 · 累计 8,985 页 · 投资 ¥1891 元
     </div>
     
     <script>
