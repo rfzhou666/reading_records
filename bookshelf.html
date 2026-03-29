@@ -431,6 +431,16 @@
         <div class="recent-books">
     
         <div class="recent-card">
+            <img class="recent-cover" src="./books/闪光小姐.webp" alt="闪光小姐" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
+            <div class="recent-info">
+                <div class="recent-bookname">闪光小姐</div>
+                <div class="recent-author">[英]罗杰.哈格里维斯</div>
+                <div class="recent-readers">盈生🐤</div>
+                <div class="recent-note">「我听了这本书感觉身体开始发亮了，但是呢，闪光小姐变得没有闪光了。我觉得听了这本书我觉得自己变得闪光，因为闪光小姐的脚指头都亮光了，我都感觉我自己的指甲都开始一闪一闪的了。」</div>
+            </div>
+        </div>
+        
+        <div class="recent-card">
             <img class="recent-cover" src="./books/忙碌先生.webp" alt="忙碌先生" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
             <div class="recent-info">
                 <div class="recent-bookname">忙碌先生</div>
@@ -450,16 +460,6 @@
             </div>
         </div>
         
-        <div class="recent-card">
-            <img class="recent-cover" src="./books/断舍离.webp" alt="断舍离" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
-            <div class="recent-info">
-                <div class="recent-bookname">断舍离</div>
-                <div class="recent-author">[日本]山下英子</div>
-                <div class="recent-readers">致虚🏔️</div>
-                <div class="recent-note">「除了题目，全是一些婆婆妈妈的东西。逃避现实，执着过去，担忧未来。我为轴心，把时间轴放在当下。在考虑物品是否应该被留下时，思考的主语是“我”，而不是物品。整理和收拾。」</div>
-            </div>
-        </div>
-        
         </div>
     </div>
     
@@ -468,11 +468,28 @@
         <div class="category">
             <div class="category-header">
                 <div class="category-title">📚 文学</div>
-                <div class="category-count">共 17 本</div>
+                <div class="category-count">共 18 本</div>
             </div>
             <div class="scroll-container">
                 <div class="book-grid">
     
+                            <div class="book-item" onclick="toggleNote(this)">
+                                <img class="book-cover" src="./books/闪光小姐.webp" alt="闪光小姐" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <div class="book-info">
+                                    <div class="book-title">闪光小姐</div>
+                                    <div class="book-author">[英]罗杰.哈格里维斯</div>
+                                    <div class="book-readers">盈生🐤</div>
+                                    <div class="book-meta">
+                                        <span>35页</span>
+                                        <span>📅 2026-03-29</span>
+                                        
+                                    </div>
+                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
+                                        「我听了这本书感觉身体开始发亮了，但是呢，闪光小姐变得没有闪光了。我觉得听了这本书我觉得自己变得闪光，因为闪光小姐的脚指头都亮光了，我都感觉我自己的指甲都开始一闪一闪的了。」
+                                    </div>
+                                </div>
+                            </div>
+                
                             <div class="book-item" onclick="toggleNote(this)">
                                 <img class="book-cover" src="./books/忙碌先生.webp" alt="忙碌先生" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
@@ -1099,7 +1116,7 @@
     </div>
     
     <div class="stats">
-        📊 总计 36 册 · 累计 8,985 页 · 投资 ¥1891 元
+        📊 总计 37 册 · 累计 9,020 页 · 投资 ¥1891 元
     </div>
     
     <script>
