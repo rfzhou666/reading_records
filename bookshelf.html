@@ -431,6 +431,16 @@
         <div class="recent-books">
     
         <div class="recent-card">
+            <img class="recent-cover" src="./books/柔韧小姐.webp" alt="柔韧小姐" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
+            <div class="recent-info">
+                <div class="recent-bookname">柔韧小姐</div>
+                <div class="recent-author">[英]罗杰.哈格里维斯</div>
+                <div class="recent-readers">盈生🐤</div>
+                <div class="recent-note">「柔韧小姐，她说她不做傻事，可是她还在做傻事，真是太搞笑啦。挠痒痒先生挠她痒痒，是因为她做了很多傻事才这样的。」</div>
+            </div>
+        </div>
+        
+        <div class="recent-card">
             <img class="recent-cover" src="./books/情的菩提.webp" alt="情的菩提" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
             <div class="recent-info">
                 <div class="recent-bookname">情的菩提</div>
@@ -450,16 +460,6 @@
             </div>
         </div>
         
-        <div class="recent-card">
-            <img class="recent-cover" src="./books/闪光小姐.webp" alt="闪光小姐" onerror="this.src='https://via.placeholder.com/100x133?text=📖'">
-            <div class="recent-info">
-                <div class="recent-bookname">闪光小姐</div>
-                <div class="recent-author">[英]罗杰.哈格里维斯</div>
-                <div class="recent-readers">盈生🐤</div>
-                <div class="recent-note">「我听了这本书感觉身体开始发亮了，但是呢，闪光小姐变得没有闪光了。我觉得听了这本书我觉得自己变得闪光，因为闪光小姐的脚指头都亮光了，我都感觉我自己的指甲都开始一闪一闪的了。」</div>
-            </div>
-        </div>
-        
         </div>
     </div>
     
@@ -468,11 +468,28 @@
         <div class="category">
             <div class="category-header">
                 <div class="category-title">📚 文学</div>
-                <div class="category-count">共 19 本</div>
+                <div class="category-count">共 20 本</div>
             </div>
             <div class="scroll-container">
                 <div class="book-grid">
     
+                            <div class="book-item" onclick="toggleNote(this)">
+                                <img class="book-cover" src="./books/柔韧小姐.webp" alt="柔韧小姐" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <div class="book-info">
+                                    <div class="book-title">柔韧小姐</div>
+                                    <div class="book-author">[英]罗杰.哈格里维斯</div>
+                                    <div class="book-readers">盈生🐤</div>
+                                    <div class="book-meta">
+                                        <span>35页</span>
+                                        <span>📅 2026-03-30</span>
+                                        
+                                    </div>
+                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
+                                        「柔韧小姐，她说她不做傻事，可是她还在做傻事，真是太搞笑啦。挠痒痒先生挠她痒痒，是因为她做了很多傻事才这样的。」
+                                    </div>
+                                </div>
+                            </div>
+                
                             <div class="book-item" onclick="toggleNote(this)">
                                 <img class="book-cover" src="./books/情的菩提.webp" alt="情的菩提" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
@@ -576,23 +593,6 @@
                             </div>
                 
                             <div class="book-item" onclick="toggleNote(this)">
-                                <img class="book-cover" src="./books/呐喊·彷徨.webp" alt="呐喊·彷徨" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
-                                <div class="book-info">
-                                    <div class="book-title">呐喊·彷徨</div>
-                                    <div class="book-author">鲁迅</div>
-                                    <div class="book-readers">锦安💰</div>
-                                    <div class="book-meta">
-                                        <span>287页</span>
-                                        <span>¥27</span>
-                                        <span>📅 2026-03-20</span>
-                                    </div>
-                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
-                                        「读《呐喊·彷徨》到277页。对于现在的我来说，还是看着是有些吃力的，不过内容确实有很多很震撼的地方。出名的孔乙己是我以前学过的课文，再读一遍感触很深，脱不掉的长衫……。」
-                                    </div>
-                                </div>
-                            </div>
-                
-                            <div class="book-item" onclick="toggleNote(this)">
                                 <img class="book-cover" src="./books/乱时候，穷时候.webp" alt="乱时候，穷时候" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
                                 <div class="book-info">
                                     <div class="book-title">乱时候，穷时候</div>
@@ -605,6 +605,23 @@
                                     </div>
                                     <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
                                         「毅力太强了，向她学习。」
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="book-item" onclick="toggleNote(this)">
+                                <img class="book-cover" src="./books/呐喊·彷徨.webp" alt="呐喊·彷徨" onerror="this.src='https://via.placeholder.com/70x93?text=📖'">
+                                <div class="book-info">
+                                    <div class="book-title">呐喊·彷徨</div>
+                                    <div class="book-author">鲁迅</div>
+                                    <div class="book-readers">锦安💰</div>
+                                    <div class="book-meta">
+                                        <span>287页</span>
+                                        <span>¥27</span>
+                                        <span>📅 2026-03-20</span>
+                                    </div>
+                                    <div class="book-note" style="display: none; margin-top: 8px; padding: 8px; background: #fff0f5; border-radius: 12px; font-size: 0.85em; color: #8b5a2b; font-style: italic; border-left: 3px solid #d6336c; text-align: left;">
+                                        「读《呐喊·彷徨》到277页。对于现在的我来说，还是看着是有些吃力的，不过内容确实有很多很震撼的地方。出名的孔乙己是我以前学过的课文，再读一遍感触很深，脱不掉的长衫……。」
                                     </div>
                                 </div>
                             </div>
@@ -1150,7 +1167,7 @@
     </div>
     
     <div class="stats">
-        📊 总计 39 册 · 累计 9,555 页 · 投资 ¥1957 元
+        📊 总计 40 册 · 累计 9,590 页 · 投资 ¥1957 元
     </div>
     
     <script>
