@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background-color: #FFF9E3; font-family: 'Microsoft YaHei', sans-serif; padding: 10px; margin: 0; }
+        .page-title { text-align: center; color: #FF8C00; font-size: 22px; margin: 15px 0; }
+        
+        /* 新增：统计行样式 */
+        .stats-bar { 
+            text-align: center; 
+            color: #A35200; 
+            font-size: 14px; 
+            margin-bottom: 20px; 
+            font-weight: bold; 
+            opacity: 0.8; 
+        }
+        
+        .reading-wall { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 600px; margin: 0 auto; justify-items: center; }
+        
+        /* 卡片基础样式 */
+        .book-item { background: white; border-radius: 10px; padding: 8px; text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+        
+        /* 图片容器与金边 (对应你的参数) */
+        .img-wrapper { position: relative; width: 100%; max-width: 110px; aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; box-sizing: border-box; }
+        .is-unlocked {
+            border: 4px solid transparent;
+            background-image: linear-gradient(#222, #222), linear-gradient(135deg, #FFE082 0%, #FFD700 45%, #B8860B 55%, #FFE082 100%);
+            background-origin: border-box; background-clip: padding-box, border-box;
+            box-shadow: inset 0 0 10px 4px #FFD700, inset 0 2px 2px rgba(255,255,255,0.6), inset 0 -2px 2px rgba(0,0,0,0.4), inset 0 0 1px 1px rgba(100,60,0,0.8), 0 0 10px 4px #FFD700, 0 0 15px 5px rgba(255,255,255,0.5), 0 0 25px 2px rgba(255,255,255,0.2);
+        }
+        .is-locked { border: 3px solid #F0F0F0; filter: grayscale(100%); opacity: 0.4; }
+        .glass-reflection { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; backdrop-filter: blur(0.2px); background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.1) 100%); box-shadow: inset 0 0 1px 0.5px rgba(255,255,255,0.3); pointer-events: none; }
+        .book-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.1s; display: block; z-index: 1; }
+        
+        /* 文字 Hover */
+        .status-tag { margin-top: 5px; font-size: 11px; font-weight: bold; color: #5D4037; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: 0.2s; cursor: pointer; }
+        .status-tag:hover { color: #FF8C00; transform: scale(1.1); }
+        .date-info { font-size: 9px; margin-top: 1px; color: #FF8C00; }
+
+        /* --- 核心：泡泡弹窗样式 --- */
+        #note-bubble {
+            position: fixed; display: none; z-index: 1000;
+            background: #FFFBE6; border: 2px solid #FFD700; border-radius: 15px;
+            padding: 12px; max-width: 200px; color: #5D4037; font-size: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            pointer-events: none; /* 防止挡住鼠标点击 */
+        }
+        /* 泡泡的小尖角 */
+        #note-bubble::after {
+            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-title">🫩 看不完呀看不完 <a href="index.html" style="text-decoration: none;">🫩</a></div>
+    <div class="stats-bar">📖 已解锁：0 / 3</div>
+    <div id="note-bubble"></div>
+    <div class='reading-wall'>
+
+        <div class='book-item'>
+            <div class='img-wrapper is-locked'>
+                <img src='data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogICAgICAgIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNGNUY1RjUiLz4KICAgICAgICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9Ik1pY3Jvc29mdCBZYUhlaSwgQXJpYWwiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiM5OTkiIAogICAgICAgICAgICAgIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPuinhOiureS4juaDqee9mjwvdGV4dD4KICAgIDwvc3ZnPgogICAg' class='book-img' onclick="showBubble(event, '吾生也有涯，而知也无涯。以有涯随无涯，殆已！')">
+            </div>
+            <div class='status-tag'>规训与惩罚</div>
+            <div class='date-info' style='color:#BBB'>🔒 待解锁</div>
+        </div>
+        <div class='book-item'>
+            <div class='img-wrapper is-locked'>
+                <img src='data:image/jpeg;base64,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' class='book-img' onclick="showBubble(event, '吾生也有涯，而知也无涯。以有涯随无涯，殆已！')">
+            </div>
+            <div class='status-tag'>在峡江的转弯处</div>
+            <div class='date-info' style='color:#BBB'>🔒 待解锁</div>
+        </div>
+        <div class='book-item'>
+            <div class='img-wrapper is-locked'>
+                <img src='data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogICAgICAgIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNGNUY1RjUiLz4KICAgICAgICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9Ik1pY3Jvc29mdCBZYUhlaSwgQXJpYWwiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiM5OTkiIAogICAgICAgICAgICAgIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPue6oui9rjwvdGV4dD4KICAgIDwvc3ZnPgogICAg' class='book-img' onclick="showBubble(event, '吾生也有涯，而知也无涯。以有涯随无涯，殆已！')">
+            </div>
+            <div class='status-tag'>红轮</div>
+            <div class='date-info' style='color:#BBB'>🔒 待解锁</div>
+        </div>
+    </div>
+    <script>
+        const bubble = document.getElementById('note-bubble');
+        let timer;
+
+        function showBubble(event, text) {
+            event.stopPropagation();
+            bubble.innerText = text;
+            bubble.style.display = 'block';
+            
+            // 计算位置：在点击位置下方
+            const x = event.clientX;
+            const y = event.clientY + 20;
+            
+            // 防止超出屏幕右侧
+            let leftPos = x - (bubble.offsetWidth / 2);
+            if(leftPos + bubble.offsetWidth > window.innerWidth) leftPos = window.innerWidth - bubble.offsetWidth - 10;
+            if(leftPos < 10) leftPos = 10;
+
+            bubble.style.left = leftPos + 'px';
+            bubble.style.top = y + 'px';
+
+            // 3秒后自动消失，或者再次点击消失
+            clearTimeout(timer);
+            timer = setTimeout(() => { bubble.style.display = 'none'; }, 3000);
+        }
+
+        // 点击页面其他地方泡泡消失
+        document.addEventListener('click', () => { bubble.style.display = 'none'; });
+    </script>
+</body>
+</html>
