@@ -48,9 +48,9 @@
     background: #fff; 
     padding: 0px; 
     border-radius: 5px; 
-    
+    box-sizing: border-box; /* 确保 padding 不会额外撑开宽度 */
     /* --- 核心修改：缩放自适应 --- */
-    width: 95%;             /* 容器宽度占屏幕比例 */
+    width: 100%;             /* 容器宽度占屏幕比例 */
     max-width: fit-content;  /* PC端保持内容宽度 */
     margin: 0 auto;          /* 居中 */
     overflow-x: auto;       /* 万一超出则允许内部滑动，防止撑破页面 */
@@ -64,14 +64,15 @@
         /* 第一个值是水平间距（左右），第二个值是垂直间距（上下） */
         border-spacing: 10px 10px;
         /* 使用 zoom 或 scale 视情况而定，zoom 最简单且不占位 */
-        zoom: 1; 
+        transform: scale(0.65); 
+        transform-origin: center top; /* 居中缩放，消除左/右偏重 */
         /* 如果 zoom 无效，改用 transform: scale(0.8); 但需要处理容器高度 */
     }
 }
     /* 增加：确保表头期数和格子宽度一致并居中 */
         .reading-board th { 
             text-align: center; 
-            width: 120px; 
+            width: 117px; 
             font-size: 16px; 
             padding-bottom: 10px; 
         }
@@ -82,34 +83,35 @@
         }
     
         .book-cell {
-             width: 120px; height: 160px; 
+             width: 117px; height: 152px; 
             /*width: 111px; height: 148px;*/
             background-color: #f8f9fa; border-radius: 10px;
             overflow: hidden; position: relative;
             margin: 0 auto; /* 增加：配合 td 居中实现上下对齐 */
         }
         
-        /* .book-cell {
-        #     width: 120px; height: 160px; 
-        #     background-color: #f8f9fa; border-radius: 10px;
-        #     overflow: hidden; position: relative;
-        # }
+
         
-        # .img-wrapper { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        # .book-cover { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 4; }
+    #capture-area {
+        width: 100%;           /* 容器占满屏幕 */
+        padding: 10px;         /* 留出一点边距，防止贴边 */
+        box-sizing: border-box;
+    }
     
-        # .finished { border: 5px solid #FFD700; box-shadow: 0 4px 8px rgba(0,0,0,0.3); box-sizing: border-box; z-index: 5; }
-        */
-        
-        /*.img-wrapper {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background-color: transparent; /* 确保容器背景不干扰 */
-        }*/
+    .reading-board {
+        width: 100%;           /* 表格撑满容器 */
+        table-layout: fixed;   /* 关键：强制平分宽度，不被内容撑开 */
+        border-collapse: separate;
+        border-spacing: 5px;   /* 手机端间距调小，节省空间 */
+    }
+    
+    .book-cell {
+        width: 100%;           /* 宽度不再是 90px，而是自适应百分比 */
+        aspect-ratio: 3 / 4;   /* 核心：无论宽是多少，高度自动按 3:4 计算 */
+        height: auto;          /* 必须删掉之前的固定 height: 120px */
+    }
+
+
         .img-wrapper.unfinished {
             background-color: #555 !important; /* 这个灰色决定了未读区域的基调 */
             display: flex;
