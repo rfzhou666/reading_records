@@ -30,6 +30,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            justify-content: center; /* 水平居中 */
         } 
     
         
@@ -80,6 +81,10 @@
         /* 增加：确保单元格内容居中 */
         .reading-board td { 
             text-align: center; 
+            margin-left: auto;      /* 左右自动边距 */
+            margin-right: auto;
+            border-collapse: separate;
+            /* 确保 table 没有被设置 width: 100%，否则 margin: auto 失效 */
         }
     
         .book-cell {
