@@ -58,18 +58,35 @@
     transform-origin: top left; /* 确保缩放中心在左上角 */
 }
 
-        /* 针对手机端的等比例缩放（如果表格依然太宽） */
+        /* 针对手机端的等比例缩放（如果表格依然太宽） * /
 @media (max-width: 600px) {
     .reading-board {
         border-collapse: separate; 
-        /* 第一个值是水平间距（左右），第二个值是垂直间距（上下） */
+        /* 第一个值是水平间距（左右），第二个值是垂直间距（上下） * /
         border-spacing: 10px 10px;
-        /* 使用 zoom 或 scale 视情况而定，zoom 最简单且不占位 */
+        /* 使用 zoom 或 scale 视情况而定，zoom 最简单且不占位 * /
         transform: scale(0.65); 
-        transform-origin: center top; /* 居中缩放，消除左/右偏重 */
-        /* 如果 zoom 无效，改用 transform: scale(0.8); 但需要处理容器高度 */
+        transform-origin: center top; /* 居中缩放，消除左/右偏重 * /
+        /* 如果 zoom 无效，改用 transform: scale(0.8); 但需要处理容器高度 * /
+    }
+} */
+
+@media (max-width: 600px) {
+    .reading-board {
+        /* 1. 改为 left top：表格贴着左边缩放，右侧空隙由倍数控制 */
+        transform: scale(0.48); /* 因为总宽变大了(140+114*6)，缩放倍数要调小一点 */
+        transform-origin: left top; 
+        
+        /* 2. 居中补偿：如果缩完后整体太靠左，用 margin 往右推一点点 */
+        margin-left: 2vw; 
+        
+        /* 3. 消除表格自带的强制宽度 */
+        width: auto !important; 
     }
 }
+
+
+
     /* 增加：确保表头期数和格子宽度一致并居中 */
         .reading-board th { 
             text-align: center; 
