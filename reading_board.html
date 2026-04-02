@@ -38,7 +38,9 @@
         .row-header { font-weight: bold; text-align: right; padding-right: 15px; min-width: 90px; vertical-align: middle; }
     
         #capture-area { background: #fff; padding: 30px; display: inline-block; border-radius: 20px; }
-        .reading-board { border-collapse: separate; border-spacing: 15px; font-family: 'YanTi','KaiTi'; } /* MF YanSong (Noncommercial) Regular LXGW WenKai Screen , "Microsoft YaHei", sans-serif */
+        .reading-board { border-collapse: separate; border-spacing: 15px; font-family: 'YanTi','KaiTi'; border-collapse: separate; 
+        /* 第一个值是水平间距（左右），第二个值是垂直间距（上下） */
+        border-spacing: 10px 10px;} /* MF YanSong (Noncommercial) Regular LXGW WenKai Screen , "Microsoft YaHei", sans-serif */
         .row-header { font-weight: bold; text-align: right; padding-right: 15px; min-width: 80px; font-size: 20px; }
 
 
@@ -58,6 +60,9 @@
         /* 针对手机端的等比例缩放（如果表格依然太宽） */
 @media (max-width: 600px) {
     .reading-board {
+        border-collapse: separate; 
+        /* 第一个值是水平间距（左右），第二个值是垂直间距（上下） */
+        border-spacing: 5px 5px;
         /* 使用 zoom 或 scale 视情况而定，zoom 最简单且不占位 */
         zoom: 0.7; 
         /* 如果 zoom 无效，改用 transform: scale(0.8); 但需要处理容器高度 */
@@ -66,8 +71,8 @@
     /* 增加：确保表头期数和格子宽度一致并居中 */
         .reading-board th { 
             text-align: center; 
-            width: 105px; 
-            font-size: 14px; 
+            width: 111px; 
+            font-size: 16px; 
             padding-bottom: 10px; 
         }
         
@@ -78,7 +83,7 @@
     
         .book-cell {
             /* width: 120px; height: 160px; */
-            width: 105px; height: 140px;
+            width: 111px; height: 148px;
             background-color: #f8f9fa; border-radius: 10px;
             overflow: hidden; position: relative;
             margin: 0 auto; /* 增加：配合 td 居中实现上下对齐 */
