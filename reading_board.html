@@ -81,10 +81,6 @@
         /* 增加：确保单元格内容居中 */
         .reading-board td { 
             text-align: center; 
-            margin-left: auto;      /* 左右自动边距 */
-            margin-right: auto;
-            border-collapse: separate;
-            /* 确保 table 没有被设置 width: 100%，否则 margin: auto 失效 */
         }
     
         .book-cell {
@@ -95,27 +91,6 @@
             margin: 0 auto; /* 增加：配合 td 居中实现上下对齐 */
         }
         
-
-     /* 2026-04-02 自动适应
-    #capture-area {
-        width: 100%;           /* 容器占满屏幕 *
-        padding: 10px;         /* 留出一点边距，防止贴边 *
-        box-sizing: border-box;
-    }
-    
-    .reading-board {
-        width: 100%;           /* 表格撑满容器 *
-        table-layout: fixed;   /* 关键：强制平分宽度，不被内容撑开 *
-        border-collapse: separate;
-        border-spacing: 5px;   /* 手机端间距调小，节省空间 *
-    }
-    
-    .book-cell {
-        width: 100%;           /* 宽度不再是 90px，而是自适应百分比 *
-        aspect-ratio: 3 / 4;   /* 核心：无论宽是多少，高度自动按 3:4 计算 *
-        height: auto;          /* 必须删掉之前的固定 height: 120px *
-    }*/   
-
 
         .img-wrapper.unfinished {
             background-color: #555 !important; /* 这个灰色决定了未读区域的基调 */
