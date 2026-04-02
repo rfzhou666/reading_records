@@ -26,12 +26,12 @@
             }
 
     
-        html, body {
+        /* html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            justify-content: center; /* 水平居中 */
-        } 
+            justify-content: center; /* 水平居中 
+        }  */
     
         
         #capture-area { background: #fff; padding: 30px; display: inline-block; border-radius: 20px; }
@@ -45,68 +45,46 @@
         .row-header { font-weight: bold; text-align: right; padding-right: 15px; min-width: 80px; font-size: 20px; }
 
 
-    #capture-area { 
+#capture-area { 
     background: #fff; 
     padding: 0px; 
     border-radius: 5px; 
-    box-sizing: border-box; /* 确保 padding 不会额外撑开宽度 */
-    /* --- 核心修改：缩放自适应 --- */
-    width: 100%;             /* 容器宽度占屏幕比例 */
-    max-width: fit-content;  /* PC端保持内容宽度 */
-    margin: 0 auto;          /* 居中 */
-    overflow-x: auto;       /* 万一超出则允许内部滑动，防止撑破页面 */
-    transform-origin: top left; /* 确保缩放中心在左上角 */
+    box-sizing: border-box;
+    width: 100%; 
+    max-width: fit-content; 
+    margin: 0 auto; 
+    overflow-x: auto; /* 允许在手机上滑动查看，防止强行压扁变形 */
 }
 
-        /* 针对手机端的等比例缩放（如果表格依然太宽） * /
 @media (max-width: 600px) {
     .reading-board {
         border-collapse: separate; 
-        /* 第一个值是水平间距（左右），第二个值是垂直间距（上下） * /
         border-spacing: 10px 10px;
-        /* 使用 zoom 或 scale 视情况而定，zoom 最简单且不占位 * /
-        transform: scale(0.65); 
-        transform-origin: center top; /* 居中缩放，消除左/右偏重 * /
-        /* 如果 zoom 无效，改用 transform: scale(0.8); 但需要处理容器高度 * /
-    }
-} */
-
-@media (max-width: 600px) {
-    .reading-board {
-        /* 1. 改为 left top：表格贴着左边缩放，右侧空隙由倍数控制 */
-        transform: scale(0.48); /* 因为总宽变大了(140+114*6)，缩放倍数要调小一点 */
-        transform-origin: left top; 
-        
-        /* 2. 居中补偿：如果缩完后整体太靠左，用 margin 往右推一点点 */
-        margin-left: 2vw; 
-        
-        /* 3. 消除表格自带的强制宽度 */
-        width: auto !important; 
+        /* --- 唯一修改：使用 zoom --- */
+        /* 140 + 114*6 + 间距 约 900px。
+           在 375px 宽的手机上，zoom 0.42 刚好全屏。
+           如果你想看清楚点允许滑动，可以设为 0.6 或 0.7 */
+        zoom: 0.5; 
+        margin: 0 auto;
     }
 }
 
+.reading-board th { 
+    text-align: center; 
+    width: 114px; 
+    font-size: 16px; 
+    padding-bottom: 10px; 
+}
 
-
-    /* 增加：确保表头期数和格子宽度一致并居中 */
-        .reading-board th { 
-            text-align: center; 
-            width: 114px; 
-            font-size: 16px; 
-            padding-bottom: 10px; 
-        }
-        
-        /* 增加：确保单元格内容居中 */
-        .reading-board td { 
-            text-align: center; 
-        }
-    
-        .book-cell {
-             width: 114px; height: 148px; 
-            /*width: 111px; height: 148px;*/
-            background-color: #f8f9fa; border-radius: 10px;
-            overflow: hidden; position: relative;
-            margin: 0 auto; /* 增加：配合 td 居中实现上下对齐 */
-        }
+.book-cell {
+    width: 114px; 
+    height: 148px; 
+    background-color: #f8f9fa; 
+    border-radius: 10px;
+    overflow: hidden; 
+    position: relative;
+    margin: 0 auto; 
+}
         
 
         .img-wrapper.unfinished {
